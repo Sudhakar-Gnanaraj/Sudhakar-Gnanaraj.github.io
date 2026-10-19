@@ -593,6 +593,7 @@ html:has(.game-page) { scroll-padding-top: 140px; }
   border-left: 3px solid var(--blue);
   border-radius: 4px;
 }
+.focus-note { color: #f3e3b3; background: rgba(232, 184, 74, 0.14); border-left-color: #e8b84a; }
 .mobile-warning[hidden], .play-note[hidden] { display: none; }
 .play-tools { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; margin-left: auto; }
 .play-tools[hidden] { display: none; }

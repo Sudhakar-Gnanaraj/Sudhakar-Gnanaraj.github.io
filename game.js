@@ -8,6 +8,7 @@ const fsBtn = document.getElementById("btn-fullscreen");
 const muteBtn = document.getElementById("btn-mute");
 const playTools = document.getElementById("play-tools");
 const loadNote = document.getElementById("load-note");
+const focusNote = document.getElementById("focus-note");
 const mobileWarning = document.getElementById("mobile-warning");
 
 // ---- Mobile warning --------------------------------------------------------
@@ -40,6 +41,20 @@ function gameBroken() {
     return true;
   }
 }
+
+// ---- "Click the game to resume" notice -------------------------------------
+// The game pauses itself when it loses keyboard/mouse focus (the player clicked somewhere
+// else on the page). Tell the player how to get going again.
+let hadFocus = false; // has the player clicked into this copy of the game yet?
+function checkFocus() {
+  let has = false;
+  try {
+    has = !!(frame.contentDocument && frame.contentDocument.hasFocus());
+  } catch { /* frame not ready */ }
+  if (has) hadFocus = true;
+  focusNote.hidden = !(hadFocus && !has && !panelPlay.hidden && gameLoaded());
+}
+setInterval(checkFocus, 300);
 
 // Load (or reload) the game in the frame.
 function loadGame(fresh) {
@@ -223,6 +238,10 @@ frame.addEventListener("load", () => {
     const win = frame.contentWindow;
     const doc = frame.contentDocument;
     if (!doc || !doc.querySelector("#unity-canvas")) return;
+    hadFocus = false;
+    focusNote.hidden = true;
+    win.addEventListener("focus", checkFocus);
+    win.addEventListener("blur", checkFocus);
     gameHook = hookGame(win);
     syncPause();
     const style = doc.createElement("style");

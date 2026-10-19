@@ -4,7 +4,10 @@
     {
       "name": "portfolio",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8000"],
+      "runtimeArgs": [
+        "-c",
+        "import http.server as h; h.ThreadingHTTPServer.request_queue_size=128; h.test(HandlerClass=h.SimpleHTTPRequestHandler, ServerClass=h.ThreadingHTTPServer, port=8000)"
+      ],
       "port": 8000
     }
   ]
