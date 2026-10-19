@@ -30,3 +30,21 @@ tabPlay.addEventListener("click", () => show("play"));
 fsBtn.addEventListener("click", () => {
   if (frame.requestFullscreen) frame.requestFullscreen();
 });
+
+// Some browsers stop a GIF after its first pass. Once an image has loaded, wait
+// for one full pass and swap in a fresh copy so it restarts from frame one.
+function keepLooping(img) {
+  const ms = Number(img.dataset.loopMs);
+  const arm = () =>
+    setTimeout(() => {
+      if (document.hidden) return arm_again();
+      const fresh = img.cloneNode();
+      fresh.loading = "eager";
+      img.replaceWith(fresh);
+      keepLooping(fresh);
+    }, ms);
+  const arm_again = () => setTimeout(() => keepLooping(img), 500);
+  if (img.complete && img.naturalWidth) arm();
+  else img.addEventListener("load", arm, { once: true });
+}
+document.querySelectorAll("img[data-loop-ms]").forEach(keepLooping);

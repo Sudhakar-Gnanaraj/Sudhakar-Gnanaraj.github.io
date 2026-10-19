@@ -232,6 +232,45 @@ a { color: inherit; text-decoration: none; }
 .ai-disclosure h3 { margin: 0 0 8px; font-size: 14px; font-weight: 500; color: #fff; }
 .ai-disclosure p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--muted); }
 
+/* Core gameplay features */
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 24px 20px;
+  background: rgba(0, 0, 0, 0.25);
+  border-left: 3px solid var(--blue);
+  border-radius: 4px;
+}
+.feature {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: center;
+}
+.feature:has(.gif) { grid-template-columns: 1fr 1fr; }
+.feature.gif-left .feature-text { order: 2; }
+.feature.gif-left .gif { order: 1; }
+.feature h3 { margin: 0 0 8px; font-size: 20px; font-weight: 500; color: #fff; }
+.feature p { margin: 0; font-size: 17px; line-height: 1.6; color: var(--fg); }
+.gif { margin: 0; }
+.gif img, .gif-placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  display: block;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(102, 192, 244, 0.2);
+}
+.gif img { aspect-ratio: 1 / 1; height: auto; max-width: 440px; margin: 0 auto; object-fit: cover; background: #0a0b0d; }
+.gif-placeholder {
+  display: grid;
+  place-content: center;
+  font-size: 14px;
+  color: var(--muted);
+  background: rgba(0, 0, 0, 0.4);
+}
+
 .tabs { display: flex; gap: 6px; margin-bottom: 12px; }
 .tab {
   font: inherit;
@@ -298,6 +337,8 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 860px) {
   .game { padding: 84px 18px 28px; }
   .top { grid-template-columns: 1fr; gap: 24px; }
+  .feature:has(.gif) { grid-template-columns: 1fr; gap: 16px; }
+  .feature.gif-left .feature-text, .feature.gif-left .gif { order: 0; }
 }
 
 @media (max-width: 480px) {
