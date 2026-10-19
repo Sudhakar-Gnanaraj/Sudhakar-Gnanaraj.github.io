@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=17">
+  <link rel="stylesheet" href="styles.css?v=20">
 </head>
 <body class="game-page">
 
@@ -25,8 +25,16 @@
     <a class="back" href="index.html#projects">← Back to my works</a>
     <h1 class="game-title">Orbital Defense 2</h1>
 
+    <nav class="section-bar" id="section-bar" aria-label="Jump to a section">
+      <a class="chip" href="#overview" data-target="overview" data-also="play">Overview</a>
+      <a class="chip" href="#core-gameplay" data-target="core-gameplay">Core gameplay</a>
+      <a class="chip" href="#key-systems" data-target="key-systems">Key systems</a>
+      <a class="chip" href="#level-design" data-target="level-design">Level design</a>
+      <a class="chip" href="#ux" data-target="ux">UI/UX</a>
+    </nav>
+
     <!-- Overview (left) + Details (right) -->
-    <section class="top">
+    <section class="top" id="overview">
       <div class="overview">
         <h2 class="label">Overview</h2>
         <p>Orbital Defense is a 2D top-down tower-defense game. You defend Earth by placing satellites on orbit rings and shooting down waves of incoming enemies. Each satellite can swing along its orbit. You spend currency on building and boosting them.</p>
@@ -48,7 +56,7 @@
     </section>
 
     <!-- Trailer / Play -->
-    <section class="media" aria-label="Trailer and play">
+    <section class="media" id="play" aria-label="Trailer and play">
       <div class="mobile-warning" id="mobile-warning" role="note" hidden>
         <strong>Heads up:</strong> this game is not optimized for mobile devices. For the best experience, play on a desktop or laptop with a mouse.
       </div>
@@ -78,7 +86,7 @@
       </div>
     </section>
 
-    <section class="block">
+    <section class="block" id="core-gameplay">
       <h2 class="label">Core gameplay</h2>
       <div class="features">
 
@@ -105,7 +113,7 @@
       </div>
     </section>
 
-    <section class="block">
+    <section class="block" id="key-systems">
       <h2 class="label">Key systems</h2>
       <div class="systems">
 
@@ -251,7 +259,7 @@
       </div>
     </section>
 
-    <section class="block">
+    <section class="block" id="level-design">
       <h2 class="label">Level design</h2>
       <div class="leveldesign">
 
@@ -423,10 +431,13 @@
 
   </main>
 
+  <button class="to-top" id="to-top" type="button" aria-label="Back to top" hidden>↑</button>
+
   <footer class="footer">© <span id="year"></span> Sudhakar Gnanaraj</footer>
 
   <script src="script.js"></script>
-  <script src="game.js?v=12"></script>
+  <script src="game.js?v=16"></script>
+  <script src="section-nav.js?v=2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" defer></script>
   <script src="pacing-chart.js?v=1" defer></script>
 </body>

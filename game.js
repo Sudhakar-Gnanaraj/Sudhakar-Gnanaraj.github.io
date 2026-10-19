@@ -82,11 +82,14 @@ function show(which) {
   if (!play) {
     loadNote.hidden = true;
     clearInterval(loadWatcher);
+    syncPause(); // silence and freeze the game while the trailer shows
   }
 
   if (play) {
+    inView = visibleFraction() >= 0.2;
     if (!frame.getAttribute("src")) loadGame(false);
-    else if (needsReload) loadGame(true);
+    else if (needsReload) { gameHook = null; loadGame(true); }
+    else syncPause();
     watchLoading();
 
     // Stop the trailer when switching away by reloading its iframe, if there is one
@@ -101,6 +104,23 @@ function show(which) {
 let muted = false;
 const masters = new Set(); // master gain nodes, one per AudioContext the game creates
 const mediaEls = new Map(); // media element -> its original muted state
+const contexts = new Set(); // every AudioContext the game creates (so they can be suspended)
+const resumeMedia = new Set(); // media elements we paused, to restart on return
+let gameHook = null; // controls for the game page currently in the frame: { setPaused(bool) }
+let inView = true; // is the game window on screen (not scrolled away)?
+
+// How much of the game window is on screen right now (0 to 1).
+function visibleFraction() {
+  const r = panelPlay.getBoundingClientRect();
+  if (!r.height) return 0;
+  const shown = Math.min(r.bottom, innerHeight) - Math.max(r.top, 0);
+  return Math.max(0, shown) / r.height;
+}
+
+// The game runs only while the Play tab is showing AND the window is on screen.
+function syncPause() {
+  if (gameHook) gameHook.setPaused(panelPlay.hidden || !inView);
+}
 
 function applyMute() {
   masters.forEach((g) => {
@@ -113,16 +133,23 @@ function applyMute() {
   muteBtn.setAttribute("aria-pressed", String(muted));
 }
 
-function hookAudio(win) {
-  if (win.__audioHooked) return;
-  win.__audioHooked = true;
+function hookGame(win) {
+  if (win.__gameHook) return win.__gameHook;
 
+  // A fresh game page: forget anything left over from a previous one.
+  masters.clear();
+  mediaEls.clear();
+  contexts.clear();
+  resumeMedia.clear();
+
+  // Audio: route each AudioContext through a master volume node we control.
   for (const name of ["AudioContext", "webkitAudioContext"]) {
     const Orig = win[name];
     if (!Orig) continue;
     win[name] = class extends Orig {
       constructor(...args) {
         super(...args);
+        contexts.add(this);
         try {
           const master = this.createGain();
           master.connect(this.destination);
@@ -134,6 +161,7 @@ function hookAudio(win) {
     };
   }
 
+  // <audio>/<video> elements (the tutorial videos): remember them and honour mute.
   const proto = win.HTMLMediaElement && win.HTMLMediaElement.prototype;
   if (proto) {
     const origPlay = proto.play;
@@ -143,6 +171,43 @@ function hookAudio(win) {
       return origPlay.apply(this, args);
     };
   }
+
+  // Pausing: hold back the game's animation-frame loop while the window is hidden.
+  let paused = false;
+  let fakeId = 1e9;
+  const queued = []; // [id, callback] waiting for resume
+  const origRAF = win.requestAnimationFrame.bind(win);
+  const origCancel = win.cancelAnimationFrame.bind(win);
+  win.requestAnimationFrame = (cb) => {
+    if (!paused) return origRAF(cb);
+    queued.push([++fakeId, cb]);
+    return fakeId;
+  };
+  win.cancelAnimationFrame = (id) => {
+    const i = queued.findIndex((q) => q[0] === id);
+    if (i >= 0) queued.splice(i, 1);
+    else origCancel(id);
+  };
+
+  const hook = {
+    setPaused(p) {
+      if (p === paused) return;
+      paused = p;
+      if (p) {
+        contexts.forEach((c) => { try { if (c.state === "running") c.suspend(); } catch { /* ignore */ } });
+        mediaEls.forEach((_, el) => {
+          try { if (!el.paused) { el.pause(); resumeMedia.add(el); } } catch { /* ignore */ }
+        });
+      } else {
+        contexts.forEach((c) => { try { c.resume(); } catch { /* ignore */ } });
+        resumeMedia.forEach((el) => { try { el.play(); } catch { /* ignore */ } });
+        resumeMedia.clear();
+        queued.splice(0).forEach(([, cb]) => origRAF(cb));
+      }
+    },
+  };
+  win.__gameHook = hook;
+  return hook;
 }
 
 muteBtn.addEventListener("click", () => {
@@ -158,7 +223,8 @@ frame.addEventListener("load", () => {
     const win = frame.contentWindow;
     const doc = frame.contentDocument;
     if (!doc || !doc.querySelector("#unity-canvas")) return;
-    hookAudio(win);
+    gameHook = hookGame(win);
+    syncPause();
     const style = doc.createElement("style");
     style.textContent = `
       html, body { height: 100%; margin: 0; overflow: hidden; background: #000; }
@@ -171,6 +237,20 @@ frame.addEventListener("load", () => {
     /* cross-origin or not loaded: leave the build as exported */
   }
 });
+
+// Pause the game when it is scrolled out of view; resume when it comes back.
+function onViewChange() {
+  if (panelPlay.hidden) return; // the Trailer tab handles pausing on its own
+  const nowInView = visibleFraction() >= 0.2;
+  if (nowInView === inView) return;
+  inView = nowInView;
+  syncPause();
+}
+if ("IntersectionObserver" in window) {
+  new IntersectionObserver(onViewChange, { threshold: [0, 0.2, 0.5] }).observe(panelPlay);
+}
+addEventListener("scroll", onViewChange, { passive: true });
+addEventListener("resize", onViewChange);
 
 tabTrailer.addEventListener("click", () => show("trailer"));
 tabPlay.addEventListener("click", () => show("play"));
