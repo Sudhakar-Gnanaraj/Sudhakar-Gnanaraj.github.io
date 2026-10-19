@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=5">
+  <link rel="stylesheet" href="styles.css?v=12">
 </head>
 <body class="game-page">
 
@@ -52,7 +52,10 @@
       <div class="tabs" role="tablist">
         <button class="tab active" id="tab-trailer" role="tab" aria-selected="true" aria-controls="panel-trailer">Trailer</button>
         <button class="tab" id="tab-play" role="tab" aria-selected="false" aria-controls="panel-play">▶ Play</button>
-        <button class="tab fs" id="btn-fullscreen" type="button" hidden>Fullscreen ⤢</button>
+        <div class="play-tools" id="play-tools" hidden>
+          <button class="tab" id="btn-fullscreen" type="button">Fullscreen ⤢</button>
+          <a class="tab" href="games/orbital-defense-2/index.html" target="_blank" rel="noopener">Open in new tab ↗</a>
+        </div>
       </div>
 
       <div class="screen" id="panel-trailer" role="tabpanel" aria-labelledby="tab-trailer">
@@ -65,7 +68,7 @@
       </div>
 
       <div class="screen" id="panel-play" role="tabpanel" aria-labelledby="tab-play" hidden>
-        <iframe id="game-frame" title="Orbital Defense 2 (WebGL build)" data-src="games/orbital-defense-2/index.html" allowfullscreen></iframe>
+        <iframe id="game-frame" title="Orbital Defense 2 (WebGL build)" data-src="games/orbital-defense-2/index.html" allow="fullscreen; autoplay" allowfullscreen></iframe>
       </div>
     </section>
 
@@ -141,17 +144,90 @@
               <li>Shield generators and protectors add layered defenses.</li>
             </ul>
           </div>
-          <figure class="enemy-figure">
-            <ul class="enemies" aria-label="Enemy ships">
-              <li><img src="assets/systems/1.%20Vanguard.png" alt="Vanguard, enemy ship" width="300" height="300" loading="lazy"><span>Vanguard</span></li>
-              <li><img src="assets/systems/2.%20Raptor.png" alt="Raptor, enemy ship" width="300" height="300" loading="lazy"><span>Raptor</span></li>
-              <li><img src="assets/systems/3.%20Juggernaut.png" alt="Juggernaut, enemy ship" width="300" height="300" loading="lazy"><span>Juggernaut</span></li>
-              <li><img src="assets/systems/4.%20Bulwark.png" alt="Bulwark, enemy ship" width="300" height="300" loading="lazy"><span>Bulwark</span></li>
-              <li><img src="assets/systems/5.%20Broodmother.png" alt="Broodmother, enemy ship" width="300" height="300" loading="lazy"><span>Broodmother</span></li>
-              <li><img src="assets/systems/6.%20Mender.png" alt="Mender, enemy ship" width="300" height="300" loading="lazy"><span>Mender</span></li>
-              <li><img src="assets/systems/7.%20Guardian.png" alt="Guardian, enemy ship" width="300" height="300" loading="lazy"><span>Guardian</span></li>
-            </ul>
-            <figcaption>The various enemy ships in the game.</figcaption>
+          <figure class="enemy-figure tower-figure">
+            <h4 class="sub">Satellites you can build</h4>
+            <div class="table-wrap">
+              <table class="fleet-table tower-table">
+                <thead>
+                  <tr><th scope="col"><span class="sr-only">Satellite</span></th><th scope="col">Tower</th><th scope="col">Role</th><th scope="col">Counters</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="ship"><img src="assets/systems/satellites/orbital-cannon.png" alt="Orbital Cannon satellite" width="100" height="60" loading="lazy"></td>
+                    <th scope="row" class="fleet">Orbital Cannon</th>
+                    <td class="desc" data-label="Role">Fast, single target and cheap</td>
+                    <td class="desc" data-label="Counters">Swarms, light enemies</td>
+                  </tr>
+                  <tr>
+                    <td class="ship"><img src="assets/systems/satellites/stasis-field.png?v=2" alt="Stasis Field satellite" width="100" height="60" loading="lazy"></td>
+                    <th scope="row" class="fleet">Stasis Field</th>
+                    <td class="desc" data-label="Role">Area control</td>
+                    <td class="desc" data-label="Counters">Fast enemies, buying time</td>
+                  </tr>
+                  <tr>
+                    <td class="ship"><img src="assets/systems/satellites/siegebreaker.png" alt="Siegebreaker satellite" width="100" height="60" loading="lazy"></td>
+                    <th scope="row" class="fleet">Siegebreaker</th>
+                    <td class="desc" data-label="Role">Area damage plus high armor damage</td>
+                    <td class="desc" data-label="Counters">Armored enemies, clumps</td>
+                  </tr>
+                  <tr>
+                    <td class="ship"><img src="assets/systems/satellites/photon-emitter.png?v=2" alt="Photon Emitter satellite" width="100" height="60" loading="lazy"></td>
+                    <th scope="row" class="fleet">Photon Emitter</th>
+                    <td class="desc" data-label="Role">Piercing beam with shield damage</td>
+                    <td class="desc" data-label="Counters">Shields, lines of enemies</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <figcaption>Each satellite is built to counter specific enemy fleets.</figcaption>
+          </figure>
+
+          <figure class="enemy-figure fleet-figure">
+            <h4 class="sub">Enemy fleets</h4>
+            <div class="table-wrap">
+              <table class="fleet-table">
+                <thead>
+                  <tr><th scope="col"><span class="sr-only">Ship</span></th><th scope="col">Alien Fleet</th><th scope="col">Description</th></tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td class="ship"><img src="assets/systems/1.%20Vanguard.png" alt="Vanguard, enemy ship" width="300" height="300" loading="lazy"></td>
+                  <th scope="row" class="fleet">Vanguard</th>
+                  <td class="desc">The standard alien fleet. Balanced speed, health, and damage, making it the most common enemy encountered.</td>
+                </tr>
+                <tr>
+                  <td class="ship"><img src="assets/systems/2.%20Raptor.png" alt="Raptor, enemy ship" width="300" height="300" loading="lazy"></td>
+                  <th scope="row" class="fleet">Raptor</th>
+                  <td class="desc">Extremely fast attack ships with low health. They rush past defenses before the player can reposition satellites.</td>
+                </tr>
+                <tr>
+                  <td class="ship"><img src="assets/systems/3.%20Juggernaut.png" alt="Juggernaut, enemy ship" width="300" height="300" loading="lazy"></td>
+                  <th scope="row" class="fleet">Juggernaut</th>
+                  <td class="desc">Large, powerful ships with massive health pools. They require sustained fire to destroy.</td>
+                </tr>
+                <tr>
+                  <td class="ship"><img src="assets/systems/4.%20Bulwark.png" alt="Bulwark, enemy ship" width="300" height="300" loading="lazy"></td>
+                  <th scope="row" class="fleet">Bulwark</th>
+                  <td class="desc">Heavily armoured ships that take significantly reduced damage from attacks.</td>
+                </tr>
+                <tr>
+                  <td class="ship"><img src="assets/systems/5.%20Broodmother.png" alt="Broodmother, enemy ship" width="300" height="300" loading="lazy"></td>
+                  <th scope="row" class="fleet">Broodmother</th>
+                  <td class="desc">Armoured ships that release several <strong>Vanguard ships</strong> when destroyed, turning one threat into multiple smaller threats.</td>
+                </tr>
+                <tr>
+                  <td class="ship"><img src="assets/systems/6.%20Mender.png" alt="Mender, enemy ship" width="300" height="300" loading="lazy"></td>
+                  <th scope="row" class="fleet">Mender</th>
+                  <td class="desc">Support ships that continuously restore the health of nearby alien units. They should be prioritised before stronger enemies.</td>
+                </tr>
+                <tr>
+                  <td class="ship"><img src="assets/systems/7.%20Guardian.png" alt="Guardian Fleet, enemy ship" width="300" height="300" loading="lazy"></td>
+                  <th scope="row" class="fleet">Guardian Fleet</th>
+                  <td class="desc">Powerful support ships that project shields onto nearby alien units, protecting other enemies while they advance.</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </figure>
         </article>
 
@@ -171,8 +247,171 @@
 
     <section class="block">
       <h2 class="label">Level design</h2>
-      <div class="panel">
-        <p>Placeholder. Cover how levels teach and escalate: pacing, difficulty curve and any maps or diagrams.</p>
+      <div class="leveldesign">
+
+        <article class="ld-block">
+          <h3>Design framework</h3>
+          <p>I paced Orbital Defense's 12 levels with three measures:</p>
+          <ul>
+            <li><strong>Novelty:</strong> how much is new (mechanics, enemies, towers, locations).</li>
+            <li><strong>Intensity:</strong> how much pressure the waves put on the player's defense.</li>
+            <li><strong>Tension:</strong> how much is at stake, which comes mostly from Earth's HP carrying over between levels.</li>
+          </ul>
+          <p>Intensity and tension are kept separate on purpose. A level can feel easy to fight and still be stressful to survive, because health carries forward.</p>
+        </article>
+
+        <article class="ld-block">
+          <h3>The 4-level cycle</h3>
+
+          <figure class="pacing">
+            <ul class="pacing-legend" aria-hidden="true">
+              <li><svg width="26" height="10"><line x1="1" y1="5" x2="25" y2="5" stroke="#66c0f4" stroke-width="2.5"/></svg>Novelty</li>
+              <li><svg width="26" height="10"><line x1="1" y1="5" x2="25" y2="5" stroke="#e6edf3" stroke-width="2.5" stroke-dasharray="6 3"/></svg>Intensity</li>
+              <li><svg width="26" height="10"><line x1="1" y1="5" x2="25" y2="5" stroke="#a4d007" stroke-width="2.5" stroke-dasharray="2 3"/></svg>Tension</li>
+            </ul>
+            <div class="pacing-canvas">
+              <canvas id="pacing" role="img" aria-label="Line chart of novelty, intensity and tension across levels 1 to 12. Novelty peaks at levels 1, 5 and 9. Intensity rises through each cycle's middle levels and dips at levels 4, 8 and 12. Tension climbs to a peak at levels 4, 8 and 12, then resets.">Novelty: 9, 5, 5.5, 4, 9, 5.5, 6, 4.5, 9, 6, 6.5, 5. Intensity: 3, 5, 7, 4, 3.5, 6, 8, 5, 4.5, 7, 9, 6. Tension: 2, 3, 5, 8, 2.5, 4, 6, 9, 3, 5, 7, 10.</canvas>
+            </div>
+            <figcaption>Relative novelty, intensity and tension across all 12 levels, repeating in three 4-level cycles with rising difficulty.</figcaption>
+          </figure>
+
+          <div class="table-wrap">
+            <table class="fleet-table cycle-table">
+              <thead>
+                <tr><th scope="col">Level in cycle</th><th scope="col">Novelty</th><th scope="col">Intensity</th><th scope="col">Tension</th><th scope="col">What the player feels</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="fleet">1: Introduction</th>
+                  <td data-label="Novelty">High</td>
+                  <td data-label="Intensity">Low</td>
+                  <td data-label="Tension">Low</td>
+                  <td class="desc" data-label="What the player feels">Everything is new: mechanics, satellites, enemies. Time to learn without pressure.</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">2: Ramp-up</th>
+                  <td data-label="Novelty">Small spike</td>
+                  <td data-label="Intensity">Rising</td>
+                  <td data-label="Tension">Rising</td>
+                  <td class="desc" data-label="What the player feels">A new enemy type. Waves start testing the player's build.</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">3: Peak pressure</th>
+                  <td data-label="Novelty">Small spike</td>
+                  <td data-label="Intensity">Highest</td>
+                  <td data-label="Tension">Building</td>
+                  <td class="desc" data-label="What the player feels">The hardest waves in the cycle. Mistakes start costing health.</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">4: The squeeze</th>
+                  <td data-label="Novelty">Low</td>
+                  <td data-label="Intensity">Drops</td>
+                  <td data-label="Tension">Highest</td>
+                  <td class="desc" data-label="What the player feels">The player now has a strong orbit, but carried-over damage leaves little health. Every leaked ship matters.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>At level 4, intensity and tension pull apart. The player has the firepower to handle any threat, but earlier levels have worn health down, so the challenge becomes precision instead of survival.</p>
+        </article>
+
+        <article class="ld-block">
+          <h3>The repeating structure</h3>
+          <p>The cycle repeats three times: levels 1&ndash;4, 5&ndash;8 and 9&ndash;12. Each new cycle resets and escalates:</p>
+          <ul>
+            <li><strong>New location:</strong> the story moves to a new planet.</li>
+            <li><strong>Health reset:</strong> tension drops back down, which gives a release after the level-4 squeeze.</li>
+            <li><strong>New towers:</strong> players gain new tools at levels 5 and 9.</li>
+            <li><strong>New core mechanic:</strong> armored enemies arrive at level 5 and shielded enemies at level 9. Each one forces players to rethink their tower mix.</li>
+            <li><strong>Higher baseline difficulty:</strong> each cycle follows the same shape at a higher level, so players recognize the rhythm while the challenge keeps growing.</li>
+          </ul>
+          <p>A new enemy also arrives in every level, so novelty never flatlines between the big resets.</p>
+        </article>
+
+        <article class="ld-block">
+          <h3>Why it works</h3>
+          <ul>
+            <li><strong>Rhythm prevents fatigue.</strong> Tension peaks are followed by release (the health resets), so the player isn't under constant pressure.</li>
+            <li><strong>Novelty comes before difficulty.</strong> New mechanics arrive at low-intensity moments, when the player has room to learn.</li>
+            <li><strong>Carried-over health creates meaningful stakes.</strong> Damage from early levels shapes how the late levels feel, so every level matters.</li>
+            <li><strong>The structure is familiar but escalating.</strong> Players learn the shape of a cycle, which builds anticipation for what comes next.</li>
+          </ul>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="block" id="ux">
+      <h2 class="label">UI/UX Design</h2>
+      <div class="ux-grid">
+
+        <article class="ux-card">
+          <h3><span class="ux-num">1</span>Hierarchy</h3>
+          <ul>
+            <li>Only two persistent HUD elements, Earth HP and currency, so the player's eye goes to the battlefield.</li>
+            <li>Enemy health bars sit directly above the enemy. The shield bar stacks above the HP bar, so the more important layer is read first.</li>
+            <li>Currency popups appear at the kill location, which ties each reward to its cause.</li>
+          </ul>
+        </article>
+
+        <article class="ux-card">
+          <h3><span class="ux-num">2</span>Progressive disclosure</h3>
+          <ul>
+            <li>Towers unlock gradually. Locked ones show a lock icon in the build menu.</li>
+            <li>The scrap UI hides on levels without an economy, which keeps early levels simple.</li>
+            <li>Short tutorial videos introduce each mechanic or enemy type when it first matters.</li>
+          </ul>
+        </article>
+
+        <article class="ux-card">
+          <h3><span class="ux-num">3</span>Consistency</h3>
+          <ul>
+            <li>One interaction pattern: click a slot to build, click a tower to select, right-click to upgrade.</li>
+            <li>Consistent feedback: every failed purchase triggers the same blinking warning and sound.</li>
+            <li>Unified art and audio: hand-drawn art, Roboto typography and 8-bit sound throughout.</li>
+          </ul>
+        </article>
+
+        <article class="ux-card">
+          <h3><span class="ux-num">4</span>Contrast</h3>
+          <ul>
+            <li>Distinct colours separate enemy types and their explosions, so threats are readable at a glance.</li>
+            <li>Red scrap variants signal cost or insufficient funds against the normal scrap look.</li>
+            <li>Override mode changes the beam colour and adds lightning, so you can see which towers are overclocked.</li>
+            <li>Selected-tower buttons stand out against the space background.</li>
+          </ul>
+        </article>
+
+        <article class="ux-card ux-wide">
+          <h3><span class="ux-num">5</span>Accessibility</h3>
+          <ul>
+            <li>Large world-space click targets: icons spread in a ring, not packed tightly.</li>
+            <li>Overlap protection: selecting an icon never accidentally opens another ring's menu.</li>
+            <li>No forced pause: the build menu stays open while play continues.</li>
+            <li>Game speed options (1x / 1.5x / 2x): players can slow down or speed up to their comfort.</li>
+            <li>Redundant feedback: warnings combine visual (blinking) and audio cues, so no single sense is required.</li>
+          </ul>
+          <p class="ux-note"><strong>Current gaps:</strong> no colourblind mode, rebindable controls or text-size options. Needs to be worked on in the future.</p>
+        </article>
+
+        <article class="ux-card">
+          <h3><span class="ux-num">6</span>Proximity</h3>
+          <ul>
+            <li>Controls sit on the object they affect. Override and Aim buttons appear on the tower, build icons around the slot, and health bars on the enemy.</li>
+            <li>The enemy's HP and shield bars stack together.</li>
+            <li>Dialog and character portrait fade as one unit.</li>
+          </ul>
+        </article>
+
+        <article class="ux-card">
+          <h3><span class="ux-num">7</span>Alignment</h3>
+          <ul>
+            <li>Build icons spread evenly in a ring around the slot.</li>
+            <li>Orbit slots are equally spaced around each ring.</li>
+          </ul>
+        </article>
+
       </div>
     </section>
 
@@ -181,6 +420,8 @@
   <footer class="footer">© <span id="year"></span> Sudhakar Gnanaraj</footer>
 
   <script src="script.js"></script>
-  <script src="game.js?v=7"></script>
+  <script src="game.js?v=10"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" defer></script>
+  <script src="pacing-chart.js?v=1" defer></script>
 </body>
 </html>

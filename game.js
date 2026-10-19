@@ -5,6 +5,7 @@ const panelTrailer = document.getElementById("panel-trailer");
 const panelPlay = document.getElementById("panel-play");
 const frame = document.getElementById("game-frame");
 const fsBtn = document.getElementById("btn-fullscreen");
+const playTools = document.getElementById("play-tools");
 
 function show(which) {
   const play = which === "play";
@@ -14,7 +15,7 @@ function show(which) {
   tabPlay.setAttribute("aria-selected", String(play));
   panelTrailer.hidden = play;
   panelPlay.hidden = !play;
-  fsBtn.hidden = !play;
+  playTools.hidden = !play;
 
   if (play && !frame.src) frame.src = frame.dataset.src;
 
@@ -25,10 +26,36 @@ function show(which) {
   }
 }
 
+// Fit Unity's fixed 960x600 canvas inside the page's game window (keeps the 16:10 shape,
+// hides Unity's footer). Done here so re-exporting the build from Unity doesn't undo it.
+frame.addEventListener("load", () => {
+  try {
+    const doc = frame.contentDocument;
+    if (!doc || !doc.querySelector("#unity-canvas")) return;
+    const style = doc.createElement("style");
+    style.textContent = `
+      html, body { height: 100%; margin: 0; overflow: hidden; background: #000; }
+      body { display: flex; align-items: center; justify-content: center; }
+      #unity-container.unity-desktop { position: static !important; transform: none !important; left: auto !important; top: auto !important; }
+      #unity-canvas { display: block; width: min(100vw, 160vh) !important; height: min(62.5vw, 100vh) !important; }
+      #unity-footer { display: none !important; }`;
+    doc.head.appendChild(style);
+  } catch {
+    /* cross-origin or not loaded: leave the build as exported */
+  }
+});
+
 tabTrailer.addEventListener("click", () => show("trailer"));
 tabPlay.addEventListener("click", () => show("play"));
+// Fullscreen the whole game window from this page's own click. This avoids Unity's
+// internal fullscreen code, which doesn't cope well with running inside an iframe.
 fsBtn.addEventListener("click", () => {
-  if (frame.requestFullscreen) frame.requestFullscreen();
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+    return;
+  }
+  const request = panelPlay.requestFullscreen ? panelPlay.requestFullscreen() : null;
+  if (request && request.catch) request.catch(() => window.open(frame.dataset.src, "_blank", "noopener"));
 });
 
 // Keep GIFs looping. Each GIF is fetched once into memory (a blob URL); after one

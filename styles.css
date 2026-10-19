@@ -337,6 +337,67 @@ a { color: inherit; text-decoration: none; }
 .swatch.decision { background: var(--d-fill); border-color: var(--d-line); }
 .swatch.event { background: var(--e-fill); border-color: var(--e-line); }
 
+/* Level design */
+.leveldesign {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 20px;
+  background: rgba(0, 0, 0, 0.25);
+  border-left: 3px solid var(--blue);
+  border-radius: 4px;
+}
+.ld-block { padding: 24px 0; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+.ld-block:first-child { border-top: 0; }
+.ld-block h3 { margin: 0 0 12px; font-size: 20px; font-weight: 500; color: #fff; }
+.ld-block p { margin: 0 0 12px; font-size: 16px; line-height: 1.65; color: var(--fg); }
+.ld-block p:last-child { margin-bottom: 0; }
+.ld-block ul { margin: 0 0 12px; padding-left: 20px; }
+.ld-block li { margin-bottom: 8px; font-size: 16px; line-height: 1.6; color: var(--fg); }
+.ld-block li::marker { color: var(--blue); }
+.ld-block strong { color: #fff; font-weight: 500; }
+.pacing { margin: 4px 0 24px; padding: 16px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(102, 192, 244, 0.15); border-radius: 12px; }
+.pacing-legend { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 0 0 10px; padding: 0; list-style: none; font-size: 13px; color: var(--fg); }
+.pacing-legend li { display: flex; align-items: center; gap: 8px; margin: 0; }
+.pacing-canvas { position: relative; width: 100%; height: 340px; }
+.pacing figcaption { margin-top: 12px; font-size: 13px; color: var(--muted); text-align: center; }
+.cycle-table { margin-bottom: 16px; }
+.cycle-table thead th { white-space: nowrap; }
+.cycle-table .fleet { width: 160px; }
+.cycle-table td { font-size: 15px; color: var(--fg); }
+.cycle-table td.desc { width: 38%; }
+
+/* UI/UX design: one card per principle */
+.ux-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.ux-card {
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(102, 192, 244, 0.15);
+  border-top: 3px solid var(--blue);
+  border-radius: 6px;
+}
+.ux-wide { grid-column: 1 / -1; }
+.ux-card h3 { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; font-size: 20px; font-weight: 500; color: #fff; }
+.ux-num {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #d2efa9;
+  background: linear-gradient(to right, var(--green-1) 5%, var(--green-2) 95%);
+  border-radius: 50%;
+}
+.ux-card ul { margin: 0; padding-left: 20px; }
+.ux-card li { margin-bottom: 8px; font-size: 16px; line-height: 1.6; color: var(--fg); }
+.ux-card li:last-child { margin-bottom: 0; }
+.ux-card li::marker { color: var(--blue); }
+.ux-wide ul { columns: 2; column-gap: 40px; }
+.ux-wide li { break-inside: avoid; }
+.ux-note { margin: 16px 0 0; padding: 12px 14px; font-size: 15px; line-height: 1.6; color: var(--fg); background: rgba(102, 192, 244, 0.1); border-left: 3px solid var(--blue); border-radius: 4px; }
+.ux-note strong { color: #fff; font-weight: 500; }
+
 /* Key systems: one panel, one row per group */
 .systems {
   display: flex;
@@ -379,10 +440,21 @@ a { color: inherit; text-decoration: none; }
 
 /* Enemy ships under Enemy counterplay */
 .enemy-figure { margin: 0; }
-.system .enemies { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
-.system .enemies li { margin: 0; padding: 8px 6px 10px; text-align: center; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(102, 192, 244, 0.15); border-radius: 10px; }
-.enemies img { display: block; width: 100%; height: auto; }
-.enemies span { display: block; margin-top: 6px; font-size: 14px; font-weight: 500; color: #fff; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.fleet-table { width: 100%; border-collapse: collapse; }
+.fleet-table thead th { padding: 8px 12px; text-align: left; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--blue); border-bottom: 1px solid rgba(102, 192, 244, 0.25); }
+.fleet-table td, .fleet-table tbody th { padding: 12px; vertical-align: middle; border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+.fleet-table tbody tr:last-child td, .fleet-table tbody tr:last-child th { border-bottom: 0; }
+.fleet-table .ship { width: 96px; }
+.fleet-table .ship img { display: block; width: 80px; height: 80px; object-fit: contain; }
+.fleet-table .fleet { width: 170px; text-align: left; font-size: 17px; font-weight: 500; color: #fff; }
+.fleet-table .desc { font-size: 15px; line-height: 1.6; color: var(--fg); }
+.fleet-table .desc strong { color: #fff; font-weight: 500; }
+.enemy-figure + .enemy-figure { margin-top: 28px; }
+.enemy-figure .sub { margin: 0 0 8px; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--blue); }
+.tower-table .ship { width: 120px; }
+.tower-table .ship img { width: 96px; height: auto; image-rendering: pixelated; }
+.tower-table .desc { width: 30%; }
 .enemy-figure figcaption { margin-top: 12px; font-size: 14px; color: var(--muted); text-align: center; }
 
 .tabs { display: flex; gap: 6px; margin-bottom: 12px; }
@@ -402,7 +474,12 @@ a { color: inherit; text-decoration: none; }
   border-color: transparent;
   background: linear-gradient(to right, var(--green-1) 5%, var(--green-2) 95%);
 }
-.tab.fs { margin-left: auto; }
+.play-tools { display: flex; gap: 6px; margin-left: auto; }
+.play-tools[hidden] { display: none; }
+.tab { text-decoration: none; display: inline-block; }
+/* Browser fullscreen of the game window: fill the screen, drop the rounded frame */
+.screen:fullscreen { aspect-ratio: auto; border: 0; border-radius: 0; background: #000; }
+.screen:fullscreen iframe { width: 100%; height: 100%; }
 
 .screen {
   aspect-ratio: 16 / 9;
@@ -453,7 +530,6 @@ a { color: inherit; text-decoration: none; }
   .top { grid-template-columns: 1fr; gap: 24px; }
   .system:has(.media-shot) { grid-template-columns: 1fr; gap: 16px; }
   .system.gif-left .system-text, .system.gif-left .media-shot { order: 0; }
-  .system .enemies { grid-template-columns: repeat(4, 1fr); }
   .loop-steps { grid-template-columns: repeat(2, 1fr); gap: 36px 36px; }
   .step:nth-child(2)::after, .step:nth-child(2)::before { display: none; }
   .loop-return { display: none; }
@@ -464,12 +540,39 @@ a { color: inherit; text-decoration: none; }
 
 @media (max-width: 480px) {
   .tab { padding: 8px 14px; font-size: 13px; }
+  .tabs { flex-wrap: wrap; }
   .screen { border-radius: 12px; }
   .overview p, .panel p { font-size: 16px; }
 }
 
-@media (max-width: 480px) {
-  .system .enemies { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  .system .enemies li:last-child:nth-child(3n + 1) { grid-column: 2; }
-  .enemies span { font-size: 12px; }
+/* Phones: each fleet row becomes a small card */
+@media (max-width: 560px) {
+  .fleet-table thead { display: none; }
+  .fleet-table, .fleet-table tbody { display: block; }
+  .fleet-table tr {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    column-gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+  .fleet-table tbody tr:last-child { border-bottom: 0; }
+  .fleet-table td, .fleet-table tbody th { padding: 0; border: 0; }
+  .fleet-table .ship { grid-row: 1 / span 2; width: auto; }
+  .fleet-table .ship img { width: 72px; height: 72px; }
+  .fleet-table .fleet { width: auto; font-size: 16px; margin-bottom: 4px; }
+  .fleet-table .desc { font-size: 14px; }
+  .tower-table .ship { grid-row: 1 / span 3; }
+  .tower-table .ship img { width: 72px; height: auto; }
+  .tower-table .desc { width: auto; }
+  .tower-table td[data-label]::before { content: attr(data-label) ": "; font-weight: 500; color: var(--blue); }
+  .cycle-table tr { display: block; }
+  .cycle-table td, .cycle-table tbody th { display: block; padding: 2px 0; }
+  .cycle-table .fleet { width: auto; margin-bottom: 4px; font-size: 17px; }
+  .cycle-table td[data-label]::before { content: attr(data-label) ": "; font-weight: 500; color: var(--blue); }
+  .cycle-table td.desc { width: auto; margin-top: 4px; }
+  .ux-grid { grid-template-columns: 1fr; }
+  .ux-wide ul { columns: 1; }
+  .pacing { padding: 12px 8px; }
+  .pacing-canvas { height: 280px; }
 }
