@@ -26,7 +26,7 @@ function show(which) {
   }
 }
 
-// Fit Unity's fixed 960x600 canvas inside the page's game window (keeps the 16:10 shape,
+// Fit Unity's canvas inside the page's game window (keeps the build's 16:9 shape,
 // hides Unity's footer). Done here so re-exporting the build from Unity doesn't undo it.
 frame.addEventListener("load", () => {
   try {
@@ -37,7 +37,7 @@ frame.addEventListener("load", () => {
       html, body { height: 100%; margin: 0; overflow: hidden; background: #000; }
       body { display: flex; align-items: center; justify-content: center; }
       #unity-container.unity-desktop { position: static !important; transform: none !important; left: auto !important; top: auto !important; }
-      #unity-canvas { display: block; width: min(100vw, 160vh) !important; height: min(62.5vw, 100vh) !important; }
+      #unity-canvas { display: block; width: min(100vw, 177.7778vh) !important; height: min(56.25vw, 100vh) !important; }
       #unity-footer { display: none !important; }`;
     doc.head.appendChild(style);
   } catch {
