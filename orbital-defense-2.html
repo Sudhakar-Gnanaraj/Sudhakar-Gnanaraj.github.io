@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orbital Defense 2 | Sudhakar Gnanaraj</title>
+  <meta name="description" content="Orbital Defense 2: game design case study by Sudhakar Gnanaraj.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="game-page">
+
+  <nav class="nav" aria-label="Main">
+    <a href="index.html">Home</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#contact">Contact</a>
+    <a class="nav-cta" href="index.html#contact">Resume</a>
+  </nav>
+
+  <main class="game">
+
+    <a class="back" href="index.html#projects">← Back to my works</a>
+    <h1 class="game-title">Orbital Defense 2</h1>
+
+    <!-- Overview (left) + Details (right) -->
+    <section class="top">
+      <div class="overview">
+        <h2 class="label">Overview</h2>
+        <p>Orbital Defense is a 2D top-down tower-defense game. You defend Earth by placing satellites on orbit rings and shooting down waves of incoming enemies. Each satellite can swing along its orbit. You spend currency on building and boosting them.</p>
+      </div>
+
+      <aside class="details" aria-label="Game details">
+        <h2 class="label">Details</h2>
+        <dl>
+          <div><dt>Genre</dt><dd>2D tower defense / strategy</dd></div>
+          <div><dt>Engine</dt><dd>Unity 6</dd></div>
+          <div><dt>Language</dt><dd>C#</dd></div>
+          <div><dt>Platform</dt><dd>Web</dd></div>
+        </dl>
+        <div class="ai-disclosure">
+          <h3>AI Disclosure</h3>
+          <p>AI-assisted development was part of my workflow, helping me investigate bugs and explore implementation approaches. I remained responsible for the game's code, integration, and testing.</p>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Trailer / Play -->
+    <section class="media" aria-label="Trailer and play">
+      <div class="tabs" role="tablist">
+        <button class="tab active" id="tab-trailer" role="tab" aria-selected="true" aria-controls="panel-trailer">Trailer</button>
+        <button class="tab" id="tab-play" role="tab" aria-selected="false" aria-controls="panel-play">▶ Play</button>
+        <button class="tab fs" id="btn-fullscreen" type="button" hidden>Fullscreen ⤢</button>
+      </div>
+
+      <div class="screen" id="panel-trailer" role="tabpanel" aria-labelledby="tab-trailer">
+        <!-- Replace this block with your trailer, e.g.
+        <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="Orbital Defense 2 trailer"
+                allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe> -->
+        <div class="placeholder" style="background-image:url('assets/orbital-defense-2.webp')">
+          <span>Trailer coming soon</span>
+        </div>
+      </div>
+
+      <div class="screen" id="panel-play" role="tabpanel" aria-labelledby="tab-play" hidden>
+        <iframe id="game-frame" title="Orbital Defense 2 (WebGL build)" data-src="games/orbital-defense-2/index.html" allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2 class="label">Core gameplay</h2>
+      <div class="panel">
+        <p>Placeholder. Explain the moment-to-moment loop: what the player does, what they get back, and why it stays interesting.</p>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2 class="label">Key systems</h2>
+      <div class="panel">
+        <p>Placeholder. List the systems you designed (for example economy, upgrades, enemy waves) and how they feed into each other.</p>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2 class="label">Level design</h2>
+      <div class="panel">
+        <p>Placeholder. Cover how levels teach and escalate: pacing, difficulty curve and any maps or diagrams.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">© <span id="year"></span> Sudhakar Gnanaraj</footer>
+
+  <script src="script.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
