@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body class="game-page">
 
@@ -73,50 +73,99 @@
       <h2 class="label">Core gameplay</h2>
       <div class="features">
 
-        <article class="feature gif-right">
-          <div class="feature-text">
-            <h3>Orbit building</h3>
-            <p>Place satellites in fixed slots on orbit rings around Earth. Each satellite swings independently within its own arc.</p>
-          </div>
-          <figure class="gif"><img src="assets/gifs/orbit-building.gif" data-loop-ms="9870"alt="Building and selling satellites on an orbit ring" width="600" height="608" loading="lazy"></figure>
-        </article>
-
-        <article class="feature gif-left">
-          <div class="feature-text">
-            <h3>Game economy</h3>
-            <p>Earn parts from kills. Spend them on satellites and boosts, or sell towers for a refund.</p>
-          </div>
-          <figure class="gif"><img src="assets/gifs/game-economy.gif" data-loop-ms="9000"alt="Spending parts on a satellite's upgrade options" width="686" height="744" loading="lazy"></figure>
-        </article>
-
-        <article class="feature">
-          <div class="feature-text">
-            <h3>Waves</h3>
-            <p>A data-driven wave spawner with gaps between waves.</p>
-          </div>
-        </article>
-
-        <article class="feature">
-          <div class="feature-text">
-            <h3>Progression</h3>
-            <p>A level-select screen with unlockable levels (12 levels). Satellites and parts carry over between levels.</p>
-          </div>
-        </article>
-
-        <article class="feature">
-          <div class="feature-text">
-            <h3>Game speed and pause</h3>
-            <p>Speed control and a pause menu.</p>
-          </div>
-        </article>
+        <figure class="loop" aria-label="Core loop: build, defend, earn, invest">
+          <ol class="loop-steps">
+            <li class="step decision"><h3>1. Build</h3><p>Place on orbit slots</p></li>
+            <li class="step event"><h3>2. Defend</h3><p>Survive the wave</p></li>
+            <li class="step event">
+              <h3>3. Earn
+                <svg class="gear" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.7 7.7 0 0 0 0-2l2.1-1.6a.5.5 0 0 0 .1-.6l-2-3.5a.5.5 0 0 0-.6-.2l-2.5 1a7.5 7.5 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-4a.5.5 0 0 0-.5.4l-.4 2.6a7.5 7.5 0 0 0-1.7 1l-2.5-1a.5.5 0 0 0-.6.2l-2 3.5a.5.5 0 0 0 .1.6L4.6 11a7.7 7.7 0 0 0 0 2l-2.1 1.6a.5.5 0 0 0-.1.6l2 3.5c.1.2.4.3.6.2l2.5-1c.5.4 1.1.7 1.7 1l.4 2.6c0 .2.3.4.5.4h4c.2 0 .5-.2.5-.4l.4-2.6c.6-.3 1.200-.6 1.700-1l2.500 1c.2.1.5 0 .6-.2l2-3.500a.5.5 0 0 0-.1-.6L19.400 13ZM12 15.500a3.500 3.500 0 1 1 0-7 3.500 3.500 0 0 1 0 7Z"/></svg>
+              </h3>
+              <p>Kills drop currency</p>
+            </li>
+            <li class="step decision"><h3>4. Invest</h3><p>Upgrade or override</p></li>
+          </ol>
+          <div class="loop-return" aria-hidden="true"></div>
+          <figcaption class="loop-caption">Next wave: stronger enemies, stronger defense</figcaption>
+          <ul class="legend">
+            <li><span class="swatch decision"></span>Player decision</li>
+            <li><span class="swatch event"></span>Game event</li>
+          </ul>
+        </figure>
 
       </div>
     </section>
 
     <section class="block">
       <h2 class="label">Key systems</h2>
-      <div class="panel">
-        <p>Placeholder. List the systems you designed (for example economy, upgrades, enemy waves) and how they feed into each other.</p>
+      <div class="systems">
+
+        <article class="system gif-right">
+          <div class="system-text">
+            <h3>Orbit and placement</h3>
+            <ul>
+              <li>Each orbit ring has equally spaced, fixed build slots.</li>
+              <li>Each built satellite swings independently within its own arc.</li>
+              <li>That makes placement a real decision: slot position and swing range determine which approaching enemies a tower covers.</li>
+            </ul>
+          </div>
+          <figure class="media-shot"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/systems/orbit.gif" data-loop-ms="9600" alt="Orbit rings around Earth with fixed build slots" width="600" height="576" loading="lazy"></figure>
+        </article>
+
+        <article class="system gif-left">
+          <div class="system-text">
+            <h3>Economy loop</h3>
+            <ul>
+              <li>Kills drop parts. Parts are spent on building towers, buying upgrades and running override. Selling a tower refunds part of its cost.</li>
+            </ul>
+          </div>
+          <figure class="media-shot"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/systems/economy.gif" data-loop-ms="7000" alt="A satellite with its upgrade and sell options" width="400" height="434" loading="lazy"></figure>
+        </article>
+
+        <article class="system gif-right">
+          <div class="system-text">
+            <h3>Override (risk/reward)</h3>
+            <ul>
+              <li>Override fires 3x faster for a gun, and the laser beam becomes twice as thick.</li>
+              <li>It drains parts over time, so it is a deliberate burst-for-cash trade, usually saved for hard waves.</li>
+            </ul>
+          </div>
+          <figure class="media-shot"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/systems/override.gif" data-loop-ms="8000" alt="A satellite in override mode with its range ring" width="400" height="421" loading="lazy"></figure>
+        </article>
+
+        <article class="system">
+          <div class="system-text">
+            <h3>Enemy counterplay</h3>
+            <ul>
+              <li>Armor needs cannons, shields need lasers, and healers need to be prioritized.</li>
+              <li>Shield generators and protectors add layered defenses.</li>
+            </ul>
+          </div>
+          <figure class="enemy-figure">
+            <ul class="enemies" aria-label="Enemy ships">
+              <li><img src="assets/systems/1.%20Vanguard.png" alt="Vanguard, enemy ship" width="300" height="300" loading="lazy"><span>Vanguard</span></li>
+              <li><img src="assets/systems/2.%20Raptor.png" alt="Raptor, enemy ship" width="300" height="300" loading="lazy"><span>Raptor</span></li>
+              <li><img src="assets/systems/3.%20Juggernaut.png" alt="Juggernaut, enemy ship" width="300" height="300" loading="lazy"><span>Juggernaut</span></li>
+              <li><img src="assets/systems/4.%20Bulwark.png" alt="Bulwark, enemy ship" width="300" height="300" loading="lazy"><span>Bulwark</span></li>
+              <li><img src="assets/systems/5.%20Broodmother.png" alt="Broodmother, enemy ship" width="300" height="300" loading="lazy"><span>Broodmother</span></li>
+              <li><img src="assets/systems/6.%20Mender.png" alt="Mender, enemy ship" width="300" height="300" loading="lazy"><span>Mender</span></li>
+              <li><img src="assets/systems/7.%20Guardian.png" alt="Guardian, enemy ship" width="300" height="300" loading="lazy"><span>Guardian</span></li>
+            </ul>
+            <figcaption>The various enemy ships in the game.</figcaption>
+          </figure>
+        </article>
+
+        <article class="system strengths">
+          <div class="system-text">
+            <h3>Strengths</h3>
+            <ul>
+              <li>A data-driven pipeline: designers can build a level from wave lists, ScriptableObject towers and upgrades, with no code changes.</li>
+              <li>Systems that interlock: armor, shield, healer, upgrade and override all create trade-offs.</li>
+              <li>Considered edge cases, such as support enemies never spawning alone and replays starting clean.</li>
+            </ul>
+          </div>
+        </article>
+
       </div>
     </section>
 
@@ -132,6 +181,6 @@
   <footer class="footer">© <span id="year"></span> Sudhakar Gnanaraj</footer>
 
   <script src="script.js"></script>
-  <script src="game.js?v=2"></script>
+  <script src="game.js?v=7"></script>
 </body>
 </html>

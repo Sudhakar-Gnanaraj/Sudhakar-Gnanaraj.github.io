@@ -31,20 +31,43 @@ fsBtn.addEventListener("click", () => {
   if (frame.requestFullscreen) frame.requestFullscreen();
 });
 
-// Some browsers stop a GIF after its first pass. Once an image has loaded, wait
-// for one full pass and swap in a fresh copy so it restarts from frame one.
-function keepLooping(img) {
+// Keep GIFs looping. Each GIF is fetched once into memory (a blob URL); after one
+// full pass the <img> is swapped for a fresh copy of that same in-memory file, so the
+// animation restarts from frame one without another network request.
+async function keepLooping(img) {
   const ms = Number(img.dataset.loopMs);
-  const arm = () =>
-    setTimeout(() => {
-      if (document.hidden) return arm_again();
-      const fresh = img.cloneNode();
-      fresh.loading = "eager";
-      img.replaceWith(fresh);
-      keepLooping(fresh);
-    }, ms);
-  const arm_again = () => setTimeout(() => keepLooping(img), 500);
-  if (img.complete && img.naturalWidth) arm();
-  else img.addEventListener("load", arm, { once: true });
+  // Download the whole file into memory, retrying a few times if the connection drops.
+  let blobUrl;
+  for (let attempt = 0; attempt < 5 && !blobUrl; attempt++) {
+    try {
+      const res = await fetch(img.dataset.src, { cache: attempt ? "reload" : "default" });
+      if (res.ok) blobUrl = URL.createObjectURL(await res.blob());
+    } catch {
+      await new Promise((r) => setTimeout(r, 600 * (attempt + 1)));
+    }
+  }
+  if (!blobUrl) {
+    img.src = img.dataset.src; // last resort: let the browser load it directly
+    return;
+  }
+
+  let current = img;
+  const play = () => {
+    const fresh = current.cloneNode();
+    fresh.loading = "eager";
+    fresh.src = blobUrl;
+    fresh.addEventListener("error", () => setTimeout(() => (fresh.src = blobUrl), 300), { once: true });
+    current.replaceWith(fresh);
+    current = fresh;
+  };
+  const tick = () => {
+    if (!document.hidden) play();
+    setTimeout(tick, ms);
+  };
+  play();
+  setTimeout(tick, ms);
 }
-document.querySelectorAll("img[data-loop-ms]").forEach(keepLooping);
+// One at a time, so three large downloads don't compete with each other.
+(async () => {
+  for (const img of document.querySelectorAll("img[data-loop-ms]")) await keepLooping(img);
+})();
