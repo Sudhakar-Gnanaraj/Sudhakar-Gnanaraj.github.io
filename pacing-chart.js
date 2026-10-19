@@ -3,16 +3,27 @@
   const canvas = document.getElementById("pacing");
   if (!canvas || typeof Chart === "undefined") return;
 
+  // Novelty follows the page's accent colour; the other two lines stay fixed so all three read apart.
+  const accent = (getComputedStyle(document.body).getPropertyValue("--accent") || "#7aa2ff").trim();
+  function withAlpha(color, alpha) {
+    const m = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(color);
+    if (!m) return color;
+    let hex = m[1];
+    if (hex.length === 3) hex = hex.split("").map((ch) => ch + ch).join("");
+    const n = parseInt(hex, 16);
+    return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${alpha})`;
+  }
+
   const C = {
-    novelty: "#66c0f4",
-    intensity: "#e6edf3",
-    tension: "#a4d007",
+    novelty: accent,
+    intensity: "#e6ebf5",
+    tension: "#ffb454",
     grid: "rgba(255, 255, 255, 0.08)",
-    muted: "#8f98a0",
-    band: "rgba(102, 192, 244, 0.06)",
+    muted: "#8a93a8",
+    band: withAlpha(accent, 0.07),
     divider: "rgba(255, 255, 255, 0.2)",
-    label: "#c6d4df",
-    surface: "#18222f",
+    label: "#d5dbe8",
+    surface: "#161b26",
   };
 
   const narrow = () => canvas.parentElement.clientWidth < 560;
@@ -88,8 +99,8 @@
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: "#171a21",
-          borderColor: "rgba(102, 192, 244, 0.35)",
+          backgroundColor: "#0e1118",
+          borderColor: withAlpha(accent, 0.45),
           borderWidth: 1,
           titleColor: "#fff",
           bodyColor: C.label,

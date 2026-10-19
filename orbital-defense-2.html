@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=21">
+  <link rel="stylesheet" href="styles.css?v=23">
 </head>
 <body class="game-page">
 
@@ -281,9 +281,9 @@
 
           <figure class="pacing">
             <ul class="pacing-legend" aria-hidden="true">
-              <li><svg width="26" height="10"><line x1="1" y1="5" x2="25" y2="5" stroke="#66c0f4" stroke-width="2.5"/></svg>Novelty</li>
-              <li><svg width="26" height="10"><line x1="1" y1="5" x2="25" y2="5" stroke="#e6edf3" stroke-width="2.5" stroke-dasharray="6 3"/></svg>Intensity</li>
-              <li><svg width="26" height="10"><line x1="1" y1="5" x2="25" y2="5" stroke="#a4d007" stroke-width="2.5" stroke-dasharray="2 3"/></svg>Tension</li>
+              <li><svg width="26" height="10"><line x1="1" y1="5" x2="25" y2="5" class="lg-novelty" stroke-width="2.5"/></svg>Novelty</li>
+              <li><svg width="26" height="10"><line x1="1" y1="5" x2="25" y2="5" class="lg-intensity" stroke-width="2.5" stroke-dasharray="6 3"/></svg>Intensity</li>
+              <li><svg width="26" height="10"><line x1="1" y1="5" x2="25" y2="5" class="lg-tension" stroke-width="2.5" stroke-dasharray="2 3"/></svg>Tension</li>
             </ul>
             <div class="pacing-canvas">
               <canvas id="pacing" role="img" aria-label="Line chart of novelty, intensity and tension across levels 1 to 12. Novelty peaks at levels 1, 5 and 9. Intensity rises through each cycle's middle levels and dips at levels 4, 8 and 12. Tension climbs to a peak at levels 4, 8 and 12, then resets.">Novelty: 9, 5, 5.5, 4, 9, 5.5, 6, 4.5, 9, 6, 6.5, 5. Intensity: 3, 5, 7, 4, 3.5, 6, 8, 5, 4.5, 7, 9, 6. Tension: 2, 3, 5, 8, 2.5, 4, 6, 9, 3, 5, 7, 10.</canvas>
@@ -441,6 +441,6 @@
   <script src="game.js?v=18"></script>
   <script src="section-nav.js?v=2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" defer></script>
-  <script src="pacing-chart.js?v=1" defer></script>
+  <script src="pacing-chart.js?v=3" defer></script>
 </body>
 </html>
