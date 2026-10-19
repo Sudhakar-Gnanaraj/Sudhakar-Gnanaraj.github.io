@@ -15,7 +15,7 @@ const mobileWarning = document.getElementById("mobile-warning");
 const isMobile =
   /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ||
   (matchMedia("(pointer: coarse)").matches && !matchMedia("(any-pointer: fine)").matches);
-if (isMobile && mobileWarning) mobileWarning.hidden = false;
+// (shown only while the Play tab is open: see show())
 
 // ---- Game health -----------------------------------------------------------
 // True when the game page inside the frame has finished loading and is still running.
@@ -93,6 +93,7 @@ function show(which) {
   panelTrailer.hidden = play;
   panelPlay.hidden = !play;
   playTools.hidden = !play;
+  if (mobileWarning) mobileWarning.hidden = !(isMobile && play);
 
   if (!play) {
     loadNote.hidden = true;
