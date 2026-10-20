@@ -2,6 +2,8 @@
 const tabTrailer = document.getElementById("tab-trailer");
 const tabPlay = document.getElementById("tab-play");
 const panelTrailer = document.getElementById("panel-trailer");
+const tabGameplay = document.getElementById("tab-gameplay");
+const panelGameplay = document.getElementById("panel-gameplay");
 const panelPlay = document.getElementById("panel-play");
 const frame = document.getElementById("game-frame");
 const fsBtn = document.getElementById("btn-fullscreen");
@@ -81,67 +83,77 @@ function watchLoading() {
   }, 500);
 }
 
-// ---- Trailer (YouTube, loaded only when clicked) -------------------------------
-const trailerFacade = document.getElementById("trailer-facade");
-let trailerFrame = null;
+// ---- Videos (YouTube, loaded only when their poster is clicked) --------------
+// Two of them: the trailer and the gameplay video. Each is a poster with a play button;
+// the YouTube player is added on click and removed again when the viewer leaves the tab.
+function makeVideo(tab, panel, facadeId, title) {
+  const facade = document.getElementById(facadeId);
+  const video = { tab, panel, facade, title, frame: null };
+  facade.addEventListener("click", () => loadVideo(video));
+  return video;
+}
 
-function loadTrailer() {
-  if (trailerFrame) return;
-  const id = trailerFacade.dataset.videoId;
-  trailerFrame = document.createElement("iframe");
-  trailerFrame.src =
-    "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1&rel=0&playsinline=1&enablejsapi=1";
-  trailerFrame.title = "Orbital Defense 2 trailer";
-  trailerFrame.allow = "accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen";
-  trailerFrame.allowFullscreen = true;
-  trailerFacade.hidden = true;
-  panelTrailer.appendChild(trailerFrame);
+function loadVideo(v) {
+  if (v.frame) return;
+  v.frame = document.createElement("iframe");
+  v.frame.src =
+    "https://www.youtube-nocookie.com/embed/" + v.facade.dataset.videoId +
+    "?autoplay=1&rel=0&playsinline=1&enablejsapi=1";
+  v.frame.title = v.title;
+  v.frame.allow = "accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen";
+  v.frame.allowFullscreen = true;
+  v.facade.hidden = true;
+  v.panel.appendChild(v.frame);
 }
 
 // Remove the player (which stops its sound) and bring the poster back.
-function resetTrailer() {
-  if (!trailerFrame) return;
-  trailerFrame.remove();
-  trailerFrame = null;
-  trailerFacade.hidden = false;
+function resetVideo(v) {
+  if (!v.frame) return;
+  v.frame.remove();
+  v.frame = null;
+  v.facade.hidden = false;
 }
 
-function pauseTrailer() {
+function pauseVideo(v) {
   try {
-    trailerFrame.contentWindow.postMessage(JSON.stringify({ event: "command", func: "pauseVideo", args: [] }), "*");
+    v.frame.contentWindow.postMessage(JSON.stringify({ event: "command", func: "pauseVideo", args: [] }), "*");
   } catch { /* player not ready */ }
 }
 
-trailerFacade.addEventListener("click", loadTrailer);
+const videos = {
+  trailer: makeVideo(tabTrailer, panelTrailer, "trailer-facade", "Orbital Defense 2 trailer"),
+  gameplay: makeVideo(tabGameplay, panelGameplay, "gameplay-facade", "Orbital Defense 2 gameplay"),
+};
 
 function show(which) {
   const play = which === "play";
   // Decide before switching: was the game left half-loaded or broken while hidden?
   const needsReload = play && !!frame.getAttribute("src") && (!gameLoaded() || gameBroken());
 
-  tabTrailer.classList.toggle("active", !play);
-  tabPlay.classList.toggle("active", play);
-  tabTrailer.setAttribute("aria-selected", String(!play));
-  tabPlay.setAttribute("aria-selected", String(play));
-  panelTrailer.hidden = play;
-  panelPlay.hidden = !play;
+  // Tabs and panels: exactly one is open
+  const tabs = { trailer: tabTrailer, gameplay: tabGameplay, play: tabPlay };
+  const panels = { trailer: panelTrailer, gameplay: panelGameplay, play: panelPlay };
+  for (const name of Object.keys(tabs)) {
+    tabs[name].classList.toggle("active", name === which);
+    tabs[name].setAttribute("aria-selected", String(name === which));
+    panels[name].hidden = name !== which;
+  }
   playTools.hidden = !play;
   if (mobileWarning) mobileWarning.hidden = !(isMobile && play);
+
+  // Stop any video we just left (its sound with it)
+  for (const [name, v] of Object.entries(videos)) if (name !== which) resetVideo(v);
 
   if (!play) {
     loadNote.hidden = true;
     clearInterval(loadWatcher);
-    syncPause(); // silence and freeze the game while the trailer shows
-  }
-
-  if (play) {
+    syncPause(); // silence and freeze the game while a video shows
+  } else {
     inView = visibleFraction() >= 0.2;
     if (!frame.getAttribute("src")) loadGame(false);
     else if (needsReload) { gameHook = null; loadGame(true); }
     else syncPause();
     watchLoading();
-
-    resetTrailer(); // stop the trailer (and its sound) when the game takes over
   }
 }
 
@@ -291,7 +303,9 @@ frame.addEventListener("load", () => {
 
 // Pause the game when it is scrolled out of view; resume when it comes back.
 function onViewChange() {
-  if (!panelTrailer.hidden && trailerFrame && visibleFraction(panelTrailer) < 0.2) pauseTrailer();
+  for (const v of Object.values(videos)) {
+    if (!v.panel.hidden && v.frame && visibleFraction(v.panel) < 0.2) pauseVideo(v);
+  }
   if (panelPlay.hidden) return; // the Trailer tab handles pausing on its own
   const nowInView = visibleFraction() >= 0.2;
   if (nowInView === inView) return;
@@ -302,11 +316,13 @@ if ("IntersectionObserver" in window) {
   const io = new IntersectionObserver(onViewChange, { threshold: [0, 0.2, 0.5] });
   io.observe(panelPlay);
   io.observe(panelTrailer);
+  io.observe(panelGameplay);
 }
 addEventListener("scroll", onViewChange, { passive: true });
 addEventListener("resize", onViewChange);
 
 tabTrailer.addEventListener("click", () => show("trailer"));
+tabGameplay.addEventListener("click", () => show("gameplay"));
 tabPlay.addEventListener("click", () => show("play"));
 // Fullscreen the whole game window from this page's own click. This avoids Unity's
 // internal fullscreen code, which doesn't cope well with running inside an iframe.

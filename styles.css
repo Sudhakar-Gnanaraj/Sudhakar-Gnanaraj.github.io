@@ -392,7 +392,9 @@ html:has(.game-page) { scroll-padding-top: 140px; }
 .step.event { background: var(--e-fill); border-color: var(--e-line); }
 .step.event h3 { color: #e6ebf5; }
 .step.event p { color: var(--e-sub); }
-.gear { width: 24px; height: 24px; color: #aeb6c9; }
+/* The game's currency icon, used inline wherever the text mentions it */
+.cur { display: inline-block; width: 1.15em; height: 1.15em; vertical-align: -0.2em; image-rendering: pixelated; }
+.cur-lg { width: 26px; height: 26px; vertical-align: middle; }
 
 /* arrows between boxes */
 .step:not(:last-child)::after {
@@ -578,11 +580,33 @@ html:has(.game-page) { scroll-padding-top: 140px; }
   cursor: pointer;
 }
 .tab:hover { color: #fff; }
+/* Trailer / Gameplay: the open one is outlined in the accent colour */
 .tab.active {
+  color: #fff;
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+/* Play: always the standout button (coral, larger, glowing) */
+.tab-play,
+.tab-play.active {
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
   color: var(--cta-text);
   border-color: transparent;
   background: var(--cta);
+  box-shadow: 0 4px 18px color-mix(in srgb, var(--cta-1) 40%, transparent);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
+.tab-play:hover { color: var(--cta-text); transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 8px 26px color-mix(in srgb, var(--cta-1) 55%, transparent); }
+.tab-play.active { box-shadow: 0 0 0 3px color-mix(in srgb, var(--cta-1) 45%, transparent), 0 4px 18px color-mix(in srgb, var(--cta-1) 40%, transparent); }
+.tab-play:not(.active) { animation: play-pulse 2.6s ease-in-out infinite; }
+@keyframes play-pulse {
+  0%, 100% { box-shadow: 0 4px 18px color-mix(in srgb, var(--cta-1) 35%, transparent); }
+  50% { box-shadow: 0 4px 30px color-mix(in srgb, var(--cta-1) 70%, transparent), 0 0 0 5px color-mix(in srgb, var(--cta-1) 16%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) { .tab-play:not(.active) { animation: none; } }
 .itch-badge { display: inline-flex; align-items: center; border-radius: 8px; transition: transform 0.15s ease, filter 0.15s ease; }
 .itch-badge img { display: block; height: 40px; width: auto; }
 .itch-badge:hover { transform: translateY(-2px); filter: brightness(1.08); }
@@ -712,7 +736,25 @@ html:has(.game-page) { scroll-padding-top: 140px; }
   .system:has(.media-shot) { grid-template-columns: 1fr; gap: 16px; }
   .system.gif-left .system-text, .system.gif-left .media-shot { order: 0; }
   .loop-steps { grid-template-columns: repeat(2, 1fr); gap: 36px 36px; }
-  .step:nth-child(2)::after, .step:nth-child(2)::before { display: none; }
+  /* Two rows: bend the arrow from step 2 (end of row 1) down and back to step 3 (start of row 2) */
+  .step:nth-child(2)::after {
+    top: 100%;
+    left: auto;
+    right: 50%;
+    width: calc(100% + 36px);
+    height: 36px;
+    background:
+      linear-gradient(var(--arrow), var(--arrow)) right 0 top 0 / 2px 50% no-repeat,
+      linear-gradient(var(--arrow), var(--arrow)) 0 50% / 100% 2px no-repeat,
+      linear-gradient(var(--arrow), var(--arrow)) left 0 bottom 0 / 2px 50% no-repeat;
+  }
+  .step:nth-child(2)::before {
+    top: calc(100% + 36px - 7px);
+    left: calc(-50% - 40px);
+    border: 0;
+    border-right: 2px solid var(--arrow);
+    border-bottom: 2px solid var(--arrow);
+  }
   .loop-return { display: none; }
   .loop-caption::before { content: "\21BA  "; }
   .feature:has(.gif) { grid-template-columns: 1fr; gap: 16px; }
@@ -721,6 +763,7 @@ html:has(.game-page) { scroll-padding-top: 140px; }
 
 @media (max-width: 480px) {
   .tab { padding: 8px 14px; font-size: 13px; }
+  .tab-play, .tab-play.active { padding: 10px 20px; font-size: 15px; }
   .section-bar { top: 62px; margin-bottom: 22px; }
   .chip { padding: 7px 12px; }
   html:has(.game-page) { scroll-padding-top: 124px; }

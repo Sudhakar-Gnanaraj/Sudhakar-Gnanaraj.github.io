@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=24">
+  <link rel="stylesheet" href="styles.css?v=29">
 </head>
 <body class="game-page">
 
@@ -62,7 +62,8 @@
       </div>
       <div class="tabs" role="tablist">
         <button class="tab active" id="tab-trailer" role="tab" aria-selected="true" aria-controls="panel-trailer">Trailer</button>
-        <button class="tab" id="tab-play" role="tab" aria-selected="false" aria-controls="panel-play">▶ Play</button>
+        <button class="tab" id="tab-gameplay" role="tab" aria-selected="false" aria-controls="panel-gameplay">Gameplay</button>
+        <button class="tab tab-play" id="tab-play" role="tab" aria-selected="false" aria-controls="panel-play"><span aria-hidden="true">▶</span> Play the game</button>
         <div class="play-tools" id="play-tools" hidden>
           <button class="tab" id="btn-mute" type="button" aria-pressed="false">🔊 Sound on</button>
           <button class="tab" id="btn-fullscreen" type="button">Fullscreen ⤢</button>
@@ -83,6 +84,14 @@
         </button>
       </div>
 
+      <div class="screen" id="panel-gameplay" role="tabpanel" aria-labelledby="tab-gameplay" hidden>
+        <button class="video-facade" id="gameplay-facade" type="button" data-video-id="Gu-3W8LBw0k"
+                aria-label="Play the gameplay video" style="background-image:url('assets/orbital-defense-2-card.webp')">
+          <span class="video-play" aria-hidden="true">&#9654;</span>
+          <span class="video-label">Watch the gameplay</span>
+        </button>
+      </div>
+
       <div class="screen" id="panel-play" role="tabpanel" aria-labelledby="tab-play" hidden>
         <iframe id="game-frame" title="Orbital Defense 2 (WebGL build)" data-src="games/orbital-defense-2/index.html?v=5" allow="fullscreen; autoplay" allowfullscreen></iframe>
       </div>
@@ -97,10 +106,8 @@
             <li class="step decision"><h3>1. Build</h3><p>Place on orbit slots</p></li>
             <li class="step event"><h3>2. Defend</h3><p>Survive the wave</p></li>
             <li class="step event">
-              <h3>3. Earn
-                <svg class="gear" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.7 7.7 0 0 0 0-2l2.1-1.6a.5.5 0 0 0 .1-.6l-2-3.5a.5.5 0 0 0-.6-.2l-2.5 1a7.5 7.5 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-4a.5.5 0 0 0-.5.4l-.4 2.6a7.5 7.5 0 0 0-1.7 1l-2.5-1a.5.5 0 0 0-.6.2l-2 3.5a.5.5 0 0 0 .1.6L4.6 11a7.7 7.7 0 0 0 0 2l-2.1 1.6a.5.5 0 0 0-.1.6l2 3.5c.1.2.4.3.6.2l2.5-1c.5.4 1.1.7 1.7 1l.4 2.6c0 .2.3.4.5.4h4c.2 0 .5-.2.5-.4l.4-2.6c.6-.3 1.200-.6 1.700-1l2.500 1c.2.1.5 0 .6-.2l2-3.500a.5.5 0 0 0-.1-.6L19.400 13ZM12 15.500a3.500 3.500 0 1 1 0-7 3.500 3.500 0 0 1 0 7Z"/></svg>
-              </h3>
-              <p>Kills drop currency</p>
+              <h3>3. Earn currency</h3>
+              <p>Kills drop <img class="cur" src="assets/currency.png" alt="parts" title="Parts (currency)" width="20" height="20"></p>
             </li>
             <li class="step decision"><h3>4. Invest</h3><p>Upgrade or override</p></li>
           </ol>
@@ -135,7 +142,7 @@
           <div class="system-text">
             <h3>Economy loop</h3>
             <ul>
-              <li>Kills drop parts. Parts are spent on building towers, buying upgrades and running override. Selling a tower refunds part of its cost.</li>
+              <li>Kills drop <img class="cur" src="assets/currency.png" alt="parts" title="Parts (currency)" width="20" height="20">. They are spent on building towers, buying upgrades and running override. Selling a tower refunds part of its cost.</li>
             </ul>
           </div>
           <figure class="media-shot"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/systems/economy.gif" data-loop-ms="7000" alt="A satellite with its upgrade and sell options" width="400" height="434" loading="lazy"></figure>
@@ -146,7 +153,7 @@
             <h3>Override (risk/reward)</h3>
             <ul>
               <li>Override fires 3x faster for a gun, and the laser beam becomes twice as thick.</li>
-              <li>It drains parts over time, so it is a deliberate burst-for-cash trade, usually saved for hard waves.</li>
+              <li>It drains <img class="cur" src="assets/currency.png" alt="parts" title="Parts (currency)" width="20" height="20"> over time, so it is a deliberate burst-for-cash trade, usually saved for hard waves.</li>
             </ul>
           </div>
           <figure class="media-shot"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/systems/override.gif" data-loop-ms="8000" alt="A satellite in override mode with its range ring" width="400" height="421" loading="lazy"></figure>
@@ -365,9 +372,9 @@
         <article class="ux-card">
           <h3><span class="ux-num">1</span>Hierarchy</h3>
           <ul>
-            <li>Only two persistent HUD elements, Earth HP and currency, so the player's eye goes to the battlefield.</li>
+            <li>Only two persistent HUD elements, Earth HP and <img class="cur" src="assets/currency.png" alt="parts" title="Parts (currency)" width="20" height="20">, so the player's eye goes to the battlefield.</li>
             <li>Enemy health bars sit directly above the enemy. The shield bar stacks above the HP bar, so the more important layer is read first.</li>
-            <li>Currency popups appear at the kill location, which ties each reward to its cause.</li>
+            <li><img class="cur" src="assets/currency.png" alt="parts" title="Parts (currency)" width="20" height="20"> popups appear at the kill location, which ties each reward to its cause.</li>
           </ul>
         </article>
 
@@ -375,7 +382,7 @@
           <h3><span class="ux-num">2</span>Progressive disclosure</h3>
           <ul>
             <li>Towers unlock gradually. Locked ones show a lock icon in the build menu.</li>
-            <li>The scrap UI hides on levels without an economy, which keeps early levels simple.</li>
+            <li>The <img class="cur" src="assets/currency.png" alt="parts" title="Parts (currency)" width="20" height="20"> UI hides on levels without an economy, which keeps early levels simple.</li>
             <li>Short tutorial videos introduce each mechanic or enemy type when it first matters.</li>
           </ul>
         </article>
@@ -393,7 +400,7 @@
           <h3><span class="ux-num">4</span>Contrast</h3>
           <ul>
             <li>Distinct colours separate enemy types and their explosions, so threats are readable at a glance.</li>
-            <li>Red scrap variants signal cost or insufficient funds against the normal scrap look.</li>
+            <li>Red <img class="cur" src="assets/currency.png" alt="parts" title="Parts (currency)" width="20" height="20"> variants signal cost or insufficient funds against the normal <img class="cur" src="assets/currency.png" alt="parts" title="Parts (currency)" width="20" height="20"> look.</li>
             <li>Override mode changes the beam colour and adds lightning, so you can see which towers are overclocked.</li>
             <li>Selected-tower buttons stand out against the space background.</li>
           </ul>
@@ -438,7 +445,7 @@
   <footer class="footer">© <span id="year"></span> Sudhakar Gnanaraj</footer>
 
   <script src="script.js"></script>
-  <script src="game.js?v=19"></script>
+  <script src="game.js?v=20"></script>
   <script src="section-nav.js?v=2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" defer></script>
   <script src="pacing-chart.js?v=3" defer></script>
