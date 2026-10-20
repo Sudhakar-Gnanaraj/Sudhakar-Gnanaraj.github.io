@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kingslayer | Sudhakar Gnanaraj</title>
+  <meta name="description" content="Kingslayer: a 2D stealth platformer built to practise level design. Game design case study by Sudhakar Gnanaraj.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=40">
+</head>
+<body class="game-page">
+
+  <nav class="nav" aria-label="Main">
+    <a href="index.html">Home</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#contact">Contact</a>
+    <a class="nav-cta" href="index.html#contact">Resume</a>
+  </nav>
+
+  <main class="game">
+
+    <a class="back" href="index.html#projects">← Back to my works</a>
+    <h1 class="game-title">Kingslayer</h1>
+    <p class="tagline">A 2D stealth platformer: sneak through a castle and kill the king without being seen.</p>
+
+    <nav class="section-bar" id="section-bar" aria-label="Jump to a section">
+      <a class="chip" href="#overview" data-target="overview" data-also="media">Overview</a>
+      <a class="chip" href="#core-loop" data-target="core-loop">Core loop</a>
+      <a class="chip" href="#level-design" data-target="level-design">Level design</a>
+      <a class="chip" href="#level-maps" data-target="level-maps">Level maps</a>
+      <a class="chip" href="#mechanics" data-target="mechanics">Mechanics</a>
+      <a class="chip" href="#systems" data-target="systems">Systems</a>
+      <a class="chip" href="#ux" data-target="ux">UI/UX Design</a>
+    </nav>
+
+    <!-- Overview (left) + Details (right) -->
+    <section class="top" id="overview">
+      <div class="overview">
+        <h2 class="label">Overview</h2>
+        <p>Kingslayer is a 2D side-scrolling stealth game: an assassin sneaks through a castle to kill the king without being seen. It was built to practise level design, teaching a stealth ruleset one mechanic at a time and then combining them.</p>
+      </div>
+
+      <aside class="details" aria-label="Game details">
+        <h2 class="label">Details</h2>
+        <dl>
+          <div><dt>Genre</dt><dd>2D stealth platformer</dd></div>
+          <div><dt>Engine</dt><dd>Unity 6</dd></div>
+          <div><dt>Language</dt><dd>C#</dd></div>
+          <div><dt>Platform</dt><dd>Web and PC (Windows)</dd></div>
+        </dl>
+        <div class="ai-disclosure">
+          <h3>AI Disclosure</h3>
+          <p>No AI was used in making this game.</p>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Gameplay video / Play -->
+    <section class="media" id="media" aria-label="Gameplay and play">
+      <div class="mobile-warning" id="mobile-warning" role="note" hidden>
+        <strong>Heads up:</strong> this game needs a keyboard or controller and is not optimized for mobile devices. For the best experience, play on a desktop or laptop.
+      </div>
+      <div class="tabs" role="tablist">
+        <button class="tab active" id="tab-gameplay" role="tab" aria-selected="true" aria-controls="panel-gameplay">Gameplay</button>
+        <button class="tab tab-play" id="tab-play" role="tab" aria-selected="false" aria-controls="panel-play"><span aria-hidden="true">▶</span> Play the game</button>
+        <div class="play-tools" id="play-tools" hidden>
+          <button class="tab" id="btn-mute" type="button" aria-pressed="false">🔊 Sound on</button>
+          <button class="tab" id="btn-fullscreen" type="button">Fullscreen ⤢</button>
+        </div>
+        <a class="itch-badge" href="https://pixel-monkey-96.itch.io/kingslayer" target="_blank" rel="noopener"><img src="assets/itch-badge.png" alt="Available on itch.io" width="130" height="40"></a>
+      </div>
+
+      <p class="play-note" id="load-note" role="status" hidden>The game takes a short time to load, especially the first time you play. When it has loaded, click the game screen once so it can read your keyboard, then follow the prompts in the level.</p>
+
+      <p class="play-note focus-note" id="focus-note" role="status" hidden>⏸ The game is paused. Click on the game screen to resume.</p>
+
+      <div class="screen" id="panel-gameplay" role="tabpanel" aria-labelledby="tab-gameplay">
+        <!-- Click-to-load: the YouTube player is only added when the poster is clicked. -->
+        <button class="video-facade" id="gameplay-facade" type="button" data-video-id="mAw_qHAiqaE" data-title="Kingslayer gameplay"
+                aria-label="Play the gameplay video" style="background-image:url('assets/kingslayer/hero-gameplay.webp')">
+          <span class="video-play" aria-hidden="true">&#9654;</span>
+          <span class="video-label">Watch the gameplay</span>
+        </button>
+      </div>
+
+      <div class="screen" id="panel-play" role="tabpanel" aria-labelledby="tab-play" hidden>
+        <iframe id="game-frame" title="Kingslayer (WebGL build)" data-src="games/kingslayer/index.html?v=2" allow="fullscreen; autoplay" allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <section class="block" id="core-loop">
+      <h2 class="label">Core loop</h2>
+      <div class="features">
+        <figure class="loop" aria-label="Core loop: observe, distract, move, checkpoint">
+          <ol class="loop-steps">
+            <li class="step decision"><h3>1. Observe</h3><p>Read each guard&rsquo;s patrol and sightline from cover</p></li>
+            <li class="step decision"><h3>2. Distract</h3><p>Throw an apple to pull a guard off their route</p></li>
+            <li class="step decision"><h3>3. Move</h3><p>Slip past, or in Level 2 kill and hide the body</p></li>
+            <li class="step event"><h3>4. Checkpoint</h3><p>Reach the next checkpoint to lock in progress</p></li>
+          </ol>
+          <div class="loop-return" aria-hidden="true"></div>
+          <figcaption class="loop-caption">Seen? Respawn at the last checkpoint and try again</figcaption>
+          <ul class="legend">
+            <li><span class="swatch decision"></span>Player decision</li>
+            <li><span class="swatch event"></span>Game event</li>
+          </ul>
+        </figure>
+      </div>
+    </section>
+
+    <section class="block" id="level-design">
+      <h2 class="label">Level design</h2>
+      <div class="leveldesign">
+
+        <article class="ld-block">
+          <h3>Two levels, two rule sets</h3>
+          <p><strong>Level 1</strong> builds the core loop. Thrown apples make noise, and guards within 10 units walk to where one lands, so the player can pull them off their patrol route.</p>
+          <p><strong>Level 2</strong> turns every kill into a decision about where the body will lie, because a guard who sees it ends the attempt.</p>
+          <p><strong>Ending:</strong> a cutscene where the player walks up to the king and kills him, then &ldquo;The King Has Been Slain&rdquo; and a return to the title screen.</p>
+        </article>
+
+        <article class="ld-block">
+          <h3>Level 1 and Level 2 compared</h3>
+          <div class="table-wrap">
+            <table class="fleet-table cycle-table ks-compare">
+              <thead>
+                <tr><th scope="col"></th><th scope="col">Level 1: learn to stay hidden</th><th scope="col">Level 2: the rules change</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="fleet">Teaches</th>
+                  <td data-label="Level 1">Move &rarr; jump &rarr; crouch &rarr; &ldquo;Do Not Be Seen&rdquo; &rarr; pick up and throw</td>
+                  <td data-label="Level 2">Knife-draw cutscene &rarr; attack &rarr; &ldquo;Do Not let enemies see dead bodies&rdquo;</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Guards</th>
+                  <td data-label="Level 1">11</td>
+                  <td data-label="Level 2">18</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Checkpoints</th>
+                  <td data-label="Level 1">6</td>
+                  <td data-label="Level 2">5</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Tools for the player</th>
+                  <td data-label="Level 1">6 apple crates for distractions, barrels as cover</td>
+                  <td data-label="Level 2">Kills, plus everything from Level 1</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Fail states</th>
+                  <td data-label="Level 1">Seen by a guard</td>
+                  <td data-label="Level 2">Seen by a guard, or a guard finds a body</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="block" id="level-maps">
+      <h2 class="label">Interactive level maps</h2>
+      <p class="section-lead">Switch between the two levels, toggle layers, pause the guards' patrols and throw an apple to watch them react. The geometry, guard settings, checkpoints and props are read straight from the Unity scenes.</p>
+      <div class="leveldesign">
+        <div class="ld-block map-embed">
+          <iframe id="map-frame" title="Kingslayer interactive level maps" src="assets/kingslayer/level-maps.html?v=3" loading="lazy"></iframe>
+        </div>
+      </div>
+      <p class="map-link"><a href="assets/kingslayer/level-maps.html" target="_blank" rel="noopener">Open the level maps in their own tab ↗</a></p>
+    </section>
+
+    <section class="block" id="mechanics">
+      <h2 class="label">Mechanics as level design tools</h2>
+      <p class="section-lead">Each mechanic was built so that where things are placed decides how a section plays.</p>
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>Sightlines</h3>
+          <p>Each guard sees along two rays, at head height and at foot height, and walls and barrels block them. Crouching behind a barrel hides the player because the barrel blocks the low ray and the high ray passes overhead, so barrel placement is the cover system.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Patrols</h3>
+          <p>Each guard has its own patrol distance, wait time at the turnaround points and starting direction, which sets the timing windows the player has to read.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Low passages</h3>
+          <p>Zones where the player cannot stand up or jump, which force a crouched route.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Verticality</h3>
+          <p>Ledge grabbing and a climbing rack give alternate routes above the guards.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Fail state and checkpoints</h3>
+          <p>Being seen gives a 3-second &ldquo;You Have Been seen&rdquo; beat, then a respawn at the last checkpoint. Checkpoints are spread out so a failure costs only a short section.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Readability</h3>
+          <p>&ldquo;?&rdquo; and &ldquo;!&rdquo; icons over guards, and sightline visuals in calm, suspicious and alerted colors. When a guard finds a body, the camera pans to show where the player was caught.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="block" id="systems">
+      <h2 class="label">Gameplay and systems</h2>
+      <div class="ux-grid">
+        <article class="ux-card ux-wide">
+          <h3>Gameplay features</h3>
+          <ul>
+            <li>Stealth movement: walk, jump, crouch, crouch-walk, ledge grab and climb-over</li>
+            <li>Throwable apples from crates, with a dotted arc that previews the throw</li>
+            <li>Noise distraction: guards walk to where the apple lands, wait, then return to their post</li>
+            <li>Knife assassinations, with a second fail state when a guard finds a body</li>
+            <li>Checkpoint respawns after being caught</li>
+            <li>Cutscenes for drawing the knife at the start of Level 2 and the final kill on the king</li>
+          </ul>
+        </article>
+      </div>
+      <div class="leveldesign ks-systems-panel">
+        <article class="ld-block">
+          <h3>Systems built</h3>
+          <div class="table-wrap">
+            <table class="fleet-table cycle-table ks-systems">
+              <thead>
+                <tr><th scope="col">System</th><th scope="col">What it does</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="fleet">Guard AI</th><td data-label="What it does">Patrols between two points with wait times, investigates noises, unsticks itself if blocked, then returns to post</td></tr>
+                <tr><th scope="row" class="fleet">Detection</th><td data-label="What it does">Two raycasts at head and foot height that walls and cover block, plus a separate check for spotting dead bodies</td></tr>
+                <tr><th scope="row" class="fleet">Input-adaptive tutorials</th><td data-label="What it does">Prompts switch between keyboard and controller icons depending on the input device in use</td></tr>
+                <tr><th scope="row" class="fleet">Throw system</th><td data-label="What it does">The arc preview uses the same throw speed and gravity as the real throw, so it matches where the apple lands</td></tr>
+                <tr><th scope="row" class="fleet">Audio and scene managers</th><td data-label="What it does">Menu and gameplay music switch on scene load; scene changes fade in and out</td></tr>
+                <tr><th scope="row" class="fleet">Camera</th><td data-label="What it does">Cinemachine with a custom look-ahead offset that resets or pans when the player is caught</td></tr>
+                <tr><th scope="row" class="fleet">AI state feedback</th><td data-label="What it does">&ldquo;?&rdquo; when investigating, &ldquo;!&rdquo; when alerted, and color-coded sightline visuals</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="block" id="ux">
+      <h2 class="label">UI/UX Design</h2>
+      <div class="ux-grid">
+        <article class="ux-card ux-wide">
+          <h3>UX and accessibility</h3>
+          <ul>
+            <li>No pause-and-read tutorial screens: prompts sit in the level where the player needs them</li>
+            <li>Full controller support, with prompts that change to match the input device</li>
+            <li>Clear fail feedback (&ldquo;You Have Been seen&rdquo;, &ldquo;Dead Body has been found&rdquo;) and a quick respawn</li>
+            <li>Title screen &rarr; game &rarr; ending flow with fade transitions</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <button class="to-top" id="to-top" type="button" aria-label="Back to top" hidden>↑</button>
+
+  <footer class="footer">© <span id="year"></span> Sudhakar Gnanaraj</footer>
+
+  <script src="script.js"></script>
+  <script src="game.js?v=24"></script>
+  <script src="map-embed.js?v=2"></script>
+  <script src="section-nav.js?v=2"></script>
+</body>
+</html>

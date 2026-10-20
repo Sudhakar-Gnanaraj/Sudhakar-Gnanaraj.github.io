@@ -325,14 +325,42 @@ if (tabGameplay) tabGameplay.addEventListener("click", () => show("gameplay"));
 tabPlay.addEventListener("click", () => show("play"));
 // Fullscreen the whole game window from this page's own click. This avoids Unity's
 // internal fullscreen code, which doesn't cope well with running inside an iframe.
+// Where the browser won't grant real fullscreen (some embedded browsers just ignore the
+// request), the window is stretched over the page instead, with its own Exit button.
+const fsLabel = fsBtn.textContent;
+const fsExit = document.createElement("button");
+fsExit.type = "button";
+fsExit.className = "fs-exit";
+fsExit.textContent = "Exit fullscreen ⤡";
+fsExit.hidden = true;
+panelPlay.appendChild(fsExit);
+
+let coverFs = false;
+function setCoverFs(on) {
+  coverFs = on;
+  panelPlay.classList.toggle("cover-fullscreen", on);
+  document.body.classList.toggle("no-scroll", on);
+  fsExit.hidden = !on;
+  fsBtn.textContent = on ? "Exit fullscreen ⤡" : fsLabel;
+}
+function exitFs() {
+  if (document.fullscreenElement) document.exitFullscreen();
+  if (coverFs) setCoverFs(false);
+}
 fsBtn.addEventListener("click", () => {
-  if (document.fullscreenElement) {
-    document.exitFullscreen();
+  if (document.fullscreenElement || coverFs) {
+    exitFs();
     return;
   }
   const request = panelPlay.requestFullscreen ? panelPlay.requestFullscreen() : null;
-  if (request && request.catch) request.catch(() => window.open(frame.dataset.src, "_blank", "noopener"));
+  // No answer (or a refusal) within a moment: use the page-cover version instead.
+  const fallback = setTimeout(() => !document.fullscreenElement && setCoverFs(true), 400);
+  document.addEventListener("fullscreenchange", () => clearTimeout(fallback), { once: true });
+  if (request && request.catch) request.catch(() => { clearTimeout(fallback); setCoverFs(true); });
+  else if (!request) { clearTimeout(fallback); setCoverFs(true); }
 });
+fsExit.addEventListener("click", exitFs);
+addEventListener("keydown", (e) => e.key === "Escape" && coverFs && setCoverFs(false));
 
 // Keep GIFs looping. Each GIF is fetched once into memory (a blob URL); after one
 // full pass the <img> is swapped for a fresh copy of that same in-memory file, so the

@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>try{if(window.self!==window.top)document.documentElement.classList.add("embedded")}catch(e){document.documentElement.classList.add("embedded")}</script>
+<style>html,body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Kingslayer Level Maps</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Grenze+Gotisch:wght@600;800&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a castle cross-section read like a surveyor's strip map; overview strip on top, scrollable side view below, section ledger under it. */
+:root {
+  --bg: #eceff3;
+  --surface: #f8f9fb;
+  --ink: #1a2030;
+  --muted: #586174;
+  --rule: #c9cfd9;
+  --map: #dde2ea;
+  --stone: #6f7a8e;
+  --stone-line: #5d677a;
+  --backwall: #ccd2dc;
+  --wood: #8b5a2b;
+  --sight: #d99a12;
+  --suspect: #df6c16;
+  --alert: #cc2d4f;
+  --save: #23806b;
+  --apple: #b8412b;
+  --crouch: #5b5fc7;
+  --stopper: #8f3b5c;
+  --focus: #2b59c3;
+  --f-display: "Grenze Gotisch", "UnifrakturCook", Georgia, serif;
+  --f-body: "Alegreya Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1119; --surface: #141a25; --ink: #e3e7ef; --muted: #98a1b3; --rule: #273042;
+    --map: #121825; --stone: #3b4558; --stone-line: #4a5569; --backwall: #1a2130; --wood: #a8733f;
+    --sight: #f0b52e; --suspect: #f08a35; --alert: #ef4f6f; --save: #3cb391; --apple: #e0644a;
+    --crouch: #8b8ff0; --stopper: #c46a8f; --focus: #8fb0ff; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1119; --surface: #141a25; --ink: #e3e7ef; --muted: #98a1b3; --rule: #273042;
+  --map: #121825; --stone: #3b4558; --stone-line: #4a5569; --backwall: #1a2130; --wood: #a8733f;
+  --sight: #f0b52e; --suspect: #f08a35; --alert: #ef4f6f; --save: #3cb391; --apple: #e0644a;
+  --crouch: #8b8ff0; --stopper: #c46a8f; --focus: #8fb0ff; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 48px;
+}
+.wrap { max-width: 1240px; margin: 0 auto; display: grid; gap: 22px; }
+header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; }
+.mark { font-family: var(--f-display); font-weight: 800; font-size: clamp(40px, 7vw, 64px); line-height: .9; letter-spacing: .01em; margin: 0; }
+.mark small { display: block; font-family: var(--f-body); font-weight: 500; font-size: 15px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-top: 10px; }
+.lede { max-width: 60ch; margin: 0; color: var(--muted); }
+.tabs { display: flex; gap: 6px; padding: 4px; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; }
+.tab { font: 500 15px var(--f-body); color: var(--muted); background: none; border: 0; border-radius: 7px; padding: 8px 16px; cursor: pointer; }
+.tab[aria-selected="true"] { background: var(--ink); color: var(--bg); }
+.tab .n { font-family: var(--f-display); font-size: 19px; font-weight: 800; margin-right: 6px; }
+button:focus-visible, .chip:focus-within, [tabindex]:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0; border-block: 1px solid var(--rule); }
+.stat { padding: 12px 14px; border-right: 1px solid var(--rule); min-width: 0; }
+.stat:last-child { border-right: 0; }
+.stat b { display: block; font: 500 26px/1.1 var(--f-mono); font-variant-numeric: tabular-nums; }
+.stat span { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+.toolbar .group { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.toolbar .sep { width: 1px; align-self: stretch; background: var(--rule); margin-inline: 4px; }
+.chip { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; padding: 5px 11px 5px 9px; border: 1px solid var(--rule); border-radius: 999px; background: var(--surface); cursor: pointer; user-select: none; }
+.chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.chip .sw { width: 11px; height: 11px; border-radius: 3px; background: var(--c); opacity: .35; transition: opacity .15s; }
+.chip:has(input:checked) .sw { opacity: 1; }
+.chip:has(input:not(:checked)) { color: var(--muted); }
+.btn { font: 500 14px var(--f-body); color: var(--ink); background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 6px 12px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+.btn[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.btn.throw[aria-pressed="true"] { background: var(--apple); border-color: var(--apple); color: #fff; }
+.zoom { font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
+
+.mapcard { border: 1px solid var(--rule); border-radius: 12px; background: var(--map); overflow: hidden; }
+.overview { display: block; width: 100%; height: 56px; cursor: pointer; touch-action: none; border-bottom: 1px solid var(--rule); background: var(--backwall); }
+.scroller { overflow-x: auto; overflow-y: hidden; position: relative; scrollbar-color: var(--stone) transparent; }
+.scroller.throwing svg { cursor: crosshair; }
+#map { display: block; }
+.hint { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; padding: 8px 14px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--rule); background: var(--surface); }
+.hint .live { color: var(--ink); font-weight: 500; }
+
+.below { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 22px; align-items: start; }
+@media (max-width: 860px) { .below { grid-template-columns: minmax(0, 1fr); } }
+h2 { font-family: var(--f-display); font-weight: 600; font-size: 26px; margin: 0 0 6px; text-wrap: balance; }
+.sub { margin: 0 0 12px; color: var(--muted); font-size: 15px; }
+.tablewrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; font-weight: 500; font-size: 12px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); padding: 6px 10px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+td { padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+td.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+tbody tr { cursor: pointer; }
+tbody tr:hover, tbody tr.on { background: var(--surface); }
+.sec { font-family: var(--f-mono); font-size: 13px; white-space: nowrap; }
+.bar { display: inline-block; height: 8px; border-radius: 2px; background: var(--alert); vertical-align: middle; margin-left: 8px; opacity: .8; }
+.tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.tag { font-size: 12px; padding: 1px 7px; border-radius: 4px; border: 1px solid var(--rule); color: var(--muted); white-space: nowrap; }
+
+.panel { border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); padding: 16px 18px; display: grid; gap: 10px; }
+.panel dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; margin: 0; font-size: 14px; }
+.panel dt { color: var(--muted); }
+.panel dd { margin: 0; font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.panel .state { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; padding: 2px 9px; border-radius: 999px; border: 1px solid currentColor; width: max-content; }
+.panel p { margin: 0; font-size: 14px; color: var(--muted); }
+.legend { display: grid; gap: 6px; font-size: 14px; margin: 0; padding: 0; list-style: none; }
+.legend li { display: flex; gap: 10px; align-items: center; }
+.legend svg { flex: none; }
+footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 12px; }
+
+/* map marks */
+.lbl { font-family: var(--f-mono); fill: var(--muted); }
+.guard { cursor: pointer; }
+.guard .body { fill: var(--ink); }
+.guard.sel .body { fill: var(--focus); }
+.guard .head { fill: var(--ink); }
+.guard.sel .head { fill: var(--focus); }
+@media (prefers-reduced-motion: reduce) { .ring { display: none; } }
+
+/* ---- Matched to the portfolio site (palette, fonts, pill controls) ---- */
+:root, :root[data-theme="dark"] {
+  --f-body: "Inter", "Segoe UI", system-ui, sans-serif;
+  --f-display: "Inter", "Segoe UI", system-ui, sans-serif;
+}
+:root[data-theme="dark"] {
+  --bg: #161b26; --surface: #1b2130; --rule: #2a3347; --map: #12161f; --backwall: #1b2130;
+  --ink: #e6ebf5; --muted: #8a93a8; --focus: #7aa2ff;
+}
+body { font-size: 15px; }
+h2 { font-family: var(--f-body); font-weight: 500; font-size: 20px; color: var(--ink); margin: 0 0 6px; }
+.tabs { background: none; border: 0; padding: 0; gap: 6px; }
+.tab { color: var(--ink); background: rgba(0, 0, 0, .3); border: 1px solid var(--rule); border-radius: 999px; padding: 8px 18px; transition: border-color .15s, background .15s; }
+.tab:hover { border-color: var(--focus); }
+.tab[aria-selected="true"] { color: #fff; background: color-mix(in srgb, var(--focus) 22%, transparent); border-color: var(--focus); }
+.tab .n { font-family: var(--f-mono); font-size: 12px; font-weight: 500; opacity: .65; margin-right: 8px; }
+.btn { border-radius: 999px; padding: 6px 14px; background: rgba(0, 0, 0, .3); }
+.btn:hover { border-color: var(--focus); }
+.btn[aria-pressed="true"] { background: color-mix(in srgb, var(--focus) 22%, transparent); border-color: var(--focus); color: #fff; }
+.btn.throw { border-color: #ff7a59; color: #ffb9a6; }
+.btn.throw[aria-pressed="true"] { background: linear-gradient(to right, #ff7a59 5%, #e5522d 95%); border-color: transparent; color: #1c0f0b; font-weight: 600; }
+.chip { background: rgba(0, 0, 0, .3); }
+.stats { border-color: var(--rule); }
+
+/* Inside the portfolio page: no title, no page padding, tighter spacing */
+html.embedded body { padding: 0; background: transparent; }
+html.embedded .wrap { max-width: none; gap: 16px; }
+html.embedded header .mark, html.embedded footer { display: none; }
+html.embedded header { justify-content: flex-start; }
+html.embedded .lede { max-width: none; font-size: 15px; }
+
+@media (max-width: 600px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .stat { border-bottom: 1px solid var(--rule); padding: 10px 12px; }
+  .stat:nth-child(2n) { border-right: 0; }
+  .stat:last-child { border-bottom: 0; }
+  .stat b { font-size: 22px; }
+  .toolbar .sep { display: none; }
+  .panel { padding: 14px; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1 class="mark">Kingslayer<small>Level layouts · 2D stealth</small></h1>
+    <div class="tabs" role="tablist" aria-label="Level">
+      <button class="tab" role="tab" id="tab-level1" data-level="level1" aria-selected="true"><span class="n">I</span>Level 1</button>
+      <button class="tab" role="tab" id="tab-level2" data-level="level2" aria-selected="false"><span class="n">II</span>Level 2</button>
+    </div>
+  </header>
+  <p class="lede" id="lede"></p>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="toolbar">
+    <div class="group" id="layers" aria-label="Layers"></div>
+    <span class="sep" aria-hidden="true"></span>
+    <div class="group">
+      <button class="btn" id="play" aria-pressed="true">Pause patrols</button>
+      <button class="btn throw" id="throw" aria-pressed="false">Throw an apple</button>
+      <button class="btn" id="reset">Reset</button>
+    </div>
+    <span class="sep" aria-hidden="true"></span>
+    <div class="group">
+      <button class="btn" id="zoomOut" aria-label="Zoom out">−</button>
+      <span class="zoom" id="zoomLabel"></span>
+      <button class="btn" id="zoomIn" aria-label="Zoom in">+</button>
+    </div>
+  </div>
+
+  <div class="mapcard">
+    <svg class="overview" id="overview" role="img" aria-label="Whole-level overview. Click or drag to move the view."></svg>
+    <div class="scroller" id="scroller"><svg id="map" role="img"></svg></div>
+    <div class="hint"><span id="hint">Drag the overview or scroll sideways to move along the level. Click a guard for its stats.</span><span class="live" id="live"></span></div>
+  </div>
+
+  <div class="below">
+    <section>
+      <h2>Sections between checkpoints</h2>
+      <p class="sub">Each row is the stretch a player replays after being caught. Select a row to jump the map there.</p>
+      <div class="tablewrap"><table id="sections"></table></div>
+    </section>
+    <aside class="panel" id="panel" aria-live="polite"></aside>
+  </div>
+
+  <footer>Geometry, guard settings, checkpoints and props are read directly from the Unity scenes (1 unit = 1 tile). Patrols use the game's own rules: 2 u/s walking speed, a pause at each end, sight range of 5 u at head and foot height, blocked by walls and barrels. Crouch passages are wherever the ceiling is one tile above the floor: the player stands 1.68 u tall and crouches to 0.76 u. Thrown-apple reactions are approximate.</footer>
+</div>
+
+<script>
+const LEVELS = {"level1":{"tiles":{"Rack Support":[[116.5,-2.25,0.25,0.25],[117.5,-2.25,0.25,0.25],[118.5,-2.25,0.25,0.25],[119.5,-2.25,0.25,0.25],[120.5,-2.25,0.25,0.25],[121.5,-2.25,0.25,0.25],[122.75,-2.25,0.25,0.25],[133.0,-2.25,0.25,0.25],[134.0,-2.25,0.25,0.25],[135.25,-2.25,0.25,0.25],[136.25,-2.25,0.25,0.25],[142.25,-2.25,0.25,0.25],[143.25,-2.25,0.25,0.25],[144.5,-2.25,0.25,0.25],[145.5,-2.25,0.25,0.25],[11.0,-2.0,0.25,0.25],[12.5,-2.0,0.25,0.25],[14.0,-2.0,0.25,0.25],[15.5,-2.0,0.25,0.25],[17.0,-2.0,0.25,0.25],[47.25,-1.75,0.25,0.25],[48.75,-1.75,0.25,0.25],[50.25,-1.75,0.25,0.25],[51.75,-1.75,0.25,0.25],[53.25,-1.75,0.25,0.25],[54.75,-1.75,0.25,0.25],[82.75,-1.75,0.25,0.25],[84.0,-1.75,0.25,0.25],[85.0,-1.75,0.25,0.25],[86.0,-1.75,0.25,0.25],[87.0,-1.75,0.25,0.25],[88.0,-1.75,0.25,0.25],[94.5,-1.75,0.25,0.25],[95.5,-1.75,0.25,0.25],[96.75,-1.75,0.25,0.25],[97.75,-1.75,0.25,0.25],[98.75,-1.75,0.25,0.25]],"Platforms":[[-9.0,-7.0,242.0,1.0],[-9.0,-6.0,205.0,1.0],[206.0,-6.0,27.0,1.0],[-9.0,-5.0,205.0,1.0],[198.0,-5.0,6.0,1.0],[206.0,-5.0,27.0,1.0],[-9.0,-4.0,1.0,1.0],[19.0,-4.0,11.0,1.0],[55.0,-4.0,8.0,1.0],[123.0,-4.0,5.0,1.0],[180.0,-4.0,6.0,1.0],[227.0,-4.0,6.0,1.0],[-9.0,-3.0,1.0,1.0],[19.0,-3.0,11.0,1.0],[55.0,-3.0,8.0,1.0],[123.0,-3.0,5.0,1.0],[180.0,-3.0,6.0,1.0],[227.0,-3.0,6.0,1.0],[-9.0,-2.0,1.0,1.0],[19.0,-2.0,11.0,1.0],[55.0,-2.0,8.0,1.0],[123.0,-2.0,5.0,1.0],[180.0,-2.0,6.0,1.0],[227.0,-2.0,6.0,1.0],[-9.0,-1.0,1.0,1.0],[19.0,-1.0,11.0,1.0],[55.0,-1.0,8.0,1.0],[123.0,-1.0,5.0,1.0],[167.0,-1.0,2.0,1.0],[227.0,-1.0,6.0,1.0],[-9.0,0.0,1.0,1.0],[55.0,0.0,8.0,1.0],[167.0,0.0,2.0,1.0],[227.0,0.0,6.0,1.0],[-9.0,1.0,1.0,1.0],[22.0,1.0,6.0,1.0],[167.0,1.0,2.0,1.0],[227.0,1.0,6.0,1.0],[-9.0,2.0,1.0,1.0],[22.0,2.0,6.0,1.0],[167.0,2.0,2.0,1.0],[227.0,2.0,6.0,1.0],[-9.0,3.0,242.0,1.0],[-9.0,4.0,242.0,1.0]],"Objects":[[222.0,-4.09,3.0,1.5],[222.0,-2.59,3.0,1.5]],"Background":[[196.0,-6.0,10.0,1.0],[196.0,-5.0,2.0,1.0],[204.0,-5.0,2.0,1.0],[-8.0,-4.0,235.0,1.0],[-8.0,-3.0,235.0,1.0],[-8.0,-2.0,235.0,1.0],[-8.0,-1.0,235.0,1.0],[-8.0,0.0,235.0,1.0],[-8.0,1.0,235.0,1.0],[-8.0,2.0,235.0,1.0]],"Climbing Rack":[[176.25,-2.25,3.75,0.25],[116.25,-2.0,6.75,0.25],[132.75,-2.0,4.0,0.25],[142.0,-2.0,4.0,0.25],[156.5,-2.0,7.0,0.25],[209.25,-2.0,2.75,0.25],[10.75,-1.75,6.75,0.25],[47.0,-1.5,8.0,0.25],[82.5,-1.5,6.0,0.25],[94.25,-1.5,5.0,0.25],[164.25,-0.25,2.75,0.25]]},"guards":[{"x":48.371,"y":-2.78,"origin":48.57,"dist":3.0,"wait":3.0,"moves":true,"left":false,"face":1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":84.521,"y":-2.78,"origin":84.44,"dist":3.0,"wait":3.0,"moves":true,"left":false,"face":1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":94.541,"y":-2.78,"origin":94.74,"dist":3.0,"wait":3.0,"moves":true,"left":false,"face":1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":114.864,"y":-2.78,"origin":114.69,"dist":3.0,"wait":3.0,"moves":false,"left":false,"face":-1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":133.001,"y":-2.78,"origin":133.18,"dist":4.0,"wait":3.0,"moves":true,"left":false,"face":1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":143.181,"y":-2.78,"origin":143.43,"dist":4.0,"wait":3.0,"moves":true,"left":false,"face":1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":166.671,"y":-2.78,"origin":166.52,"dist":4.0,"wait":3.0,"moves":false,"left":false,"face":-1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":173.541,"y":-2.78,"origin":173.68,"dist":2.5,"wait":3.0,"moves":true,"left":false,"face":1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":198.401,"y":-2.78,"origin":198.89,"dist":0.5,"wait":3.0,"moves":false,"left":false,"face":-1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":201.051,"y":-2.78,"origin":201.4,"dist":2.0,"wait":5.0,"moves":true,"left":false,"face":1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":211.361,"y":-2.78,"origin":211.19,"dist":4.0,"wait":3.0,"moves":false,"left":false,"face":-1,"range":5.0,"top":-2.483,"bottom":-3.788}],"barrels":[[151.989,-4.006,0.891,0.995],[110.209,-4.006,0.891,0.995],[88.029,-4.006,0.891,0.995],[90.349,-4.006,0.891,0.995],[98.469,-4.006,0.891,0.995],[98.469,-3.012,0.891,1.069],[88.029,-3.012,0.891,1.069],[79.829,-4.006,0.891,0.995],[151.989,-3.012,0.891,1.069],[195.009,-4.006,0.891,0.995],[43.009,-3.996,0.891,0.977]],"crates":[[202.718,-4.08,1.159,2.013],[108.878,-4.08,1.159,2.013],[164.708,-0.025,1.159,2.013],[193.748,-4.08,1.159,2.013],[169.088,-4.1,1.159,2.013],[135.318,-1.78,1.159,2.013]],"saves":[{"id":"1.1","box":[29.856,-4.253,5.125,7.163]},{"id":"1.2","box":[62.994,-4.253,5.125,7.163]},{"id":"1.3","box":[99.344,-4.253,5.125,7.163]},{"id":"1.4","box":[123.614,-4.253,5.125,7.163]},{"id":"1.5","box":[152.724,-4.253,5.125,7.163]},{"id":"1.6","box":[186.194,-4.253,5.125,7.163]}],"crouch":[[198,-6,6,1],[22,0,6,1]],"stoppers":[[205.05,-4.23,1.0,1.0],[203.86,-4.23,1.0,1.0],[197.02,-4.23,1.0,1.0]],"chandeliers":[],"torches":[],"crouchTriggers":[[22.074,-0.316,5.802,1.565],[198.002,-6.236,5.996,1.565]],"door":{"box":[223.522,-4.114,0.385,2.763],"to":"Level 2"},"player":[-4.67,-2.86]},"level2":{"tiles":{"Rack Support":[[11.0,-2.0,0.25,0.25],[12.5,-2.0,0.25,0.25],[14.0,-2.0,0.25,0.25],[15.5,-2.0,0.25,0.25],[17.0,-2.0,0.25,0.25],[47.25,-1.75,0.25,0.25],[48.75,-1.75,0.25,0.25],[50.25,-1.75,0.25,0.25],[51.75,-1.75,0.25,0.25],[53.25,-1.75,0.25,0.25],[54.75,-1.75,0.25,0.25],[82.75,-1.75,0.25,0.25],[84.0,-1.75,0.25,0.25],[85.0,-1.75,0.25,0.25],[86.0,-1.75,0.25,0.25],[87.0,-1.75,0.25,0.25],[88.0,-1.75,0.25,0.25],[94.5,-1.75,0.25,0.25],[95.5,-1.75,0.25,0.25],[96.75,-1.75,0.25,0.25],[97.75,-1.75,0.25,0.25],[98.75,-1.75,0.25,0.25]],"Platforms":[[-9.0,-7.0,210.0,1.0],[-9.0,-6.0,132.0,1.0],[156.0,-6.0,45.0,1.0],[-9.0,-5.0,102.0,1.0],[95.0,-5.0,6.0,1.0],[103.0,-5.0,20.0,1.0],[125.0,-5.0,13.0,1.0],[140.0,-5.0,4.0,1.0],[146.0,-5.0,8.0,1.0],[156.0,-5.0,45.0,1.0],[-9.0,-4.0,1.0,1.0],[35.0,-4.0,5.0,1.0],[69.0,-4.0,6.0,1.0],[116.0,-4.0,5.0,1.0],[156.0,-4.0,5.0,1.0],[198.0,-4.0,3.0,1.0],[-9.0,-3.0,1.0,1.0],[35.0,-3.0,5.0,1.0],[69.0,-3.0,6.0,1.0],[116.0,-3.0,5.0,1.0],[156.0,-3.0,5.0,1.0],[198.0,-3.0,3.0,1.0],[-9.0,-2.0,1.0,1.0],[35.0,-2.0,5.0,1.0],[69.0,-2.0,6.0,1.0],[116.0,-2.0,5.0,1.0],[156.0,-2.0,5.0,1.0],[198.0,-2.0,3.0,1.0],[-9.0,-1.0,1.0,1.0],[35.0,-1.0,5.0,1.0],[69.0,-1.0,6.0,1.0],[116.0,-1.0,5.0,1.0],[156.0,-1.0,5.0,1.0],[198.0,-1.0,3.0,1.0],[-9.0,0.0,1.0,1.0],[35.0,0.0,5.0,1.0],[69.0,0.0,6.0,1.0],[116.0,0.0,5.0,1.0],[136.0,0.0,25.0,1.0],[198.0,0.0,3.0,1.0],[-9.0,1.0,1.0,1.0],[198.0,1.0,3.0,1.0],[-9.0,2.0,1.0,1.0],[136.0,2.0,25.0,1.0],[198.0,2.0,3.0,1.0],[-9.0,3.0,210.0,1.0],[-9.0,4.0,210.0,1.0]],"Objects":[[-6.0,-4.09,3.0,1.5],[190.5,-4.09,3.0,1.5],[-6.0,-2.59,3.0,1.5],[190.5,-2.59,3.0,1.5],[3.0,0.41,1.5,1.5],[13.5,0.41,1.5,1.5],[28.5,0.41,1.5,1.5],[46.5,0.41,1.5,1.5],[54.0,0.41,1.5,1.5],[61.5,0.41,1.5,1.5],[79.5,0.41,1.5,1.5],[91.5,0.41,1.5,1.5],[103.5,0.41,1.5,1.5],[112.5,0.41,1.5,1.5],[127.5,0.41,1.5,1.5],[166.5,0.41,1.5,1.5],[177.0,0.41,1.5,1.5],[186.0,0.41,1.5,1.5],[195.0,0.41,1.5,1.5]],"Background":[[123.0,-6.0,33.0,1.0],[93.0,-5.0,2.0,1.0],[101.0,-5.0,2.0,1.0],[123.0,-5.0,2.0,1.0],[138.0,-5.0,2.0,1.0],[144.0,-5.0,2.0,1.0],[154.0,-5.0,2.0,1.0],[-8.0,-4.0,206.0,1.0],[-8.0,-3.0,206.0,1.0],[-8.0,-2.0,206.0,1.0],[-8.0,-1.0,206.0,1.0],[-8.0,0.0,206.0,1.0],[-8.0,1.0,206.0,1.0],[-8.0,2.0,206.0,1.0]],"Climbing Rack":[[112.5,-2.0,3.5,0.25],[10.75,-1.75,6.75,0.25],[27.5,-1.75,4.0,0.25],[128.25,-1.75,4.0,0.25],[161.0,-1.75,3.5,0.25],[169.5,-1.75,5.0,0.25],[52.0,-1.5,3.5,0.25],[59.5,-1.5,4.0,0.25],[67.0,-1.5,2.0,0.25]]},"guards":[{"x":6.811,"y":-2.78,"origin":6.95,"dist":3.0,"wait":3.0,"moves":false,"left":false,"face":1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":20.781,"y":-2.78,"origin":20.64,"dist":3.0,"wait":3.0,"moves":false,"left":false,"face":-1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":24.221,"y":-2.78,"origin":24.35,"dist":3.0,"wait":3.0,"moves":false,"left":false,"face":1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":48.531,"y":-2.78,"origin":48.64,"dist":1.0,"wait":3.0,"moves":false,"left":false,"face":1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":57.347,"y":-2.78,"origin":57.46,"dist":6.0,"wait":3.0,"moves":true,"left":false,"face":1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":64.921,"y":-2.78,"origin":65.04,"dist":1.0,"wait":3.0,"moves":false,"left":false,"face":-1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":87.751,"y":-2.78,"origin":88.93,"dist":1.0,"wait":3.0,"moves":false,"left":false,"face":-1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":97.121,"y":-2.78,"origin":95.15,"dist":1.0,"wait":3.0,"moves":false,"left":false,"face":-1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":105.811,"y":-2.78,"origin":101.94,"dist":1.0,"wait":3.0,"moves":false,"left":false,"face":-1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":130.021,"y":-2.78,"origin":129.91,"dist":1.0,"wait":3.0,"moves":false,"left":false,"face":-1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":134.701,"y":-2.78,"origin":134.57,"dist":1.3,"wait":3.0,"moves":true,"left":false,"face":-1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":142.121,"y":-2.78,"origin":141.99,"dist":1.3,"wait":3.0,"moves":true,"left":false,"face":-1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":147.971,"y":-2.78,"origin":147.77,"dist":1.2,"wait":3.0,"moves":true,"left":false,"face":-1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":152.278,"y":-2.78,"origin":152.21,"dist":1.2,"wait":3.0,"moves":true,"left":false,"face":-1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":170.488,"y":-2.78,"origin":170.32,"dist":6.0,"wait":3.0,"moves":true,"left":true,"face":-1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":173.518,"y":-2.78,"origin":173.34,"dist":6.0,"wait":3.0,"moves":true,"left":true,"face":-1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":180.498,"y":-2.78,"origin":180.35,"dist":6.0,"wait":3.0,"moves":true,"left":false,"face":-1,"range":5.0,"top":-2.483,"bottom":-3.788},{"x":183.248,"y":-2.78,"origin":183.1,"dist":6.0,"wait":3.0,"moves":true,"left":false,"face":-1,"range":5.0,"top":-2.483,"bottom":-3.788}],"barrels":[[130.939,-4.006,0.891,0.995],[149.669,-4.006,0.891,0.995],[130.939,-3.012,0.891,1.069],[85.249,-4.006,0.891,0.995]],"crates":[[83.838,-4.08,1.159,2.013],[95.348,-4.08,1.159,2.013],[147.498,-4.08,1.159,2.013],[151.658,-4.1,1.159,2.013],[89.078,-4.08,1.159,2.013]],"saves":[{"id":"2","box":[-5.446,-4.253,5.125,7.163]},{"id":"2.1","box":[38.804,-4.253,5.125,7.163]},{"id":"2.2","box":[73.834,-4.253,5.125,7.163]},{"id":"2.3","box":[119.344,-4.253,5.125,7.163]},{"id":"2.4","box":[159.584,-4.253,5.125,7.163]}],"crouch":[[125,-6,13,1],[140,-6,4,1],[146,-6,8,1],[136,1,25,1]],"stoppers":[[100.859,-4.23,2.285,1.0],[143.879,-4.23,2.243,1.0],[124.18,-4.23,1.0,1.0],[92.82,-4.23,2.341,1.0],[137.871,-4.23,2.243,1.0],[153.929,-4.23,2.243,1.0]],"chandeliers":[[18.88,0.218,2.279,0.471],[97.02,0.218,2.279,0.471],[133.64,0.47,2.279,0.471],[32.39,0.218,2.279,0.471],[85.18,0.218,2.279,0.471],[56.58,0.218,2.279,0.471],[64.17,0.218,2.279,0.471]],"torches":[],"crouchTriggers":[[22.074,-0.316,5.802,1.565],[198.002,-6.236,5.996,1.565]],"door":{"box":[191.792,-4.114,0.385,2.763],"to":"EndScreen"},"player":[-4.5,-3.02]}};
+</script>
+<script>
+(() => {
+const NOISE_RADIUS = 10, SPEED = 2, RAYS = 6;
+const INTRO = {
+  level1: "Teaches the stealth basics in order: move, jump, crouch, stay out of sight, then throw apples to pull guards off their routes. Barrels are the cover system.",
+  level2: "Hands the player a knife and changes the rules: a guard who sees a body ends the attempt, so every kill is also a decision about where the body falls."
+};
+const LAYERS = [
+  ["sight", "Sightlines", "--sight"],
+  ["patrol", "Patrol routes", "--ink"],
+  ["cover", "Cover", "--wood"],
+  ["apples", "Apple crates", "--apple"],
+  ["saves", "Checkpoints", "--save"],
+  ["crouch", "Crouch passages", "--crouch"],
+  ["stoppers", "Guard stoppers", "--stopper"],
+];
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $ = (id) => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const el = (tag, attrs = {}, parent) => {
+  const n = document.createElementNS(NS, tag);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(n);
+  return n;
+};
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmt = (n, d = 1) => Number(n).toFixed(d).replace(/\.0$/, "");
+
+let state = {
+  level: "level1",
+  scale: innerWidth < 600 ? 14 : 22,
+  playing: !reduceMotion,
+  throwing: false,
+  layers: Object.fromEntries(LAYERS.map(([k]) => [k, true])),
+  selected: null,
+};
+try { const s = JSON.parse(localStorage.getItem("ks-map") || "{}"); if (s.layers) Object.assign(state.layers, s.layers); if (s.scale) state.scale = s.scale; } catch (e) {}
+const save = () => { try { localStorage.setItem("ks-map", JSON.stringify({ layers: state.layers, scale: state.scale })); } catch (e) {} };
+
+let L, bounds, solids, guards, sections, rings = [];
+
+function prepare(key) {
+  L = LEVELS[key];
+  const P = L.tiles["Platforms"];
+  const minX = Math.min(...P.map((r) => r[0])) - 1, maxX = Math.max(...P.map((r) => r[0] + r[2])) + 1;
+  const minY = Math.min(...P.map((r) => r[1])), maxY = Math.max(...P.map((r) => r[1] + r[3])) + 1.6;
+  bounds = { minX, maxX, minY, maxY, w: maxX - minX, h: maxY - minY };
+  solids = P.map(([x, y, w, h]) => ({ x, y, w, h }))
+    .concat(L.barrels.map(([x, y, w, h]) => ({ x, y, w, h, barrel: true })))
+    .concat(L.chandeliers.map(([x, y, w, h]) => ({ x, y, w, h })));
+  const blockers = solids.concat(L.stoppers.map(([x, y, w, h]) => ({ x, y, w, h })));
+  guards = L.guards.map((g, i) => ({
+    ...g, i, blockers,
+    cx: g.x, dir: g.left ? -1 : 1, facing: g.moves ? (g.left ? -1 : 1) : g.face,
+    mode: "patrol", timer: 0, stuck: 0, target: null, alert: 0,
+  }));
+  // sections between checkpoints
+  const marks = [{ x: L.player[0], name: "Start" }].concat(L.saves.map((s) => ({ x: s.box[0] + s.box[2] / 2, name: "CP " + s.id })));
+  marks.push({ x: L.door.box[0], name: "Exit" });
+  sections = [];
+  for (let i = 0; i < marks.length - 1; i++) {
+    const a = marks[i].x, b = marks[i + 1].x;
+    const inside = (x) => x >= a && x < b;
+    const gs = L.guards.filter((g) => inside(g.origin));
+    const tags = [];
+    if (L.crouch.some((c) => inside(c[0] + c[2] / 2))) tags.push("Crouch passage");
+    if (L.tiles["Climbing Rack"].some((r) => inside(r[0] + r[2] / 2))) tags.push("Climb route");
+    if (L.barrels.some((c) => inside(c[0]))) tags.push("Cover");
+    if (L.crates.some((c) => inside(c[0]))) tags.push("Apples");
+    if (L.chandeliers.some((c) => inside(c[0] + c[2] / 2))) tags.push("Chandeliers");
+    if (L.stoppers.some((c) => inside(c[0]))) tags.push("Guard stoppers");
+    sections.push({ from: marks[i].name, to: marks[i + 1].name, a, b, len: b - a,
+      patrol: gs.filter((g) => g.moves).length, still: gs.filter((g) => !g.moves).length,
+      cover: L.barrels.filter((c) => inside(c[0])).length, apples: L.crates.filter((c) => inside(c[0])).length, tags });
+  }
+}
+
+// ---------- drawing helpers (world y up -> svg y down) ----------
+const Y = (y) => -y;
+function rect(parent, x, y, w, h, attrs) { return el("rect", { x, y: Y(y + h), width: w, height: h, ...attrs }, parent); }
+
+function raycast(x0, y, dir, range) {
+  let best = range;
+  for (const s of solids) {
+    if (y < s.y || y > s.y + s.h) continue;
+    let d;
+    if (x0 >= s.x && x0 <= s.x + s.w) d = 0;
+    else d = dir > 0 ? s.x - x0 : x0 - (s.x + s.w);
+    if (d >= 0 && d < best) best = d;
+  }
+  return best;
+}
+
+function sightPoints(g) {
+  const ox = g.cx + 0.15 * g.facing, top = g.top + (g.cy0 ?? 0), bottom = g.bottom;
+  const near = [], far = [];
+  for (let i = 0; i < RAYS; i++) {
+    const y = bottom + (top - bottom) * (i / (RAYS - 1));
+    const d = raycast(ox, y, g.facing, g.range);
+    near.push([ox, y]); far.push([ox + g.facing * d, y]);
+  }
+  return near.concat(far.reverse()).map(([x, y]) => `${x.toFixed(2)},${Y(y).toFixed(2)}`).join(" ");
+}
+
+let svg, layerGroups, guardEls, ringLayer;
+
+function drawMap() {
+  svg = $("map");
+  svg.innerHTML = "";
+  const s = state.scale, fs = 11 / s;
+  svg.setAttribute("viewBox", `${bounds.minX} ${Y(bounds.maxY)} ${bounds.w} ${bounds.h}`);
+  svg.setAttribute("width", Math.round(bounds.w * s));
+  svg.setAttribute("height", Math.round(bounds.h * s));
+  svg.setAttribute("aria-label", `Side view of ${state.level === "level1" ? "Level 1" : "Level 2"}, ${Math.round(bounds.w)} units long`);
+
+  const defs = el("defs", {}, svg);
+  const pat = el("pattern", { id: "tiles", width: 1, height: 1, patternUnits: "userSpaceOnUse" }, defs);
+  el("rect", { width: 1, height: 1, fill: css("--stone") }, pat);
+  el("path", { d: "M0 0H1M0 0V1", stroke: css("--stone-line"), "stroke-width": 0.04, fill: "none" }, pat);
+  const hatch = el("pattern", { id: "hatch", width: 0.5, height: 0.5, patternUnits: "userSpaceOnUse", patternTransform: "rotate(45)" }, defs);
+  el("line", { x1: 0, y1: 0, x2: 0, y2: 0.5, stroke: css("--crouch"), "stroke-width": 0.12 }, hatch);
+
+  const g = (name) => el("g", { "data-layer": name }, svg);
+  layerGroups = {};
+
+  // back wall + terrain
+  const back = g("base");
+  for (const [x, y, w, h] of L.tiles["Background"]) rect(back, x, y, w, h, { fill: css("--backwall") });
+
+  layerGroups.crouch = g("crouch");
+  for (const [x, y, w, h] of L.crouch) {
+    rect(layerGroups.crouch, x, y, w, h, { fill: "url(#hatch)", opacity: 0.55 });
+    rect(layerGroups.crouch, x, y, w, h, { fill: "none", stroke: css("--crouch"), "stroke-width": 0.06 });
+    if (w * s > 80) el("text", { x: x + w / 2, y: Y(y + h / 2), "font-size": fs, "text-anchor": "middle", "dominant-baseline": "central", class: "lbl", style: "fill:var(--crouch);font-weight:500" }, layerGroups.crouch).textContent = "crouch only";
+  }
+
+  const terrain = g("terrain");
+  for (const [x, y, w, h] of L.tiles["Platforms"]) rect(terrain, x, y, w, h, { fill: "url(#tiles)" });
+  for (const [x, y, w, h] of L.tiles["Rack Support"]) rect(terrain, x, y - 0.6, w, 0.6 + h, { fill: css("--wood"), opacity: 0.7 });
+  for (const [x, y, w, h] of L.tiles["Climbing Rack"]) rect(terrain, x, y, w, h, { fill: css("--wood"), rx: 0.05 });
+
+  layerGroups.stoppers = g("stoppers");
+  for (const [x, y, w, h] of L.stoppers) {
+    rect(layerGroups.stoppers, x, y, w, h, { fill: "none", stroke: css("--stopper"), "stroke-width": 0.07, "stroke-dasharray": "0.15 0.1" });
+  }
+
+  layerGroups.saves = g("saves");
+  L.saves.forEach((sv) => {
+    const x = sv.box[0] + sv.box[2] / 2;
+    el("line", { x1: x, x2: x, y1: Y(bounds.maxY - 0.9), y2: Y(bounds.minY + 2), stroke: css("--save"), "stroke-width": 0.06, "stroke-dasharray": "0.3 0.2" }, layerGroups.saves);
+    el("path", { d: `M${x} ${Y(bounds.maxY - 0.25)}v0.9l0.9 -0.3z`, fill: css("--save") }, layerGroups.saves);
+    el("text", { x: x + 1.05, y: Y(bounds.maxY - 0.62), "font-size": fs, class: "lbl", fill: css("--save") }, layerGroups.saves).textContent = sv.id;
+  });
+  // start + exit
+  const ends = g("base");
+  const [px, py] = L.player;
+  el("circle", { cx: px, cy: Y(py - 0.75), r: 0.35, fill: css("--save") }, ends);
+  el("text", { x: px, y: Y(py - 0.1), "font-size": fs, "text-anchor": "middle", class: "lbl" }, ends).textContent = "start";
+  const d = L.door.box;
+  rect(ends, d[0] - 0.4, d[1], 1.2, d[3], { fill: "none", stroke: css("--ink"), "stroke-width": 0.08, rx: 0.5 });
+  el("text", { x: d[0] + 0.2, y: Y(d[1] + d[3] + 0.4), "font-size": fs, "text-anchor": "middle", class: "lbl" }, ends).textContent = "exit → " + L.door.to.replace("EndScreen", "the king");
+
+  // chandeliers: hanging platforms the player can stand on
+  for (const [x, y, w, h] of L.chandeliers) {
+    const cx = x + w / 2, top = y + h;
+    const ceiling = Math.min(...L.tiles["Platforms"].filter((r) => r[1] >= top && cx >= r[0] && cx <= r[0] + r[2]).map((r) => r[1]), bounds.maxY - 1.6);
+    el("line", { x1: cx, x2: cx, y1: Y(ceiling), y2: Y(top + 0.45), stroke: css("--stone-line"), "stroke-width": 0.07, "stroke-dasharray": "0.12 0.08" }, terrain);
+    for (const dx of [-0.75, 0, 0.75]) {
+      el("rect", { x: cx + dx - 0.06, y: Y(top + 0.32), width: 0.12, height: 0.32, fill: css("--surface") }, terrain);
+      el("circle", { cx: cx + dx, cy: Y(top + 0.42), r: 0.08, fill: css("--sight") }, terrain);
+    }
+    rect(terrain, x, y, w, h, { fill: css("--sight"), rx: 0.12, stroke: css("--wood"), "stroke-width": 0.06 });
+  }
+
+  layerGroups.cover = g("cover");
+  L.barrels.forEach(([x, y, w, h]) => {
+    rect(layerGroups.cover, x, y, w, h, { fill: css("--wood"), rx: 0.18 });
+    el("line", { x1: x, x2: x + w, y1: Y(y + h * 0.3), y2: Y(y + h * 0.3), stroke: css("--map"), "stroke-width": 0.05 }, layerGroups.cover);
+    el("line", { x1: x, x2: x + w, y1: Y(y + h * 0.7), y2: Y(y + h * 0.7), stroke: css("--map"), "stroke-width": 0.05 }, layerGroups.cover);
+  });
+
+  layerGroups.apples = g("apples");
+  L.crates.forEach(([x, y, w, h]) => {
+    rect(layerGroups.apples, x - 0.1, y, w + 0.2, h * 0.7, { fill: "none", stroke: css("--wood"), "stroke-width": 0.08 });
+    for (const dx of [0.2, 0.5]) el("circle", { cx: x + w * dx + 0.1, cy: Y(y + h * 0.78), r: 0.17, fill: css("--apple") }, layerGroups.apples);
+  });
+
+  layerGroups.patrol = g("patrol");
+  layerGroups.sight = g("sight");
+  ringLayer = el("g", {}, svg);
+  const guardLayer = el("g", {}, svg);
+  guardEls = guards.map((gd) => {
+    const pg = layerGroups.patrol;
+    // patrol range drawn on the floor surface, label inside the floor so it never collides with racks
+    const yLine = gd.bottom - 0.42;
+    if (gd.moves) {
+      const a = gd.origin - gd.dist, b = gd.origin + gd.dist;
+      el("line", { x1: a, x2: b, y1: Y(yLine), y2: Y(yLine), stroke: css("--sight"), "stroke-width": 0.1 }, pg);
+      for (const x of [a, b]) el("line", { x1: x, x2: x, y1: Y(yLine - 0.22), y2: Y(yLine + 0.22), stroke: css("--sight"), "stroke-width": 0.1 }, pg);
+    }
+    el("text", { x: gd.origin, y: Y(yLine - 0.75), "font-size": fs * 0.9, "text-anchor": "middle", class: "lbl", style: "fill:var(--map)" }, pg).textContent = gd.moves ? `±${fmt(gd.dist)}u · ${fmt(gd.wait)}s` : "posted";
+
+    const sight = el("polygon", { opacity: 0.42 }, layerGroups.sight);
+    const grp = el("g", { class: "guard", tabindex: 0, role: "button", "aria-label": `Guard ${gd.i + 1}, ${gd.moves ? "patrolling" : "posted"}` }, guardLayer);
+    const inner = el("g", {}, grp);
+    const footY = gd.bottom - 0.2, h = (gd.top + 0.2) - footY;
+    el("rect", { class: "body", x: -0.32, y: Y(footY + h * 0.78), width: 0.64, height: h * 0.78, rx: 0.2 }, inner);
+    el("circle", { class: "head", cx: 0, cy: Y(footY + h * 0.9), r: 0.22 }, inner);
+    el("path", { d: `M0.1 ${Y(footY + h * 0.92)}l0.3 0.08l-0.3 0.08z`, fill: css("--sight") }, inner);
+    const status = el("text", { x: 0, y: Y(footY + h + 0.35), "font-size": fs * 1.6, "text-anchor": "middle", "font-weight": 700, fill: css("--suspect") }, grp);
+    el("rect", { x: -0.6, y: Y(footY + h + 0.6), width: 1.2, height: h + 0.6, fill: "transparent" }, grp);
+    grp.addEventListener("click", (e) => { e.stopPropagation(); select(gd.i); });
+    grp.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(gd.i); } });
+    return { grp, inner, sight, status };
+  });
+  applyLayers();
+  renderGuards();
+}
+
+function drawOverview() {
+  const ov = $("overview");
+  ov.innerHTML = "";
+  ov.setAttribute("viewBox", `${bounds.minX} ${Y(bounds.maxY)} ${bounds.w} ${bounds.h}`);
+  ov.setAttribute("preserveAspectRatio", "none");
+  for (const [x, y, w, h] of L.tiles["Platforms"]) rect(ov, x, y, w, h, { fill: css("--stone") });
+  for (const [x, y, w, h] of L.chandeliers) rect(ov, x, y, w, Math.max(h, 0.6), { fill: css("--sight") });
+  for (const [x, y, w, h] of L.crouch) rect(ov, x, y, w, h, { fill: css("--crouch"), opacity: 0.7 });
+  for (const sv of L.saves) { const x = sv.box[0] + sv.box[2] / 2; el("line", { x1: x, x2: x, y1: Y(bounds.maxY), y2: Y(bounds.minY), stroke: css("--save"), "stroke-width": 0.5 }, ov); }
+  for (const g of L.guards) el("rect", { x: g.x - 0.7, y: Y(g.top + 0.4), width: 1.4, height: g.top - g.bottom + 0.6, fill: g.moves ? css("--alert") : css("--ink") }, ov);
+  el("rect", { id: "ovwin", y: Y(bounds.maxY), height: bounds.h, fill: css("--sight"), "fill-opacity": 0.18, stroke: css("--sight"), "stroke-width": 0.6, "vector-effect": "non-scaling-stroke" }, ov);
+  syncWindow();
+}
+
+function syncWindow() {
+  const sc = $("scroller"), win = $("ovwin");
+  if (!win) return;
+  const s = state.scale;
+  win.setAttribute("x", bounds.minX + sc.scrollLeft / s);
+  win.setAttribute("width", Math.min(bounds.w, sc.clientWidth / s));
+}
+
+function applyLayers() {
+  for (const k in layerGroups) layerGroups[k].style.display = state.layers[k] ? "" : "none";
+}
+
+// ---------- simulation (mirrors EnemyMovement) ----------
+function blocked(g, nx) {
+  const half = 0.3;
+  for (const b of g.blockers) {
+    if (b.y + b.h <= g.bottom + 0.12 || b.y >= g.top) continue;
+    if (nx + half > b.x && nx - half < b.x + b.w) return true;
+  }
+  return false;
+}
+function walk(g, dir, dt) {
+  const nx = g.cx + dir * SPEED * dt;
+  g.facing = dir;
+  if (blocked(g, nx)) return false;
+  g.cx = nx;
+  return true;
+}
+function step(dt) {
+  for (const g of guards) {
+    g.alert = Math.max(0, g.alert - dt * 0.4);
+    if (g.mode === "toTarget") {
+      const dx = g.target - g.cx;
+      if (Math.abs(dx) < 0.3) { g.mode = "atTarget"; g.timer = g.wait; continue; }
+      if (!walk(g, Math.sign(dx), dt)) { g.stuck += dt; if (g.stuck >= 0.5) { g.mode = "atTarget"; g.timer = g.wait; } }
+      else g.stuck = 0;
+    } else if (g.mode === "atTarget") {
+      g.timer -= dt;
+      if (g.timer <= 0) g.mode = "return";
+    } else if (g.mode === "return") {
+      const dx = g.origin - g.cx;
+      if (Math.abs(dx) < 0.3) { g.mode = "patrol"; g.dir = Math.sign(dx) || g.dir; g.cx += g.dir * 0.1; continue; }
+      if (!walk(g, Math.sign(dx), dt)) { g.mode = "patrol"; }
+    } else if (g.mode === "wait") {
+      g.timer -= dt;
+      if (g.timer <= 0) g.mode = "patrol";
+    } else if (g.moves) {
+      const left = g.origin - g.dist, right = g.origin + g.dist;
+      walk(g, g.dir, dt);
+      if (g.cx >= right && g.dir === 1) { g.dir = -1; g.mode = "wait"; g.timer = g.wait; }
+      else if (g.cx <= left && g.dir === -1) { g.dir = 1; g.mode = "wait"; g.timer = g.wait; }
+    }
+  }
+  rings = rings.filter((r) => (r.t += dt) < 1.6);
+}
+
+function investigating(g) { return g.mode === "toTarget" || g.mode === "atTarget"; }
+
+function renderGuards() {
+  const sightColor = css("--sight"), suspect = css("--suspect");
+  guards.forEach((g, i) => {
+    const e = guardEls[i];
+    e.grp.setAttribute("transform", `translate(${g.cx.toFixed(3)} 0)`);
+    e.inner.setAttribute("transform", g.facing < 0 ? "scale(-1 1)" : "");
+    e.grp.classList.toggle("sel", state.selected === i);
+    e.sight.setAttribute("points", sightPoints(g));
+    e.sight.setAttribute("fill", investigating(g) ? suspect : sightColor);
+    e.status.textContent = investigating(g) ? "?" : "";
+  });
+  ringLayer.innerHTML = "";
+  for (const r of rings) {
+    const k = Math.min(1, r.t / 0.6);
+    el("circle", { class: "ring", cx: r.x, cy: Y(r.y), r: NOISE_RADIUS * k, fill: css("--apple"), "fill-opacity": 0.08 * (1.6 - r.t), stroke: css("--apple"), "stroke-width": 0.08, "stroke-opacity": Math.max(0, 1 - r.t / 1.6) }, ringLayer);
+    el("circle", { cx: r.x, cy: Y(r.y), r: 0.22, fill: css("--apple") }, ringLayer);
+  }
+}
+
+let last = 0;
+function frame(t) {
+  const dt = Math.min(0.05, (t - last) / 1000 || 0);
+  last = t;
+  if (state.playing) step(dt);
+  renderGuards();
+  if (state.selected !== null && Math.floor(t / 250) !== Math.floor((t - dt * 1000) / 250)) renderPanel();
+  requestAnimationFrame(frame);
+}
+
+// ---------- UI ----------
+function renderStats() {
+  const len = L.door.box[0] - L.player[0];
+  const patrol = L.guards.filter((g) => g.moves).length;
+  const cps = L.saves.length;
+  const items = [
+    [fmt(len, 0) + "u", "Start to exit"],
+    [L.guards.length, "Guards"],
+    [`${patrol} / ${L.guards.length - patrol}`, "Patrol / posted"],
+    [L.barrels.length, "Barrels (cover)"],
+    [L.crates.length, "Apple crates"],
+    [cps, "Checkpoints"],
+    [fmt(len / (cps + 1), 0) + "u", "Avg. replay stretch"],
+  ];
+  $("stats").innerHTML = items.map(([v, k]) => `<div class="stat"><b>${v}</b><span>${k}</span></div>`).join("");
+  $("lede").textContent = INTRO[state.level];
+}
+
+function renderSections() {
+  const max = Math.max(...sections.map((s) => s.patrol + s.still), 1);
+  $("sections").innerHTML = `<thead><tr><th>Section</th><th>Length</th><th>Guards</th><th>Cover</th><th>Apples</th><th>Features</th></tr></thead><tbody>` +
+    sections.map((s, i) => `<tr data-i="${i}" tabindex="0"><td class="sec">${s.from} → ${s.to}</td><td class="num">${fmt(s.len, 0)}u</td>` +
+      `<td class="num">${s.patrol + s.still}<span class="bar" style="width:${((s.patrol + s.still) / max) * 48}px"></span>${s.still ? ` <span style="color:var(--muted)">(${s.still} posted)</span>` : ""}</td>` +
+      `<td class="num">${s.cover}</td><td class="num">${s.apples}</td><td><div class="tags">${s.tags.map((t) => `<span class="tag">${t}</span>`).join("")}</div></td></tr>`).join("") + "</tbody>";
+  $("sections").querySelectorAll("tbody tr").forEach((tr) => {
+    const go = () => {
+      const s = sections[+tr.dataset.i];
+      $("sections").querySelectorAll("tr.on").forEach((r) => r.classList.remove("on"));
+      tr.classList.add("on");
+      scrollToX(s.a - 2, true);
+    };
+    tr.addEventListener("click", go);
+    tr.addEventListener("keydown", (e) => { if (e.key === "Enter") go(); });
+  });
+}
+
+function legendHTML() {
+  const sw = (inner) => `<svg width="28" height="16" viewBox="0 0 28 16" aria-hidden="true">${inner}</svg>`;
+  return `<ul class="legend">
+    <li>${sw(`<polygon points="4,4 26,4 26,12 4,12" fill="var(--sight)" opacity=".45"/>`)}Guard sight, 5 u, stopped by walls and barrels</li>
+    <li>${sw(`<line x1="3" x2="25" y1="8" y2="8" stroke="var(--ink)" stroke-width="1.5"/><line x1="3" x2="3" y1="4" y2="12" stroke="var(--ink)" stroke-width="1.5"/><line x1="25" x2="25" y1="4" y2="12" stroke="var(--ink)" stroke-width="1.5"/>`)}Patrol range and pause at each end</li>
+    <li>${sw(`<rect x="8" y="2" width="12" height="12" rx="3" fill="var(--wood)"/>`)}Barrel: crouch behind it to block the low ray</li>
+    <li>${sw(`<circle cx="11" cy="8" r="3.5" fill="var(--apple)"/><circle cx="18" cy="8" r="3.5" fill="var(--apple)"/>`)}Apple crate: guards within 10 u investigate a throw</li>
+    <li>${sw(`<line x1="8" x2="8" y1="1" y2="15" stroke="var(--save)" stroke-width="1.5" stroke-dasharray="3 2"/><path d="M8 1v6l7-2z" fill="var(--save)"/>`)}Checkpoint</li>
+    <li>${sw(`<rect x="2" y="3" width="24" height="10" fill="none" stroke="var(--crouch)" stroke-width="1.5"/>`)}Crouch passage: ceiling one tile high, too low to stand</li>
+    <li>${sw(`<rect x="4" y="7" width="20" height="3" fill="var(--wood)"/>`)}Climbing rack, reached by ledge grabs</li>
+    <li>${sw(`<line x1="14" x2="14" y1="0" y2="8" stroke="var(--stone-line)" stroke-width="1.2" stroke-dasharray="2 1.5"/><rect x="4" y="9" width="20" height="4" rx="1.5" fill="var(--sight)" stroke="var(--wood)"/>`)}Chandelier: a hanging platform the player can stand on</li>
+    <li>${sw(`<rect x="8" y="3" width="12" height="10" fill="none" stroke="var(--stopper)" stroke-width="1.5" stroke-dasharray="3 2"/>`)}Guard stopper: invisible wall guards can't walk through</li>
+  </ul>`;
+}
+
+function renderPanel() {
+  const p = $("panel");
+  if (state.selected === null) {
+    p.innerHTML = `<h2>Legend</h2>${legendHTML()}`;
+    return;
+  }
+  const g = guards[state.selected];
+  const sec = sections.find((s) => g.origin >= s.a && g.origin < s.b);
+  const label = investigating(g) ? ["Investigating", "var(--suspect)"] : g.mode === "return" ? ["Returning to post", "var(--muted)"] : g.mode === "wait" ? ["Pausing", "var(--muted)"] : g.moves ? ["Patrolling", "var(--save)"] : ["Posted", "var(--muted)"];
+  p.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><h2>Guard ${g.i + 1}</h2><button class="btn" id="closeGuard">Show legend</button></div>
+    <span class="state" style="color:${label[1]}">${label[0]}</span>
+    <dl>
+      <dt>Role</dt><dd>${g.moves ? "Patrols" : "Stands guard"}</dd>
+      ${g.moves ? `<dt>Patrol range</dt><dd>${fmt(g.dist)} u each way (${fmt(g.dist * 2)} u total)</dd><dt>Pause at ends</dt><dd>${fmt(g.wait)} s</dd><dt>Full loop</dt><dd>${fmt((g.dist * 4) / SPEED + g.wait * 2)} s</dd>` : `<dt>Faces</dt><dd>${g.face > 0 ? "right →" : "← left"}</dd>`}
+      <dt>Sight range</dt><dd>${fmt(g.range)} u</dd>
+      <dt>Post</dt><dd>x = ${fmt(g.origin)}</dd>
+      <dt>Section</dt><dd>${sec ? `${sec.from} → ${sec.to}` : "—"}</dd>
+    </dl>
+    <p>${g.moves ? "Time the gap: the guard pauses facing outward at each end of the route before turning back." : "Posted guards never turn on their own. Pull them away with a thrown apple, or get past behind them."}</p>`;
+  $("closeGuard").addEventListener("click", () => { state.selected = null; renderPanel(); });
+}
+
+function select(i) {
+  state.selected = i;
+  renderPanel();
+  if (state.throwing) toggleThrow(false);
+}
+
+function scrollToX(x, smooth) {
+  const sc = $("scroller");
+  sc.scrollTo({ left: Math.max(0, (x - bounds.minX) * state.scale), behavior: smooth && !reduceMotion ? "smooth" : "auto" });
+}
+
+function setZoom(s) {
+  const sc = $("scroller");
+  const centre = bounds.minX + (sc.scrollLeft + sc.clientWidth / 2) / state.scale;
+  state.scale = Math.max(8, Math.min(40, s));
+  $("zoomLabel").textContent = `${state.scale}px / u`;
+  drawMap();
+  sc.scrollLeft = (centre - bounds.minX) * state.scale - sc.clientWidth / 2;
+  syncWindow();
+  save();
+}
+
+function toggleThrow(on) {
+  state.throwing = on;
+  $("throw").setAttribute("aria-pressed", on);
+  $("scroller").classList.toggle("throwing", on);
+  $("hint").textContent = on ? "Click anywhere on the map to drop an apple. Guards within 10 units walk over to look." : "Drag the overview or scroll sideways to move along the level. Click a guard for its stats.";
+}
+
+function throwAt(x, y) {
+  rings.push({ x, y, t: 0 });
+  let n = 0;
+  for (const g of guards) {
+    const gy = (g.top + g.bottom) / 2;
+    if (Math.hypot(g.cx - x, gy - y) <= NOISE_RADIUS) { g.mode = "toTarget"; g.target = x; g.stuck = 0; n++; }
+  }
+  $("live").textContent = n ? `${n} guard${n > 1 ? "s" : ""} heard it` : "No guard in earshot";
+  if (!state.playing) setPlaying(true);
+}
+
+function setPlaying(on) {
+  state.playing = on;
+  $("play").setAttribute("aria-pressed", on);
+  $("play").textContent = on ? "Pause patrols" : "Play patrols";
+}
+
+function loadLevel(key, keepScroll) {
+  state.level = key;
+  state.selected = null;
+  rings = [];
+  document.querySelectorAll(".tab").forEach((t) => t.setAttribute("aria-selected", t.dataset.level === key));
+  prepare(key);
+  renderStats();
+  drawMap();
+  drawOverview();
+  renderSections();
+  renderPanel();
+  $("live").textContent = "";
+  if (!keepScroll) scrollToX(L.player[0] - 3);
+  syncWindow();
+  if (location.hash !== "#" + key) history.replaceState(null, "", "#" + key);
+}
+
+// layer chips
+$("layers").innerHTML = LAYERS.map(([k, name, c]) => `<label class="chip" style="--c:var(${c})"><input type="checkbox" id="layer-${k}" data-k="${k}" ${state.layers[k] ? "checked" : ""}><span class="sw"></span>${name}</label>`).join("");
+$("layers").addEventListener("change", (e) => { state.layers[e.target.dataset.k] = e.target.checked; applyLayers(); save(); });
+
+document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => loadLevel(t.dataset.level)));
+$("play").addEventListener("click", () => setPlaying(!state.playing));
+$("throw").addEventListener("click", () => toggleThrow(!state.throwing));
+$("reset").addEventListener("click", () => loadLevel(state.level, true));
+$("zoomIn").addEventListener("click", () => setZoom(state.scale + 6));
+$("zoomOut").addEventListener("click", () => setZoom(state.scale - 6));
+$("scroller").addEventListener("scroll", syncWindow, { passive: true });
+addEventListener("resize", syncWindow);
+
+$("map").addEventListener("click", (e) => {
+  if (!state.throwing) return;
+  const pt = svg.createSVGPoint();
+  pt.x = e.clientX; pt.y = e.clientY;
+  const w = pt.matrixTransform(svg.getScreenCTM().inverse());
+  throwAt(w.x, -w.y);
+});
+addEventListener("keydown", (e) => { if (e.key === "Escape" && state.throwing) toggleThrow(false); });
+
+// overview drag
+const ov = $("overview");
+const ovMove = (e) => {
+  const r = ov.getBoundingClientRect();
+  const x = bounds.minX + ((e.clientX - r.left) / r.width) * bounds.w;
+  scrollToX(x - $("scroller").clientWidth / state.scale / 2);
+};
+ov.addEventListener("pointerdown", (e) => { ov.setPointerCapture(e.pointerId); ovMove(e); });
+ov.addEventListener("pointermove", (e) => { if (ov.hasPointerCapture(e.pointerId)) ovMove(e); });
+
+// theme changes recolor the SVG
+const mq = matchMedia("(prefers-color-scheme: dark)");
+const redraw = () => { drawMap(); drawOverview(); };
+mq.addEventListener?.("change", redraw);
+new MutationObserver(redraw).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+$("zoomLabel").textContent = `${state.scale}px / u`;
+setPlaying(state.playing);
+loadLevel(location.hash === "#level2" ? "level2" : "level1");
+requestAnimationFrame(frame);
+})();
+</script>
+
+</body>
+</html>
