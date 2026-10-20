@@ -1,4 +1,5 @@
 // Trailer / Play toggle. Trailer is the default; the WebGL build loads only on the first Play click.
+// Trailer and Gameplay tabs are optional: a page can have any mix of them plus the Play tab.
 const tabTrailer = document.getElementById("tab-trailer");
 const tabPlay = document.getElementById("tab-play");
 const panelTrailer = document.getElementById("panel-trailer");
@@ -86,9 +87,9 @@ function watchLoading() {
 // ---- Videos (YouTube, loaded only when their poster is clicked) --------------
 // Two of them: the trailer and the gameplay video. Each is a poster with a play button;
 // the YouTube player is added on click and removed again when the viewer leaves the tab.
-function makeVideo(tab, panel, facadeId, title) {
+function makeVideo(tab, panel, facadeId) {
   const facade = document.getElementById(facadeId);
-  const video = { tab, panel, facade, title, frame: null };
+  const video = { tab, panel, facade, title: facade.dataset.title || "Video", frame: null };
   facade.addEventListener("click", () => loadVideo(video));
   return video;
 }
@@ -120,10 +121,9 @@ function pauseVideo(v) {
   } catch { /* player not ready */ }
 }
 
-const videos = {
-  trailer: makeVideo(tabTrailer, panelTrailer, "trailer-facade", "Orbital Defense 2 trailer"),
-  gameplay: makeVideo(tabGameplay, panelGameplay, "gameplay-facade", "Orbital Defense 2 gameplay"),
-};
+const videos = {};
+if (tabTrailer && panelTrailer) videos.trailer = makeVideo(tabTrailer, panelTrailer, "trailer-facade");
+if (tabGameplay && panelGameplay) videos.gameplay = makeVideo(tabGameplay, panelGameplay, "gameplay-facade");
 
 function show(which) {
   const play = which === "play";
@@ -131,8 +131,9 @@ function show(which) {
   const needsReload = play && !!frame.getAttribute("src") && (!gameLoaded() || gameBroken());
 
   // Tabs and panels: exactly one is open
-  const tabs = { trailer: tabTrailer, gameplay: tabGameplay, play: tabPlay };
-  const panels = { trailer: panelTrailer, gameplay: panelGameplay, play: panelPlay };
+  const present = (o) => Object.fromEntries(Object.entries(o).filter(([, el]) => el));
+  const tabs = present({ trailer: tabTrailer, gameplay: tabGameplay, play: tabPlay });
+  const panels = present({ trailer: panelTrailer, gameplay: panelGameplay, play: panelPlay });
   for (const name of Object.keys(tabs)) {
     tabs[name].classList.toggle("active", name === which);
     tabs[name].setAttribute("aria-selected", String(name === which));
@@ -314,15 +315,13 @@ function onViewChange() {
 }
 if ("IntersectionObserver" in window) {
   const io = new IntersectionObserver(onViewChange, { threshold: [0, 0.2, 0.5] });
-  io.observe(panelPlay);
-  io.observe(panelTrailer);
-  io.observe(panelGameplay);
+  [panelPlay, panelTrailer, panelGameplay].forEach((panel) => panel && io.observe(panel));
 }
 addEventListener("scroll", onViewChange, { passive: true });
 addEventListener("resize", onViewChange);
 
-tabTrailer.addEventListener("click", () => show("trailer"));
-tabGameplay.addEventListener("click", () => show("gameplay"));
+if (tabTrailer) tabTrailer.addEventListener("click", () => show("trailer"));
+if (tabGameplay) tabGameplay.addEventListener("click", () => show("gameplay"));
 tabPlay.addEventListener("click", () => show("play"));
 // Fullscreen the whole game window from this page's own click. This avoids Unity's
 // internal fullscreen code, which doesn't cope well with running inside an iframe.

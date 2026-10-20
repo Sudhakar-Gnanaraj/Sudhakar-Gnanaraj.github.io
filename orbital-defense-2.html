@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=29">
+  <link rel="stylesheet" href="styles.css?v=32">
 </head>
 <body class="game-page">
 
@@ -67,8 +67,8 @@
         <div class="play-tools" id="play-tools" hidden>
           <button class="tab" id="btn-mute" type="button" aria-pressed="false">🔊 Sound on</button>
           <button class="tab" id="btn-fullscreen" type="button">Fullscreen ⤢</button>
-          <a class="itch-badge" href="https://pixel-monkey-96.itch.io/orbital-defense-2" target="_blank" rel="noopener"><img src="assets/itch-badge.png" alt="Available on itch.io" width="130" height="40"></a>
         </div>
+        <a class="itch-badge" href="https://pixel-monkey-96.itch.io/orbital-defense-2" target="_blank" rel="noopener"><img src="assets/itch-badge.png" alt="Available on itch.io" width="130" height="40"></a>
       </div>
 
       <p class="play-note" id="load-note" role="status" hidden>The game takes a short time to load, especially the first time you play. Please wait for the loading bar to finish.</p>
@@ -77,7 +77,7 @@
 
       <div class="screen" id="panel-trailer" role="tabpanel" aria-labelledby="tab-trailer">
         <!-- Click-to-load: the YouTube player is only added when the poster is clicked. -->
-        <button class="video-facade" id="trailer-facade" type="button" data-video-id="HbvNBOBQP4c"
+        <button class="video-facade" id="trailer-facade" type="button" data-video-id="HbvNBOBQP4c" data-title="Orbital Defense 2 trailer"
                 aria-label="Play the trailer" style="background-image:url('assets/orbital-defense-2.webp')">
           <span class="video-play" aria-hidden="true">&#9654;</span>
           <span class="video-label">Watch the trailer</span>
@@ -85,7 +85,7 @@
       </div>
 
       <div class="screen" id="panel-gameplay" role="tabpanel" aria-labelledby="tab-gameplay" hidden>
-        <button class="video-facade" id="gameplay-facade" type="button" data-video-id="Gu-3W8LBw0k"
+        <button class="video-facade" id="gameplay-facade" type="button" data-video-id="Gu-3W8LBw0k" data-title="Orbital Defense 2 gameplay"
                 aria-label="Play the gameplay video" style="background-image:url('assets/orbital-defense-2-card.webp')">
           <span class="video-play" aria-hidden="true">&#9654;</span>
           <span class="video-label">Watch the gameplay</span>
@@ -445,7 +445,7 @@
   <footer class="footer">© <span id="year"></span> Sudhakar Gnanaraj</footer>
 
   <script src="script.js"></script>
-  <script src="game.js?v=20"></script>
+  <script src="game.js?v=21"></script>
   <script src="section-nav.js?v=2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" defer></script>
   <script src="pacing-chart.js?v=3" defer></script>

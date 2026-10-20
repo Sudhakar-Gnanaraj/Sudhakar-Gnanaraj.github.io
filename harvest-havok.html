@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Harvest Havok | Sudhakar Gnanaraj</title>
+  <meta name="description" content="Harvest Havok: a one-button 2D physics game about sorting a chaotic harvest. Game design case study by Sudhakar Gnanaraj.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=35">
+</head>
+<body class="game-page">
+
+  <nav class="nav" aria-label="Main">
+    <a href="index.html">Home</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#contact">Contact</a>
+    <a class="nav-cta" href="index.html#contact">Resume</a>
+  </nav>
+
+  <main class="game">
+
+    <a class="back" href="index.html#projects">← Back to my works</a>
+    <h1 class="game-title">Harvest Havok</h1>
+    <p class="tagline">A one-button physics game about sorting a chaotic harvest.</p>
+
+    <nav class="section-bar" id="section-bar" aria-label="Jump to a section">
+      <a class="chip" href="#overview" data-target="overview" data-also="media cast">Overview</a>
+      <a class="chip" href="#core-loop" data-target="core-loop">Core loop</a>
+      <a class="chip" href="#level-design" data-target="level-design">Level design</a>
+      <a class="chip" href="#playtesting" data-target="playtesting">Playtesting</a>
+      <a class="chip" href="#game-feel" data-target="game-feel">Game feel</a>
+      <a class="chip" href="#technical" data-target="technical">Technical</a>
+      <a class="chip" href="#learned" data-target="learned">What I learned</a>
+    </nav>
+
+    <!-- Overview (left) + Details (right) -->
+    <section class="top" id="overview">
+      <div class="overview">
+        <h2 class="label">Overview</h2>
+        <blockquote class="pitch">Vegetables and rocks tumble off a factory conveyor. Time a single paddle swing to launch the produce into the basket and let the rocks drop away.</blockquote>
+        <p>Harvest Havok is a 2D physics game built around one input. Potatoes, onions and rocks roll off a conveyor belt one at a time. Each object has its own size and mass, and the player taps SPACEBAR to swing a paddle and knock it through the air. A vegetable that lands in the basket scores points. A rock that lands there costs points. Across four levels the basket starts moving, a second basket appears, and the player has to sort potatoes and onions into the right bin.</p>
+        <p>The game started as an exercise in designing with physics. Most of the design work came out of three rounds of playtesting, each of which exposed a problem I had not seen on paper.</p>
+      </div>
+
+      <aside class="details" aria-label="Game details">
+        <h2 class="label">Details</h2>
+        <dl>
+          <div><dt>Genre</dt><dd>2D physics / arcade skill game</dd></div>
+          <div><dt>Engine</dt><dd>Unity 6</dd></div>
+          <div><dt>Language</dt><dd>C#</dd></div>
+          <div><dt>Platform</dt><dd>Web and PC (Windows)</dd></div>
+        </dl>
+        <div class="ai-disclosure">
+          <h3>AI Disclosure</h3>
+          <p>No AI was used in making this game.</p>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Gameplay video / Play -->
+    <section class="media" id="media" aria-label="Gameplay and play">
+      <div class="mobile-warning" id="mobile-warning" role="note" hidden>
+        <strong>Heads up:</strong> this game needs a keyboard (SPACEBAR) and is not optimized for mobile devices. For the best experience, play on a desktop or laptop.
+      </div>
+      <div class="tabs" role="tablist">
+        <button class="tab active" id="tab-gameplay" role="tab" aria-selected="true" aria-controls="panel-gameplay">Gameplay</button>
+        <button class="tab tab-play" id="tab-play" role="tab" aria-selected="false" aria-controls="panel-play"><span aria-hidden="true">▶</span> Play the game</button>
+        <div class="play-tools" id="play-tools" hidden>
+          <button class="tab" id="btn-mute" type="button" aria-pressed="false">🔊 Sound on</button>
+          <button class="tab" id="btn-fullscreen" type="button">Fullscreen ⤢</button>
+        </div>
+        <a class="itch-badge" href="https://pixel-monkey-96.itch.io/harvest-havok" target="_blank" rel="noopener"><img src="assets/itch-badge.png" alt="Available on itch.io" width="130" height="40"></a>
+      </div>
+
+      <p class="play-note" id="load-note" role="status" hidden>The game takes a short time to load, especially the first time you play. When it has loaded, click the game screen once, then press SPACEBAR to swing the paddle.</p>
+
+      <p class="play-note focus-note" id="focus-note" role="status" hidden>⏸ The game is paused. Click on the game screen to resume.</p>
+
+      <div class="screen" id="panel-gameplay" role="tabpanel" aria-labelledby="tab-gameplay">
+        <!-- Click-to-load: the YouTube player is only added when the poster is clicked. -->
+        <button class="video-facade" id="gameplay-facade" type="button" data-video-id="x-7qiaywlF8" data-title="Harvest Havok gameplay"
+                aria-label="Play the gameplay video" style="background-image:url('assets/harvest-havok/hero-gameplay.webp')">
+          <span class="video-play" aria-hidden="true">&#9654;</span>
+          <span class="video-label">Watch the gameplay</span>
+        </button>
+      </div>
+
+      <div class="screen" id="panel-play" role="tabpanel" aria-labelledby="tab-play" hidden>
+        <iframe id="game-frame" title="Harvest Havok (WebGL build)" data-src="games/harvest-havok/index.html?v=2" allow="fullscreen; autoplay" allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <!-- The cast -->
+    <section class="block" id="cast">
+      <h2 class="label">The cast</h2>
+      <div class="art-strip">
+        <figure class="art-tile"><img src="assets/harvest-havok/art-potato.webp" alt="Potato" width="480" height="621" loading="lazy"><figcaption>Potato</figcaption></figure>
+        <figure class="art-tile"><img src="assets/harvest-havok/art-onion.webp" alt="Onion" width="480" height="664" loading="lazy"><figcaption>Onion</figcaption></figure>
+        <figure class="art-tile"><img src="assets/harvest-havok/art-rock.webp" alt="Rock" width="480" height="398" loading="lazy"><figcaption>Rock</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="block" id="core-loop">
+      <h2 class="label">Core loop</h2>
+      <div class="features">
+
+        <figure class="loop" aria-label="Core loop: spawn, fall, hit, land">
+          <ol class="loop-steps">
+            <li class="step event"><h3>1. Spawn</h3><p>A vegetable or rock drops onto the conveyor</p></li>
+            <li class="step event"><h3>2. Fall</h3><p>It rolls off the edge with its own mass and shape</p></li>
+            <li class="step decision"><h3>3. Hit</h3><p>Tap SPACEBAR to swing the paddle</p></li>
+            <li class="step event"><h3>4. Land</h3><p>Vegetable in basket: score up. Rock: score down</p></li>
+          </ol>
+          <div class="loop-return" aria-hidden="true"></div>
+          <figcaption class="loop-caption">Next object: an indicator shows what is coming</figcaption>
+          <ul class="legend">
+            <li><span class="swatch decision"></span>Player decision</li>
+            <li><span class="swatch event"></span>Game event</li>
+          </ul>
+        </figure>
+
+        <div class="score-block">
+          <h3>Scoring</h3>
+          <div class="score-grid">
+            <div class="score good"><strong>+10</strong><span>Right vegetable in the right basket</span></div>
+            <div class="score ok"><strong>+2</strong><span>Vegetable in the wrong basket (partial credit for the hit)</span></div>
+            <div class="score bad"><strong>&minus;10</strong><span>Rock in a basket</span></div>
+            <div class="score timer"><strong>10 s</strong><span>&ldquo;Last Chance&rdquo; countdown once the last vegetable is in play</span></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="block" id="level-design">
+      <h2 class="label">Level design</h2>
+      <div class="leveldesign">
+
+        <article class="ld-block">
+          <h3>Four levels, one new idea each</h3>
+          <div class="table-wrap">
+            <table class="fleet-table cycle-table hh-levels">
+              <thead>
+                <tr><th scope="col">Level</th><th scope="col">Basket</th><th scope="col">What it teaches</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="fleet">Level 1</th><td data-label="Basket">Fixed</td><td class="desc" data-label="What it teaches">Learn the swing. Potatoes only.</td></tr>
+                <tr><th scope="row" class="fleet">Level 2</th><td data-label="Basket">Moving</td><td class="desc" data-label="What it teaches">Read the basket's motion and time the hit.</td></tr>
+                <tr><th scope="row" class="fleet">Level 3</th><td data-label="Basket">Fixed, split</td><td class="desc" data-label="What it teaches">Choose the right vegetable for the right bin.</td></tr>
+                <tr><th scope="row" class="fleet">Level 4</th><td data-label="Basket">Moving, split</td><td class="desc" data-label="What it teaches">All of the above at once.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="ld-block">
+          <h3>The level button shows the rules</h3>
+          <p>I wanted players to know what a level asks of them before they enter it. Each level-select button is a small working conveyor: it spawns the vegetables that level uses, and a basket moves on it if the level has a moving basket.</p>
+          <figure class="shot">
+            <img src="assets/harvest-havok/level-previews.webp" alt="The level select screen, where each level button is a small working conveyor previewing that level" width="960" height="539" loading="lazy">
+            <figcaption>The level select screen: every button previews its own level.</figcaption>
+          </figure>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="block" id="playtesting">
+      <h2 class="label">Designing through playtesting</h2>
+      <div class="pt-list">
+
+        <article class="pt-card">
+          <header><span class="pt-tag">Playtest 1</span><h3>Randomness got in the way of mastery</h3></header>
+          <div class="pt-grid">
+            <div>
+              <h4>Problem</h4>
+              <p>Every potato and onion spawned with a random size and weight, so the same swing gave a different result each time. Players could not get a feel for the paddle.</p>
+              <blockquote>&ldquo;It feels random. I can't tell if I'm getting better.&rdquo;</blockquote>
+            </div>
+            <div>
+              <h4>Fix</h4>
+              <p>Objects now spawn at one of <strong>three preset sizes (small, medium, large), each with a matching mass.</strong> There is still variety, and each size behaves the same way every time.</p>
+            </div>
+          </div>
+          <p class="pt-takeaway"><strong>Takeaway:</strong> In a physics game, too much randomness stops players from improving. Variation should be readable.</p>
+        </article>
+
+        <article class="pt-card">
+          <header><span class="pt-tag">Playtest 2</span><h3>Players couldn't read the arc</h3></header>
+          <div class="pt-grid">
+            <div>
+              <h4>Problem</h4>
+              <p>After an object left the paddle, nothing showed where it had gone. Aiming the next swing was a guess, and most players did not improve between attempts.</p>
+              <blockquote>&ldquo;I have no idea why that one went in and that one didn't.&rdquo;</blockquote>
+            </div>
+            <div>
+              <h4>Fix</h4>
+              <p>Every airborne object now leaves a <strong>color-coded, fading trail</strong> (orange for potatoes, pink for onions, grey for rocks), so players can see the last arc and adjust their next swing.</p>
+            </div>
+          </div>
+          <p class="pt-takeaway"><strong>Takeaway:</strong> A short visual record of the last shot turns the next shot into a decision instead of a guess.</p>
+        </article>
+
+        <article class="pt-card">
+          <header><span class="pt-tag">Playtest 3</span><h3>Unlucky spawns felt unfair</h3></header>
+          <div class="pt-grid">
+            <div>
+              <h4>Problem</h4>
+              <p>The spawner chose vegetables and rocks at random, so sometimes three rocks came in a row. Players blamed the game.</p>
+              <blockquote>&ldquo;It just doesn't give me anything to hit.&rdquo;</blockquote>
+            </div>
+            <div>
+              <h4>Fix</h4>
+              <p>Vegetables now spawn on a <strong>timer that interleaves them with rocks</strong>, so pacing is steady and a level always gives the player something to hit.</p>
+            </div>
+          </div>
+          <p class="pt-takeaway"><strong>Takeaway:</strong> Players judge fairness by pacing, not by probabilities.</p>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="block" id="game-feel">
+      <h2 class="label">Game feel: making hits feel good</h2>
+      <p class="section-lead">Once the mechanic worked, I added feedback on top of it: small, overlapping signals that confirm what the physics already shows.</p>
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>Score popups</h3>
+          <p>&ldquo;+10&rdquo; / &ldquo;&minus;10&rdquo; numbers burst out of the basket with their own physics (random velocity and tilt), so the player sees the score change happen.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Spawn indicator</h3>
+          <p>A preview of the next vegetable gives the player a moment to plan.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Audio feedback</h3>
+          <p>Separate sounds for the paddle swing, a correct catch, a wrong catch, and hard impacts. The impact sound plays only above a speed threshold, with a cooldown so it does not repeat constantly.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Living machinery</h3>
+          <p>The gears on the moving basket turn in the direction the basket is moving and stop when it stops.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="block" id="technical">
+      <h2 class="label">Technical highlights</h2>
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>Object pooling</h3>
+          <p>Vegetables, rocks and the hundreds of trail points are pre-created and reused rather than created and destroyed each time, which keeps frame times steady during busy moments.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Controlled physics variety</h3>
+          <p>One system sets the scale and Rigidbody2D mass together from three size tiers, so how big an object looks always matches how heavily it moves.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Stable tumbling</h3>
+          <p>Each object's angular velocity is capped so it spins in a believable way instead of erratically.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Trail system</h3>
+          <p>Recording starts when an object leaves the paddle and stops when it lands in a basket or hits the conveyor. Each point is tinted by object type and fades out over time.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Paced spawner</h3>
+          <p>A timer schedules vegetables and fills the gaps with rocks. A per-level quota decides the potato/onion split and when the level ends.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Moving goals</h3>
+          <p>The basket moves between two points with a pause at each end, and the gear rotation is tied to that movement.</p>
+        </article>
+        <article class="ux-card ux-wide">
+          <h3>Level flow</h3>
+          <p>A level manager counts vegetables that have been resolved (caught or missed) and triggers the last-chance countdown and the end screen. A persistent score keeper and audio manager (singletons that survive scene loads) carry the score and music across scenes.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="block" id="learned">
+      <h2 class="label">What I learned</h2>
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>On playtesting</h3>
+          <p>Playtesting changed almost every decision I had made on paper. My instincts about difficulty and clarity were wrong more often than right. Watching real players was the only way I found problems I could not see myself.</p>
+        </article>
+        <article class="ux-card">
+          <h3>On game feel</h3>
+          <p>Feedback isn't decoration. The same hit can feel forgettable or great depending on what the game does in the half-second after it. Juice made a mechanic that worked into one that was satisfying to play.</p>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <button class="to-top" id="to-top" type="button" aria-label="Back to top" hidden>↑</button>
+
+  <footer class="footer">© <span id="year"></span> Sudhakar Gnanaraj</footer>
+
+  <script src="script.js"></script>
+  <script src="game.js?v=22"></script>
+  <script src="section-nav.js?v=2"></script>
+</body>
+</html>
