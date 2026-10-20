@@ -81,6 +81,39 @@ function watchLoading() {
   }, 500);
 }
 
+// ---- Trailer (YouTube, loaded only when clicked) -------------------------------
+const trailerFacade = document.getElementById("trailer-facade");
+let trailerFrame = null;
+
+function loadTrailer() {
+  if (trailerFrame) return;
+  const id = trailerFacade.dataset.videoId;
+  trailerFrame = document.createElement("iframe");
+  trailerFrame.src =
+    "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1&rel=0&playsinline=1&enablejsapi=1";
+  trailerFrame.title = "Orbital Defense 2 trailer";
+  trailerFrame.allow = "accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen";
+  trailerFrame.allowFullscreen = true;
+  trailerFacade.hidden = true;
+  panelTrailer.appendChild(trailerFrame);
+}
+
+// Remove the player (which stops its sound) and bring the poster back.
+function resetTrailer() {
+  if (!trailerFrame) return;
+  trailerFrame.remove();
+  trailerFrame = null;
+  trailerFacade.hidden = false;
+}
+
+function pauseTrailer() {
+  try {
+    trailerFrame.contentWindow.postMessage(JSON.stringify({ event: "command", func: "pauseVideo", args: [] }), "*");
+  } catch { /* player not ready */ }
+}
+
+trailerFacade.addEventListener("click", loadTrailer);
+
 function show(which) {
   const play = which === "play";
   // Decide before switching: was the game left half-loaded or broken while hidden?
@@ -108,9 +141,7 @@ function show(which) {
     else syncPause();
     watchLoading();
 
-    // Stop the trailer when switching away by reloading its iframe, if there is one
-    const trailer = panelTrailer.querySelector("iframe");
-    if (trailer) trailer.src = trailer.src;
+    resetTrailer(); // stop the trailer (and its sound) when the game takes over
   }
 }
 
@@ -126,8 +157,8 @@ let gameHook = null; // controls for the game page currently in the frame: { set
 let inView = true; // is the game window on screen (not scrolled away)?
 
 // How much of the game window is on screen right now (0 to 1).
-function visibleFraction() {
-  const r = panelPlay.getBoundingClientRect();
+function visibleFraction(el = panelPlay) {
+  const r = el.getBoundingClientRect();
   if (!r.height) return 0;
   const shown = Math.min(r.bottom, innerHeight) - Math.max(r.top, 0);
   return Math.max(0, shown) / r.height;
@@ -260,6 +291,7 @@ frame.addEventListener("load", () => {
 
 // Pause the game when it is scrolled out of view; resume when it comes back.
 function onViewChange() {
+  if (!panelTrailer.hidden && trailerFrame && visibleFraction(panelTrailer) < 0.2) pauseTrailer();
   if (panelPlay.hidden) return; // the Trailer tab handles pausing on its own
   const nowInView = visibleFraction() >= 0.2;
   if (nowInView === inView) return;
@@ -267,7 +299,9 @@ function onViewChange() {
   syncPause();
 }
 if ("IntersectionObserver" in window) {
-  new IntersectionObserver(onViewChange, { threshold: [0, 0.2, 0.5] }).observe(panelPlay);
+  const io = new IntersectionObserver(onViewChange, { threshold: [0, 0.2, 0.5] });
+  io.observe(panelPlay);
+  io.observe(panelTrailer);
 }
 addEventListener("scroll", onViewChange, { passive: true });
 addEventListener("resize", onViewChange);
