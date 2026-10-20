@@ -818,16 +818,6 @@ body.no-scroll { overflow: hidden; }
 
 /* ---- Harvest Havok page ---------------------------------------------------- */
 .tagline { margin: -18px 0 26px; font-size: 18px; color: var(--muted); }
-.pitch {
-  margin: 0 0 18px;
-  padding: 14px 18px;
-  font-size: 18px;
-  line-height: 1.6;
-  color: #fff;
-  background: color-mix(in srgb, var(--accent) 9%, transparent);
-  border-left: 3px solid var(--accent);
-  border-radius: 4px;
-}
 .hh-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 18px 0 0; padding: 0; list-style: none; }
 .hh-tags li { padding: 4px 11px; font-size: 12px; color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); border-radius: 999px; }
 .section-lead { margin: 0 0 16px; font-size: 17px; line-height: 1.6; color: var(--fg); }
@@ -895,7 +885,6 @@ body.no-scroll { overflow: hidden; }
 }
 @media (max-width: 480px) {
   .tagline { margin-top: -14px; font-size: 16px; }
-  .pitch { font-size: 16px; }
   .art-strip { gap: 10px; }
   .art-tile { padding: 10px 8px; }
   .art-tile img { height: 110px; }
@@ -912,20 +901,6 @@ body.no-scroll { overflow: hidden; }
 .ks-compare thead th:not(:first-child) { width: 41%; }
 .ks-systems .fleet { width: 220px; }
 .ks-systems-panel { margin-top: 16px; }
-
-/* Home card for a game with no screenshot yet: the title set as a poster */
-.thumb-title {
-  background:
-    radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.08), transparent 60%),
-    linear-gradient(160deg, #3a3550, #14121c 80%);
-}
-.thumb-title span {
-  font-family: "Grenze Gotisch", Georgia, serif;
-  font-size: clamp(40px, 6vw, 64px);
-  font-weight: 800;
-  letter-spacing: 0.01em;
-  color: #fff;
-}
 
 @media (max-width: 860px) {
   .ks-compare .fleet, .ks-systems .fleet { width: auto; }
