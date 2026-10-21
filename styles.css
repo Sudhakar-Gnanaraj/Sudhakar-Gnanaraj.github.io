@@ -1054,4 +1054,4 @@ body.no-scroll { overflow: hidden; }
 
 /* Portrait game window (a phone-shaped build such as Paperwala) */
 .screen.screen-portrait { aspect-ratio: 9 / 16; width: auto; height: min(82vh, 860px); max-width: 100%; margin-inline: auto; }
-.screen.screen-portrait.cover-fullscreen, .screen.screen-portrait:fullscreen { width: 100vw; height: 100vh; aspect-ratio: auto; }
+.screen.screen-portrait.cover-fullscreen, .screen.screen-portrait:fullscreen { width: 100vw; height: 100vh; height: 100dvh; max-width: none; aspect-ratio: auto; }

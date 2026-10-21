@@ -300,8 +300,10 @@ frame.addEventListener("load", () => {
       body { display: flex; align-items: center; justify-content: center; }
       #unity-container.unity-desktop { position: static !important; transform: none !important; left: auto !important; top: auto !important; }
       #unity-canvas { display: block; width: min(100vw, ${ratio * 100}vh) !important; height: min(${100 / ratio}vw, 100vh) !important; }
-      #unity-footer { display: none !important; }`;
+      #unity-footer { display: none !important; }
+      html.fill #unity-canvas { width: 100vw !important; height: 100vh !important; }`;
     doc.head.appendChild(style);
+    syncFill();
   } catch {
     /* cross-origin or not loaded: leave the build as exported */
   }
@@ -347,7 +349,17 @@ function setCoverFs(on) {
   document.body.classList.toggle("no-scroll", on);
   fsExit.hidden = !on;
   fsBtn.textContent = on ? "Exit fullscreen ⤡" : fsLabel;
+  syncFill();
 }
+// On phones, fullscreen lets the game fill the whole screen (as it does on itch.io)
+// instead of keeping its exported shape with bars around it.
+function syncFill() {
+  const on = isMobile && (document.fullscreenElement === panelPlay || coverFs);
+  try {
+    frame.contentDocument.documentElement.classList.toggle("fill", on);
+  } catch { /* frame not ready */ }
+}
+document.addEventListener("fullscreenchange", syncFill);
 function exitFs() {
   if (document.fullscreenElement) document.exitFullscreen();
   if (coverFs) setCoverFs(false);
