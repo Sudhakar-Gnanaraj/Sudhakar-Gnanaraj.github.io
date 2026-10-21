@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paperwala | Sudhakar Gnanaraj</title>
+  <meta name="description" content="Paperwala: a one-gesture mobile puzzle about a 6 AM newspaper route, made for the Dainik Bhaskar Game Lab 2026. Game design case study by Sudhakar Gnanaraj.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=73">
+</head>
+<body class="game-page">
+
+  <nav class="nav" aria-label="Main">
+    <a href="index.html">Home</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#contact">Contact</a>
+    <a class="nav-cta" href="index.html#contact">Resume</a>
+  </nav>
+
+  <main class="game">
+
+    <a class="back" href="index.html#projects">← Back to my works</a>
+    <h1 class="game-title">Paperwala</h1>
+    <p class="tagline">A 6 AM paper route. Draw the path, beat the clock, deliver the news.</p>
+
+    <nav class="section-bar" id="section-bar" aria-label="Jump to a section">
+      <a class="chip" href="#overview" data-target="overview" data-also="media">Overview</a>
+      <a class="chip" href="#core-loop" data-target="core-loop">Core loop</a>
+      <a class="chip" href="#mechanics" data-target="mechanics">Mechanics</a>
+      <a class="chip" href="#principles" data-target="principles">Principles</a>
+      <a class="chip" href="#levels" data-target="levels">Levels</a>
+      <a class="chip" href="#game-jam" data-target="game-jam">Game jam</a>
+      <a class="chip" href="#daily" data-target="daily">Beyond the jam</a>
+      <a class="chip" href="#art" data-target="art">Art and language</a>
+    </nav>
+
+    <!-- Overview (left) + Details (right) -->
+    <section class="top" id="overview">
+      <div class="overview">
+        <h2 class="label">Overview</h2>
+        <p>Paperwala puts you on the saddle of a newspaper boy, the <em>akhbaar wala</em> who reaches every doorstep before the day begins. It is 6 AM and the clock runs to 8 AM. Drag your finger along the road to draw a route through every newspaper, release, and watch your cycle ride the route, tossing papers over the fence to each house.</p>
+        <p>The game turns something every Indian household knows, the morning paper arriving on time, into a short, readable puzzle: what is the best route? Each level adds one new real-world obstacle, such as cows, petrol and traffic. I made it for the Dainik Bhaskar Game Lab 2026.</p>
+      </div>
+
+      <aside class="details" aria-label="Game details">
+        <h2 class="label">Details</h2>
+        <dl>
+          <div><dt>Genre</dt><dd>Route-drawing puzzle</dd></div>
+          <div><dt>Engine</dt><dd>Unity</dd></div>
+          <div><dt>Language</dt><dd>C#</dd></div>
+          <div><dt>Platform</dt><dd><span class="plat"><svg class="plat-ico" aria-hidden="true"><use href="assets/platform-icons.svg#web"/></svg>Web</span></dd></div>
+        </dl>
+        <div class="ai-disclosure">
+          <h3>AI Disclosure</h3>
+          <p>This game uses AI-generated art, and AI tools were used to assist with its coding.</p>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Gameplay video / Play on itch.io -->
+    <section class="media" id="media" aria-label="Gameplay and play">
+      <div class="tabs" role="tablist">
+        <button class="tab active" id="tab-gameplay" role="tab" aria-selected="true" aria-controls="panel-gameplay">Gameplay</button>
+        <button class="tab tab-play" id="tab-play" role="tab" aria-selected="false" aria-controls="panel-play"><span aria-hidden="true">▶</span> Play the game</button>
+        <a class="tab tab-apk" href="games/paperwala/paperwala.apk" download="Paperwala.apk"><span aria-hidden="true">&#11015;</span> Download <small>(Android APK)</small></a>
+        <div class="play-tools" id="play-tools" hidden>
+          <button class="tab" id="btn-mute" type="button" aria-pressed="false">🔊 Sound on</button>
+          <button class="tab" id="btn-fullscreen" type="button">Fullscreen ⤢</button>
+        </div>
+        <a class="itch-badge" href="https://pixel-monkey-96.itch.io/paperwala" target="_blank" rel="noopener"><img src="assets/itch-badge.png" alt="Available on itch.io" width="130" height="40"></a>
+      </div>
+      <p class="play-note">The download is an Android APK (about 69 MB) for 64-bit phones, so it won't install on iPhone. Android may ask you to allow installs from your browser.</p>
+
+      <p class="play-note play-only" hidden>It is recommended to play this game on a mobile device.</p>
+
+      <p class="play-note" id="load-note" role="status" hidden>The game takes a short time to load, especially the first time you play. When it has loaded, tap or click the game screen, then drag from the cycle along the road to draw your route.</p>
+
+      <p class="play-note focus-note" id="focus-note" role="status" hidden>⏸ The game is paused. Click on the game screen to resume.</p>
+
+      <div class="screen" id="panel-gameplay" role="tabpanel" aria-labelledby="tab-gameplay">
+        <!-- Click-to-load: the YouTube player is only added when the poster is clicked. -->
+        <button class="video-facade" id="gameplay-facade" type="button" data-video-id="Cdw9RP9ZZsM" data-title="Paperwala gameplay"
+                aria-label="Play the gameplay video" style="background-image:url('https://i.ytimg.com/vi/Cdw9RP9ZZsM/maxresdefault.jpg')">
+          <span class="video-play" aria-hidden="true">&#9654;</span>
+          <span class="video-label">Watch the gameplay</span>
+        </button>
+      </div>
+
+      <div class="screen screen-portrait" id="panel-play" role="tabpanel" aria-labelledby="tab-play" hidden>
+        <iframe id="game-frame" title="Paperwala (WebGL build)" data-src="games/paperwala/index.html?v=1" allow="fullscreen; autoplay" allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <!-- Core loop -->
+    <section class="block" id="core-loop">
+      <h2 class="label">Core loop</h2>
+      <div class="features">
+        <figure class="loop" aria-label="Core loop: look, draw, ride, result">
+          <ol class="loop-steps">
+            <li class="step decision"><h3>1. Look</h3><p>Read the map and find every newspaper</p></li>
+            <li class="step decision"><h3>2. Draw</h3><p>Drag from the cycle along the road, through every newspaper</p></li>
+            <li class="step event"><h3>3. Ride</h3><p>Release, and papers are thrown to the houses as you pass</p></li>
+            <li class="step event"><h3>4. Result</h3><p>Level complete, or a clear failure screen</p></li>
+          </ol>
+          <div class="loop-return" aria-hidden="true"></div>
+          <figcaption class="loop-caption">A failure explains what went wrong, and a single tap retries</figcaption>
+          <ul class="legend">
+            <li><span class="swatch decision"></span>Player decision</li>
+            <li><span class="swatch event"></span>Game event</li>
+          </ul>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Mechanics -->
+    <section class="block" id="mechanics">
+      <h2 class="label">Mechanics</h2>
+      <div class="systems">
+
+        <article class="system gif-right">
+          <div class="system-text">
+            <h3>Drawing the route</h3>
+            <p>The route must stay on the road and pass through every newspaper. Missing one shows &ldquo;Connect all the newspapers first!&rdquo; and lets the player redraw, and drawing off the road shows a warning. Failure is never silent.</p>
+            <p>The in-game clock runs from 6:00 to 8:00 AM while the cycle rides. Its digits turn green, then yellow, then red, and it throbs in the last half hour, so the player feels the urgency without reading numbers. Each newspaper is thrown towards the nearest house as the cycle passes, a small reward at every step.</p>
+          </div>
+          <figure class="media-shot pw-shot"><img src="assets/paperwala/anim-route.webp" alt="Level 1: a route is drawn from the cycle through the newspapers, and the cycle rides it" width="360" height="745" loading="lazy"></figure>
+        </article>
+
+        <article class="system gif-left">
+          <div class="system-text">
+            <h3>Start, stop and cows</h3>
+            <p>While riding, the player can press Stop and then Start. The clock only runs while the cycle moves, so stopping costs no time.</p>
+            <p>Cows come in two types. Ambush cows wait off the road and step onto it as the cycle approaches, so the player must stop before reaching one and wait until it walks off. Patrol cows walk back and forth across the road, pausing mid-road, so the player must time the crossing. Hitting a cow fails the level.</p>
+            <p class="pw-skill"><strong>Skill it adds:</strong> reading the road ahead.</p>
+          </div>
+          <figure class="media-shot pw-shot"><img src="assets/paperwala/anim-cows.webp" alt="A village level where the player presses Stop to let a cow cross the road" width="360" height="745" loading="lazy"></figure>
+        </article>
+
+        <article class="system gif-right">
+          <div class="system-text">
+            <h3>Petrol</h3>
+            <p>In the town the cycle becomes a motorbike with a fuel gauge. A route that is too long runs dry. Petrol pumps on the road stop the bike to refuel for a few seconds, so route length and pump placement become the puzzle.</p>
+            <p class="pw-skill"><strong>Skill it adds:</strong> planning and resource management.</p>
+          </div>
+          <figure class="media-shot pw-shot"><img src="assets/paperwala/anim-fuel.webp" alt="A town level where the motorbike rides its route past a petrol pump as the fuel gauge drops" width="360" height="745" loading="lazy"></figure>
+        </article>
+
+        <article class="system gif-left">
+          <div class="system-text">
+            <h3>Cars</h3>
+            <p>Cars loop around fixed routes. They honk when close, brake for the bike in their lane and wait at crossings. A collision fails the level, so the player uses Stop to let a car pass. Cars always follow the same pattern, so a failed attempt can be learned from and beaten.</p>
+            <p class="pw-skill"><strong>Skill it adds:</strong> pattern recognition and timing.</p>
+          </div>
+          <figure class="media-shot pw-shot"><img src="assets/paperwala/anim-cars.webp" alt="A town level where the motorbike rides its route while a car loops around the block" width="360" height="745" loading="lazy"></figure>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- Design principles -->
+    <section class="block" id="principles">
+      <h2 class="label">Design principles</h2>
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>One new idea per level</h3>
+          <p>The first level that uses a mechanic switches off failure on time and shows a hand that demonstrates the action. The player learns by doing, not by reading.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Everything is deterministic</h3>
+          <p>Patrol cows and cars wait for the ride to start and then repeat the same pattern every attempt, and ambush cows always react the same way. A failure feels like the player's mistake, never luck, and a solution can be shared: &ldquo;the trick is to stop at the second corner&rdquo;.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Show, don't tell</h3>
+          <p>Meaning is carried by picture, colour and sound: green, yellow and red clock digits, a pulsing newspaper icon, a throbbing fuel gauge, a horn before a car arrives, and a moo before a cow steps out.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Forgiving touch input</h3>
+          <p>The drag area extends a little beyond the road tile, so a thick finger on a small, low-end phone can still follow a lane. It works with both touch and mouse.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Fail fast, retry instantly</h3>
+          <p>Each failure (late, cow, fuel, car) has its own picture-led screen with &ldquo;Play again&rdquo; and &ldquo;Level select&rdquo;, so the player always knows why they failed.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Culturally rooted, never stereotyped</h3>
+          <p>A warm, sunlit illustrated look, familiar sounds and a bilingual interface. There is no violence, and even failures are cartoon-friendly.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Level design -->
+    <section class="block" id="levels">
+      <h2 class="label">Level design</h2>
+      <p class="section-lead">The prototype has twelve hand-built levels in two worlds. Each new mechanic appears in a quiet teaching level, is repeated in a practice level, and is then combined with earlier mechanics in a test level. That Teach, Practice, Test cycle repeats three times (basic route, cows, then fuel and cars), so a player who stalls always has an easier level just behind them.</p>
+      <div class="leveldesign">
+
+        <article class="ld-block">
+          <h3>Two worlds</h3>
+          <div class="table-wrap">
+            <table class="fleet-table cycle-table pw-worlds">
+              <thead>
+                <tr><th scope="col">World</th><th scope="col">Levels</th><th scope="col">Focus</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="fleet">Village</th>
+                  <td data-label="Levels">1 &ndash; 6</td>
+                  <td class="desc" data-label="Focus">Route drawing, time pressure and cows. Village lanes, trees, bushes and houses, with village music and a cycle bell.</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Town</th>
+                  <td data-label="Levels">7 &ndash; 12</td>
+                  <td class="desc" data-label="Focus">A faster motorbike with an engine sound, petrol, then cars. A short story cutscene introduces the change of setting before Level 7.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="ld-block">
+          <h3>Level by level</h3>
+          <div class="table-wrap">
+            <table class="fleet-table cycle-table pw-levels">
+              <thead>
+                <tr><th scope="col">Level</th><th scope="col">Role</th><th scope="col">What it asks of the player</th><th scope="col">Challenge</th><th scope="col">Time</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="fleet">1</th><td data-label="Role">Teach</td><td class="desc" data-label="What it asks">Draw a single route through all the newspapers; a tutorial hand shows how. Running out of time cannot fail the level, so a first-time player is never punished.</td><td data-label="Challenge">Draw a path</td><td data-label="Time">15 s (no time fail)</td></tr>
+                <tr><th scope="row" class="fleet">2</th><td data-label="Role">Practice</td><td class="desc" data-label="What it asks">The same loop, but the clock can now end the ride, and the time budget is slightly tighter.</td><td data-label="Challenge">Efficiency</td><td data-label="Time">14 s</td></tr>
+                <tr><th scope="row" class="fleet">3</th><td data-label="Role">Practice</td><td class="desc" data-label="What it asks">A bigger map with a more generous time budget, rewarding planning before the drag.</td><td data-label="Challenge">Planning</td><td data-label="Time">17.5 s</td></tr>
+                <tr><th scope="row" class="fleet">4</th><td data-label="Role">Teach</td><td class="desc" data-label="What it asks">The first cow, an ambush cow. A guided Start/Stop tutorial teaches the player to stop and let it pass. Running out of time cannot fail the level, but hitting the cow still does.</td><td data-label="Challenge">Stop / Start</td><td data-label="Time">40 s (no time fail)</td></tr>
+                <tr><th scope="row" class="fleet">5</th><td data-label="Role">Practice</td><td class="desc" data-label="What it asks">Two cows on the route; the player must choose when to stop and when to push on.</td><td data-label="Challenge">Timing</td><td data-label="Time">27.5 s</td></tr>
+                <tr><th scope="row" class="fleet">6</th><td data-label="Role">Test</td><td class="desc" data-label="What it asks">Three cows, the longest village level. Path planning, time and stopping all combine.</td><td data-label="Challenge">Multi-hazard</td><td data-label="Time">41 s</td></tr>
+                <tr><th scope="row" class="fleet">7</th><td data-label="Role">Teach</td><td class="desc" data-label="What it asks">The town: a faster motorbike with a fuel gauge, and petrol pumps on the road. The player learns to route through a pump. It starts with about 45% fuel to make the need obvious.</td><td data-label="Challenge">Fuel planning</td><td data-label="Time">30 s</td></tr>
+                <tr><th scope="row" class="fleet">8</th><td data-label="Role">Practice</td><td class="desc" data-label="What it asks">Lower starting fuel (30%) and a longer time budget, so a pump visit becomes necessary rather than optional.</td><td data-label="Challenge">Resource planning</td><td data-label="Time">36 s</td></tr>
+                <tr><th scope="row" class="fleet">9</th><td data-label="Role">Test</td><td class="desc" data-label="What it asks">The longest town ride so far. A longer refuel (6 s) means balancing distance, fuel and time.</td><td data-label="Challenge">Route optimisation</td><td data-label="Time">40 s</td></tr>
+                <tr><th scope="row" class="fleet">10</th><td data-label="Role">Teach</td><td class="desc" data-label="What it asks">The first car. Starting fuel is very low (about 19%) and the tank is smaller, adding urgency to the new traffic.</td><td data-label="Challenge">Timing vs traffic</td><td data-label="Time">21 s</td></tr>
+                <tr><th scope="row" class="fleet">11</th><td data-label="Role">Practice</td><td class="desc" data-label="What it asks">Two cars on different loops, out of step with each other, a quicker refuel (4.25 s) and the longest time budget in the game.</td><td data-label="Challenge">Pattern reading</td><td data-label="Time">44 s</td></tr>
+                <tr><th scope="row" class="fleet">12</th><td data-label="Role">Final test</td><td class="desc" data-label="What it asks">Three cars, the smallest tank range of the game and the shortest refuel (3.5 s). Path, fuel, clock and traffic all combine.</td><td data-label="Challenge">Mastery</td><td data-label="Time">30 s</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="od-note">Time is the real seconds of riding that map to 6:00&ndash;8:00 AM on the in-game clock.</p>
+        </article>
+
+        <article class="ld-block">
+          <h3>Tuned with a few numbers</h3>
+          <p>Each level is tuned with a handful of designer-friendly numbers: clock seconds, ride speed, fuel range, starting fuel, refuel time, and car start delay and offset. Levels can be balanced quickly without code changes. They are built from Unity tilemaps with Road, Goals, Houses, Petrol and Animal layers, so a new level takes minutes to make: paint the road, drop in newspapers and houses, and place the hazards.</p>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- Game jam -->
+    <section class="block" id="game-jam">
+      <h2 class="label">Designing for the game jam</h2>
+      <p class="section-lead">The Dainik Bhaskar Game Lab 2026 asked for a game for a mobile news platform that millions of users would love to play every day, with mass appeal, daily engagement, simple mechanics and relevance to an Indian audience. Paperwala is a mobile prototype built in Unity, playable in English and Hindi.</p>
+      <div class="leveldesign">
+        <article class="ld-block">
+          <div class="table-wrap">
+            <table class="fleet-table cycle-table pw-brief">
+              <thead>
+                <tr><th scope="col">Brief</th><th scope="col">How Paperwala answers it</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="fleet">Mass appeal and simplicity</th>
+                  <td class="desc" data-label="How Paperwala answers it">One gesture: drag a line, lift your finger. There are no text-heavy menus and no controls to memorise. A tutorial hand shows the first route, and each later mechanic is taught by playing the first level that uses it.</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Indian audience relevance</th>
+                  <td class="desc" data-label="How Paperwala answers it">Village lanes and busy town roads, with everyday sights: a paper-boy on a cycle, cows on the road, a petrol pump and honking cars. The whole game, including every message and result screen, is playable in Hindi as well as English. The theme is a tribute to the newspaper itself.</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Simple mechanics, hard to master</th>
+                  <td class="desc" data-label="How Paperwala answers it">Drawing a path is trivial. Drawing the efficient, safe path under time, fuel and traffic limits is the puzzle.</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Fun and delight</th>
+                  <td class="desc" data-label="How Paperwala answers it">Papers spin through the air in an arc onto doorsteps, the cycle bell rings, cows moo, car horns blare, and a clock hand sweeps towards 8 AM. Every ride is a small show.</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Daily engagement</th>
+                  <td class="desc" data-label="How Paperwala answers it">The 6 to 8 AM morning ritual matches the real habit of reading the news each morning.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Beyond the jam -->
+    <section class="block" id="daily">
+      <h2 class="label">Beyond the jam: daily play</h2>
+      <p class="section-lead">The prototype delivers a complete 12-level campaign. Because levels are built from tile layers and a few tuning numbers, the same system is ready to grow into the daily-habit loop the brief asks for. These are the directions I planned, not features in the prototype.</p>
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>Daily Route</h3>
+          <p>One new map each morning, with the 6 to 8 AM clock tied to the real morning routine, in a short session of one or two minutes.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Content and events</h3>
+          <p>New hazards such as rain, a school-bus rush, festival processions and a market day, plus seasonal maps, all added as new tile layers and obstacles.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Stars and streaks</h3>
+          <p>Rewards for a faster or fuel-efficient route and for consecutive days played, with no ads, purchases or real-money rewards.</p>
+        </article>
+        <article class="ux-card">
+          <h3>News integration</h3>
+          <p>The newspaper theme fits naturally into a news app: a delivered paper could show that day's headline, linking play to reading.</p>
+        </article>
+        <article class="ux-card ux-wide">
+          <h3>Social play</h3>
+          <p>Share route screenshots, or challenge a friend to deliver the same route faster.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Art, audio and language -->
+    <section class="block" id="art">
+      <h2 class="label">Art, audio and language</h2>
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>Art</h3>
+          <p>A bright, sunlit, illustrated 2D cartoon style, with separate village and city tile sets, houses, trees, bushes, cars, a cow and a cycle or motorbike with exhaust smoke. The interface uses wooden-sign buttons.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Audio</h3>
+          <p>Separate background music for the title, the village and the city, and sound effects for the cycle bell, bike engine, cow, car horn, newspaper throw, warnings, and level complete and fail.</p>
+        </article>
+        <article class="ux-card ux-wide">
+          <h3>Localisation</h3>
+          <p>A language choice on the title screen, English or Hindi, is saved and applied everywhere: instruction messages, warnings, buttons, level select and every result screen.</p>
+          <div class="pw-language">
+            <img src="assets/paperwala/shot-language.webp" alt="The language select screen, with English and Hindi buttons" width="458" height="950" loading="lazy">
+            <img class="pw-logos" src="assets/paperwala/logos.webp" alt="The Paperwala title in English and in Hindi" width="1400" height="459" loading="lazy">
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <button class="to-top" id="to-top" type="button" aria-label="Back to top" hidden>↑</button>
+
+  <footer class="footer">© <span id="year"></span> Sudhakar Gnanaraj</footer>
+
+  <script src="script.js"></script>
+  <script src="game.js?v=26"></script>
+  <script src="section-nav.js?v=2"></script>
+</body>
+</html>

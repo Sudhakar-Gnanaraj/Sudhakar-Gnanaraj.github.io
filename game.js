@@ -141,6 +141,8 @@ function show(which) {
   }
   playTools.hidden = !play;
   if (mobileWarning) mobileWarning.hidden = !(isMobile && play);
+  // Any note a page marks as play-only is shown just while the Play tab is open
+  document.querySelectorAll(".play-only").forEach((el) => (el.hidden = !play));
 
   // Stop any video we just left (its sound with it)
   for (const [name, v] of Object.entries(videos)) if (name !== which) resetVideo(v);
@@ -276,8 +278,9 @@ muteBtn.addEventListener("click", () => {
 });
 
 // ---- Fit the game into the page's window -----------------------------------
-// Fit Unity's canvas inside the page's game window (keeps the build's 16:9 shape,
-// hides Unity's footer). Done here so re-exporting the build from Unity doesn't undo it.
+// Fit Unity's canvas inside the page's game window (keeps the shape the build was exported
+// with, 16:9 or portrait, and hides Unity's footer). Done here so re-exporting the build
+// from Unity doesn't undo it.
 frame.addEventListener("load", () => {
   try {
     const win = frame.contentWindow;
@@ -289,12 +292,14 @@ frame.addEventListener("load", () => {
     win.addEventListener("blur", checkFocus);
     gameHook = hookGame(win);
     syncPause();
+    const canvas = doc.querySelector("#unity-canvas");
+    const ratio = canvas.width && canvas.height ? canvas.width / canvas.height : 16 / 9;
     const style = doc.createElement("style");
     style.textContent = `
       html, body { height: 100%; margin: 0; overflow: hidden; background: #000; }
       body { display: flex; align-items: center; justify-content: center; }
       #unity-container.unity-desktop { position: static !important; transform: none !important; left: auto !important; top: auto !important; }
-      #unity-canvas { display: block; width: min(100vw, 177.7778vh) !important; height: min(56.25vw, 100vh) !important; }
+      #unity-canvas { display: block; width: min(100vw, ${ratio * 100}vh) !important; height: min(${100 / ratio}vw, 100vh) !important; }
       #unity-footer { display: none !important; }`;
     doc.head.appendChild(style);
   } catch {

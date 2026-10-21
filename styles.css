@@ -1025,3 +1025,33 @@ body.no-scroll { overflow: hidden; }
 .system.gif-left:has(.od-shot) { grid-template-columns: 1.3fr 1fr; }
 .od-shot img { width: 100%; aspect-ratio: 16 / 9; }
 @media (max-width: 860px) { .system:has(.od-shot), .system.gif-left:has(.od-shot) { grid-template-columns: 1fr; } }
+
+/* ---- Paperwala page ---------------------------------------------------------- */
+.system-text p + p { margin-top: 12px; }
+.pw-skill { color: var(--muted) !important; font-size: 15px !important; }
+.pw-skill strong { color: var(--accent); font-weight: 500; }
+.system:has(.pw-shot) { grid-template-columns: 1.4fr 1fr; }
+.system.gif-left:has(.pw-shot) { grid-template-columns: 1fr 1.4fr; }
+.pw-shot img { width: min(100%, 250px); aspect-ratio: auto; height: auto; object-fit: contain; background: #0b0e14; border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent); border-radius: 22px; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5); }
+.pw-worlds .fleet { width: 120px; }
+.pw-levels .fleet { width: 64px; }
+.pw-levels thead th, .pw-levels td { white-space: normal; }
+.pw-brief .fleet { width: 220px; }
+.pw-brief td.desc { width: auto; }
+.pw-language { display: flex; align-items: center; justify-content: center; gap: 28px; flex-wrap: wrap; margin-top: 18px; padding: 20px; background: rgba(0, 0, 0, 0.28); border-radius: 12px; }
+.pw-language img { display: block; height: auto; }
+.pw-language img:first-child { width: 170px; filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.5)); }
+.pw-logos { width: min(100%, 520px); }
+@media (max-width: 860px) {
+  .system:has(.pw-shot), .system.gif-left:has(.pw-shot) { grid-template-columns: 1fr; }
+  .pw-levels .fleet, .pw-worlds .fleet, .pw-brief .fleet { width: auto; }
+}
+.pw-worlds td.desc { width: auto; }
+
+/* Secondary download button beside the main Play button */
+.tab-apk { font-weight: 500; }
+.tab-apk small { font-size: 13px; opacity: 0.8; }
+
+/* Portrait game window (a phone-shaped build such as Paperwala) */
+.screen.screen-portrait { aspect-ratio: 9 / 16; width: auto; height: min(82vh, 860px); max-width: 100%; margin-inline: auto; }
+.screen.screen-portrait.cover-fullscreen, .screen.screen-portrait:fullscreen { width: 100vw; height: 100vh; aspect-ratio: auto; }
