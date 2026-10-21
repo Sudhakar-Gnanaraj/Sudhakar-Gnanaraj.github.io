@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vines &amp; Vipers | Sudhakar Gnanaraj</title>
+  <meta name="description" content="Vines &amp; Vipers: a text-free multiplayer take on Snakes &amp; Ladders where players drag snakes and vines to reshape the board. Game design case study by Sudhakar Gnanaraj.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=48">
+</head>
+<body class="game-page">
+
+  <nav class="nav" aria-label="Main">
+    <a href="index.html">Home</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#contact">Contact</a>
+    <a class="nav-cta" href="index.html#contact">Resume</a>
+  </nav>
+
+  <main class="game">
+
+    <a class="back" href="index.html#projects">← Back to my works</a>
+    <h1 class="game-title">Vines &amp; Vipers</h1>
+    <p class="tagline">A text-free multiplayer take on Snakes &amp; Ladders where players drag snakes and vines to reshape the board each turn.</p>
+
+    <nav class="section-bar" id="section-bar" aria-label="Jump to a section">
+      <a class="chip" href="#overview" data-target="overview" data-also="media">Overview</a>
+      <a class="chip" href="#core-loop" data-target="core-loop">Core loop</a>
+      <a class="chip" href="#research" data-target="research">Research</a>
+      <a class="chip" href="#exploration" data-target="exploration">Exploration</a>
+      <a class="chip" href="#board" data-target="board">Board design</a>
+      <a class="chip" href="#interface" data-target="interface">No-text UI</a>
+      <a class="chip" href="#playtesting" data-target="playtesting">Playtesting</a>
+      <a class="chip" href="#build" data-target="build">Build</a>
+      <a class="chip" href="#learned" data-target="learned">What I learned</a>
+    </nav>
+
+    <!-- Overview (left) + Details (right) -->
+    <section class="top" id="overview">
+      <div class="overview">
+        <h2 class="label">Overview</h2>
+        <p>Vines &amp; Vipers is a casual mobile board game built on Snakes &amp; Ladders, a game almost everyone in India already knows. It adds one rule: after you move, you can drag a snake or a vine by the number you rolled. Up to four players play online.</p>
+        <p>The game has no text in play, so players who can't read English can still pick it up. That constraint came from field research in three places across India, and the rest of the design followed from it.</p>
+      </div>
+
+      <aside class="details" aria-label="Game details">
+        <h2 class="label">Details</h2>
+        <dl>
+          <div><dt>Genre</dt><dd>Casual board game</dd></div>
+          <div><dt>Engine</dt><dd>Unity 6</dd></div>
+          <div><dt>Language</dt><dd>C#</dd></div>
+          <div><dt>Platform</dt><dd>Mobile (Android)</dd></div>
+        </dl>
+      </aside>
+    </section>
+
+    <!-- Gameplay video / Download -->
+    <section class="media" id="media" aria-label="Gameplay video and download">
+      <div class="tabs">
+        <button class="tab active" id="tab-gameplay" type="button" aria-selected="true">Gameplay</button>
+        <a class="tab tab-play" href="games/vines-and-vipers/vines-and-vipers.apk" download="Vines-and-Vipers.apk"><span aria-hidden="true">&#11015;</span> Download game <small>(Android APK)</small></a>
+      </div>
+      <p class="play-note">The download is an Android APK (about 97 MB) for 64-bit phones, so it won't install on iPhone. Android may ask you to allow installs from your browser. The game is multiplayer: one player creates a room and the others join it.</p>
+      <div class="screen" id="panel-gameplay">
+        <!-- Click-to-load: the YouTube player is only added when the poster is clicked. -->
+        <button class="video-facade" id="gameplay-facade" type="button" data-video-id="4xZa95wEuXA" data-title="Vines &amp; Vipers gameplay"
+                aria-label="Play the gameplay video" style="background-image:url('assets/vines-and-vipers/poster.webp')">
+          <span class="video-play" aria-hidden="true">&#9654;</span>
+          <span class="video-label">Watch the gameplay</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Core loop -->
+    <section class="block" id="core-loop">
+      <h2 class="label">Core loop</h2>
+      <div class="features">
+
+        <figure class="loop" aria-label="Core loop: roll, resolve, reposition, pass">
+          <ol class="loop-steps">
+            <li class="step event"><h3>1. Roll</h3><p>Roll the dice and the token moves</p></li>
+            <li class="step event"><h3>2. Resolve</h3><p>Land on a vine and climb, or on a viper and slide</p></li>
+            <li class="step decision"><h3>3. Reposition</h3><p>Drag a snake or vine end by the roll, or skip</p></li>
+            <li class="step event"><h3>4. Pass</h3><p>A timer ends the turn and play moves on</p></li>
+          </ol>
+          <div class="loop-return" aria-hidden="true"></div>
+          <figcaption class="loop-caption">A connector dropped onto a token triggers right away</figcaption>
+          <ul class="legend">
+            <li><span class="swatch decision"></span>Player decision</li>
+            <li><span class="swatch event"></span>Game event</li>
+          </ul>
+        </figure>
+
+        <div class="vv-move">
+          <div class="vv-drag">
+            <h3>Move the board, not just the token</h3>
+            <p>Ladders became vines, snakes became vipers, and the players became monkeys racing through a jungle to a banana on tile 100. On each turn the active player can move one end of any connector by exactly the number they rolled. That lets them set up a climb for themselves or put a viper in a rival's path.</p>
+            <p class="vv-win"><strong>To win, you must land exactly on tile 100.</strong> Overshooting wastes the turn, which keeps the finish tense: players can't just race to the end.</p>
+          </div>
+          <figure class="vv-move-gif">
+            <img src="assets/vines-and-vipers/move-viper.webp" alt="After rolling a 4, a player drags a viper's head from tile 67 to tile 63 so that an opponent's token slides down" width="450" height="936" loading="lazy">
+            <figcaption>Rolling a 4, the player drags a viper from tile 67 to tile 63 to bring an opponent down.</figcaption>
+          </figure>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Research -->
+    <section class="block" id="research">
+      <h2 class="label">Research</h2>
+      <p class="section-lead">The brief was to design a 2D casual game set in the Indian context, with at least five minutes of play and no copying of established formats such as match-3 or endless runners. I treated casual play as something that comes from players and their everyday situations, not from a genre. I watched people play in three places chosen to cover urban, semi-urban and rural India, and asked who plays, what they play, where, how and why.</p>
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>Bangalore</h3>
+          <p>Tier 1 city. Young, English-literate players on Free Fire, Call of Duty: Mobile and other global titles. Complex onboarding and in-game text caused them no trouble.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Trichy</h3>
+          <p>Tier 2 city. Student and working-class players with high digital access that varied by age. Game choices largely matched Bangalore.</p>
+        </article>
+        <article class="ux-card ux-wide">
+          <h3>Kulithalai</h3>
+          <p>A village in the Karur district of Tamil Nadu, and the most useful of the three sites. Players were on mobile versions of Carrom, Rummy and Ludo, plus Subway Surfers and Temple Run. Many could not read English, and play was social even on single-player games, with people watching, commenting and passing the phone around.</p>
+        </article>
+      </div>
+
+      <blockquote class="vv-callout">Games that needed English to explain themselves went unplayed in Kulithalai. This finding set the main design constraint for the project.</blockquote>
+
+      <h3 class="vv-sub">What the research meant for design</h3>
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>Familiarity replaces onboarding</h3>
+          <p>Players who meet unfamiliar rules they can't read don't try to learn them. They leave. Rules that already live in cultural memory need no tutorial.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Legible controls remove language</h3>
+          <p>Subway Surfers works here because you can see that swiping up makes you jump the first time you do it.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Traditional games come with an audience</h3>
+          <p>Mobile Carrom, Rummy and Ludo skip onboarding and go straight to play.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Play is social</h3>
+          <p>People watched, commented and passed the phone around. Multiplayer fits behaviour that already exists.</p>
+        </article>
+      </div>
+      <p class="vv-win"><strong>Design opportunity:</strong> build on a game Indian players already know, add a strategic layer that gives them real choices, and make it fully playable without any English text.</p>
+    </section>
+
+    <!-- Exploration -->
+    <section class="block" id="exploration">
+      <h2 class="label">Adding agency to a game of pure chance</h2>
+      <p class="section-lead">Snakes &amp; Ladders is known across age groups, regions and literacy levels, so it needs no onboarding. It also gives players no decisions to make, because the dice decide everything. I explored three ways to give players some control over the board.</p>
+      <div class="ux-grid">
+        <article class="ux-card ux-wide">
+          <h3>A &middot; Moveable connectors <span class="vv-status chosen">Selected</span></h3>
+          <p>Drag a snake or a vine by the number on the dice. This adds strategy and keeps the familiar roll-and-move structure.</p>
+        </article>
+        <article class="ux-card">
+          <h3>B &middot; Power tiles <span class="vv-status">Set aside</span></h3>
+          <p>One-time abilities on special tiles. Players would have to learn icon meanings, which brought back the reading problem.</p>
+        </article>
+        <article class="ux-card">
+          <h3>C &middot; Card modifiers <span class="vv-status">Set aside</span></h3>
+          <p>Action cards drawn each turn. Cards plus a board made a busier interface than the brief needed.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Board design -->
+    <section class="block" id="board">
+      <h2 class="label">Board design</h2>
+      <div class="leveldesign">
+
+        <article class="ld-block">
+          <h3>Where the vines and vipers go</h3>
+          <p>The positions and number of vipers and vines were not decided in advance. They came from repeated playtests with different layouts, and the final board follows three rules.</p>
+          <div class="table-wrap">
+            <table class="fleet-table cycle-table vv-board">
+              <thead>
+                <tr><th scope="col">Tiles</th><th scope="col">What the board does</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="fleet">80 &ndash; 100</th><td class="desc" data-label="What the board does">Only two vipers, so the endgame rewards the leader with a real chance to finish.</td></tr>
+                <tr><th scope="row" class="fleet">30 &ndash; 80</th><td class="desc" data-label="What the board does">Vipers spread across the mid-board. Most strategic moves happen here.</td></tr>
+                <tr><th scope="row" class="fleet">1 &ndash; 30</th><td class="desc" data-label="What the board does">Dense vines for fast early progress and fewer frustrating slow starts.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <figure class="shot vv-board-shot">
+            <img src="assets/vines-and-vipers/board.webp" alt="The final board layout: a 10 by 10 jungle grid with vipers and vines" width="574" height="562" loading="lazy">
+            <figcaption>The final board layout</figcaption>
+          </figure>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- No-text interface -->
+    <section class="block" id="interface">
+      <h2 class="label">No text in gameplay</h2>
+      <p class="section-lead">This was the hardest constraint to build and the most important one to keep. The game teaches itself through three channels. In playtests with no verbal instructions, most new players understood the roll, move and drag cycle within one or two turns.</p>
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>Visual</h3>
+          <p>Glowing drag handles in the edit phase, turn-order indicators, a countdown ring and a full-screen win display.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Audio</h3>
+          <p>Separate sounds for the dice roll, a vine climb, a viper slide, the turn timer and the win fanfare.</p>
+        </article>
+        <article class="ux-card ux-wide">
+          <h3>Animation</h3>
+          <p>Tokens and connectors move slowly enough that players can see what caused what.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Playtesting -->
+    <section class="block" id="playtesting">
+      <h2 class="label">Designing through playtesting</h2>
+      <p class="section-lead">Research showed who the players were and what they needed. Playtesting showed what the game was doing to them.</p>
+      <div class="pt-list">
+
+        <article class="pt-card">
+          <header><span class="pt-tag">Finding 1</span><h3>Late-game vipers were punishing the leader</h3></header>
+          <div class="pt-grid">
+            <div>
+              <h4>Problem</h4>
+              <p>Early boards had vipers all the way up to tile 100. With four players, there was a good chance that one of the three trailing players would roll the exact number needed to move a viper onto the leader. Players near tile 90 were sent back, sometimes several times in one round. The ending felt punishing, and it wasn't tense.</p>
+            </div>
+            <div>
+              <h4>Fix</h4>
+              <p>I left <strong>only two vipers in tiles 80&ndash;100</strong> and concentrated the vines in the early board. The match now builds to a clear climax instead of dragging on.</p>
+            </div>
+          </div>
+          <p class="pt-takeaway"><strong>Takeaway:</strong> This problem could not have been predicted from the research. It only showed up when I watched four people play at the same time.</p>
+        </article>
+
+        <article class="pt-card">
+          <header><span class="pt-tag">Finding 2</span><h3>Which end of a snake do players grab?</h3></header>
+          <div class="pt-grid">
+            <div>
+              <h4>Problem</h4>
+              <p>Players nearly always grabbed the end that changes the trigger: a viper's head or a vine's base. With both ends of every connector draggable, they weren't sure which to use.</p>
+            </div>
+            <div>
+              <h4>Fix</h4>
+              <p>I first hid the other ends, which made the interface clearer. Experienced players then asked for them back: when they had no better move, they shifted a tail or a vine top that they might meet next turn. <strong>The final version allows all four ends and gives the trigger ends the strongest visual emphasis.</strong></p>
+            </div>
+          </div>
+          <p class="pt-takeaway"><strong>Takeaway:</strong> Hiding options made the interface clearer, but it also took away choices that players wanted. Visual emphasis kept both.</p>
+        </article>
+
+      </div>
+
+      <div class="leveldesign vv-iter">
+        <article class="ld-block">
+          <h3>What changed across iterations</h3>
+          <div class="table-wrap">
+            <table class="fleet-table cycle-table vv-iter-table">
+              <thead>
+                <tr><th scope="col">System</th><th scope="col">V1</th><th scope="col">V2</th><th scope="col">V3 &middot; Final</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="fleet">Board layout</th>
+                  <td data-label="V1">Even spread. Long, random-feeling games.</td>
+                  <td data-label="V2">Vines early, vipers mid. Better pacing, but four-player endgames were still harsh.</td>
+                  <td class="final" data-label="V3">Vines early, vipers spread out, two near 100.</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Connector handles</th>
+                  <td data-label="V1">Both ends draggable. Players didn't know which to use.</td>
+                  <td data-label="V2">Only the trigger end. Much clearer.</td>
+                  <td class="final" data-label="V3">Both ends, trigger end emphasised.</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Win condition</th>
+                  <td data-label="V1">Exact roll to land on 100.</td>
+                  <td data-label="V2">Kept.</td>
+                  <td class="final" data-label="V3">Kept for endgame tension.</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Feedback</th>
+                  <td data-label="V1">Basic cues.</td>
+                  <td data-label="V2">Refined sounds and glows.</td>
+                  <td class="final" data-label="V3">Full audio set, glow handles, turn indicators and a win screen.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Build -->
+    <section class="block" id="build">
+      <h2 class="label">How it was made</h2>
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>Mobile, portrait</h3>
+          <p>Built in Unity 6 with C#, laid out in portrait for one-handed play.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Online multiplayer</h3>
+          <p>Up to four players, using Netcode for GameObjects with Unity Lobby, Relay and Authentication. Players create or join a room. ParrelSync let me test several clients on one machine.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Bot opponent</h3>
+          <p>A bot rolls, then prefers to move a viper head away from the tiles it occupies.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Credits</h3>
+          <p>The monkey character sprite is from itch.io. All other design, research and programming is mine.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- What I learned -->
+    <section class="block" id="learned">
+      <h2 class="label">What I learned</h2>
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>Familiarity is a resource</h3>
+          <p>Starting from Snakes &amp; Ladders meant zero onboarding cost, so every design hour went into the new strategic layer.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Research and playtesting answer different questions</h3>
+          <p>Research showed who the players were. Playtesting showed what the game did to them. The late-game viper problem only showed up at the table.</p>
+        </article>
+        <article class="ux-card ux-wide">
+          <h3>The edit phase is the hook and the hardest part</h3>
+          <p>Getting players to see that they have a choice, and timing the decision so the game keeps moving, takes the most care.</p>
+        </article>
+        <article class="ux-card ux-wide">
+          <h3>Next time</h3>
+          <p>Most playtesters were digitally literate, so I would test directly with players in Kulithalai to confirm the text-free interface works for its intended audience. The lobby still uses &ldquo;Create Room&rdquo; and &ldquo;Join Room&rdquo; text. My first plan was a single play button with random matchmaking, but that needed a dedicated server that was outside the project budget.</p>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <button class="to-top" id="to-top" type="button" aria-label="Back to top" hidden>↑</button>
+
+  <footer class="footer">© <span id="year"></span> Sudhakar Gnanaraj</footer>
+
+  <script src="script.js"></script>
+  <script src="video-only.js"></script>
+  <script src="section-nav.js?v=2"></script>
+</body>
+</html>
