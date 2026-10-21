@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orbital Defense | Sudhakar Gnanaraj</title>
+  <meta name="description" content="Orbital Defense: a sci-fi tower defense game made in seven days for The Very Serious Juniper Dev Game Jam, and the first version of Orbital Defense 2. Game design case study by Sudhakar Gnanaraj.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=67">
+</head>
+<body class="game-page">
+
+  <nav class="nav" aria-label="Main">
+    <a href="index.html">Home</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#contact">Contact</a>
+    <a class="nav-cta" href="index.html#contact">Resume</a>
+  </nav>
+
+  <main class="game">
+
+    <a class="back" href="index.html#projects">← Back to my works</a>
+    <h1 class="game-title">Orbital Defense</h1>
+    <p class="tagline">Command Earth's orbital defenses and defend humanity in this sci-fi tower defense game.</p>
+
+    <nav class="section-bar" id="section-bar" aria-label="Jump to a section">
+      <a class="chip" href="#overview" data-target="overview" data-also="media">Overview</a>
+      <a class="chip" href="#core-loop" data-target="core-loop">Core loop</a>
+      <a class="chip" href="#systems" data-target="systems">Systems</a>
+      <a class="chip" href="#campaign" data-target="campaign">Campaign</a>
+      <a class="chip" href="#feedback" data-target="feedback">Feedback</a>
+      <a class="chip" href="#next" data-target="next">What came next</a>
+    </nav>
+
+    <!-- Overview (left) + Details (right) -->
+    <section class="top" id="overview">
+      <div class="overview">
+        <h2 class="label">Overview</h2>
+        <p>Orbital Defense is a sci-fi tower defense game I made in seven days for The Very Serious Juniper Dev Game Jam, where the theme was &ldquo;Spin to Win&rdquo;. An alien fleet is moving inward from Pluto towards Earth, and you command humanity's orbital defense network. Instead of placing towers on a grid, you drag weapon satellites around a planet's orbit so that their line of fire crosses the incoming ships.</p>
+      </div>
+
+      <aside class="details" aria-label="Game details">
+        <h2 class="label">Details</h2>
+        <dl>
+          <div><dt>Genre</dt><dd>Sci-fi tower defense</dd></div>
+          <div><dt>Engine</dt><dd>Unity 6</dd></div>
+          <div><dt>Language</dt><dd>C#</dd></div>
+          <div><dt>Platform</dt><dd><span class="plat"><svg class="plat-ico" aria-hidden="true"><use href="assets/platform-icons.svg#web"/></svg>Web</span></dd></div>
+        </dl>
+        <div class="ai-disclosure">
+          <h3>AI Disclosure</h3>
+          <p>No AI was used in making this game.</p>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Gameplay video / Play -->
+    <section class="media" id="media" aria-label="Gameplay and play">
+      <div class="mobile-warning" id="mobile-warning" role="note" hidden>
+        <strong>Heads up:</strong> this game is played with a mouse and is not optimized for mobile devices. For the best experience, play on a desktop or laptop.
+      </div>
+      <div class="tabs" role="tablist">
+        <button class="tab active" id="tab-gameplay" role="tab" aria-selected="true" aria-controls="panel-gameplay">Gameplay</button>
+        <button class="tab tab-play" id="tab-play" role="tab" aria-selected="false" aria-controls="panel-play"><span aria-hidden="true">▶</span> Play the game</button>
+        <div class="play-tools" id="play-tools" hidden>
+          <button class="tab" id="btn-mute" type="button" aria-pressed="false">🔊 Sound on</button>
+          <button class="tab" id="btn-fullscreen" type="button">Fullscreen ⤢</button>
+        </div>
+        <a class="itch-badge" href="https://pixel-monkey-96.itch.io/orbital-defense" target="_blank" rel="noopener"><img src="assets/itch-badge.png" alt="Available on itch.io" width="130" height="40"></a>
+      </div>
+
+      <p class="play-note" id="load-note" role="status" hidden>The game takes a short time to load, especially the first time you play. When it has loaded, click the game screen once. Drag a weapon with the left mouse button to move it, and right-click it to upgrade it.</p>
+
+      <p class="play-note focus-note" id="focus-note" role="status" hidden>⏸ The game is paused. Click on the game screen to resume.</p>
+
+      <div class="screen" id="panel-gameplay" role="tabpanel" aria-labelledby="tab-gameplay">
+        <!-- Click-to-load: the YouTube player is only added when the poster is clicked. -->
+        <button class="video-facade" id="gameplay-facade" type="button" data-video-id="l_s7pW4k78g" data-title="Orbital Defense gameplay"
+                aria-label="Play the gameplay video" style="background-image:url('https://i.ytimg.com/vi/l_s7pW4k78g/maxresdefault.jpg')">
+          <span class="video-play" aria-hidden="true">&#9654;</span>
+          <span class="video-label">Watch the gameplay</span>
+        </button>
+      </div>
+
+      <div class="screen" id="panel-play" role="tabpanel" aria-labelledby="tab-play" hidden>
+        <iframe id="game-frame" title="Orbital Defense (WebGL build)" data-src="games/orbital-defense/index.html?v=2" allow="fullscreen; autoplay" allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <!-- Core loop -->
+    <section class="block" id="core-loop">
+      <h2 class="label">Core loop</h2>
+      <div class="features">
+        <figure class="loop" aria-label="Core loop: brief, defend, earn, upgrade">
+          <ol class="loop-steps">
+            <li class="step event"><h3>1. Brief</h3><p>A story briefing introduces the threat and the new enemy or weapon</p></li>
+            <li class="step decision"><h3>2. Defend</h3><p>Drag the weapons and the Stasis Field to cover the incoming wave</p></li>
+            <li class="step event"><h3>3. Earn</h3><p>Destroyed enemies drop scrap</p></li>
+            <li class="step decision"><h3>4. Upgrade</h3><p>Right-click a weapon to spend scrap on upgrades</p></li>
+          </ol>
+          <div class="loop-return" aria-hidden="true"></div>
+          <figcaption class="loop-caption">Clear every wave to win the level. If the planet's health reaches 0, the level is lost.</figcaption>
+          <ul class="legend">
+            <li><span class="swatch decision"></span>Player decision</li>
+            <li><span class="swatch event"></span>Game event</li>
+          </ul>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Systems -->
+    <section class="block" id="systems">
+      <h2 class="label">Gameplay and systems</h2>
+      <div class="systems">
+
+        <article class="system gif-right">
+          <div class="system-text">
+            <h3>Aiming by position</h3>
+            <p>Satellites stay locked to their orbit and every one fires straight outward. Dragging a satellite around the orbit changes where its line of fire points, so positioning is the core skill: line up shots so that they cross an incoming ship's path.</p>
+          </div>
+          <figure class="media-shot od-shot"><img src="assets/orbital-defense/aim.webp" alt="Dragging a satellite around its orbit to line its shot up with incoming alien ships" width="960" height="540" loading="lazy"></figure>
+        </article>
+
+        <article class="system gif-left">
+          <div class="system-text">
+            <h3>Stasis Field</h3>
+            <p>A draggable arc that slows everything inside it. Slowing a wave buys time to line up shots.</p>
+          </div>
+          <figure class="media-shot od-shot"><img src="assets/orbital-defense/stasis.webp" alt="The Stasis Field being dragged around the orbit, with lightning arcing between its two end handles" width="960" height="540" loading="lazy"></figure>
+        </article>
+
+        <article class="system gif-right">
+          <div class="system-text">
+            <h3>Scrap and upgrades</h3>
+            <p>Destroyed enemies drop scrap. Right-click a weapon to buy upgrades: each weapon has two upgrade tracks of up to five levels, and every purchase doubles the cost.</p>
+          </div>
+          <figure class="media-shot od-shot"><img src="assets/orbital-defense/upgrade.webp" alt="The Siegebreaker's upgrade panel, with a damage track and an explosion area track and their scrap costs" width="1100" height="619" loading="lazy"></figure>
+        </article>
+
+        <article class="system">
+          <div class="system-text">
+            <h3>Story and tutorial</h3>
+            <p>Each level opens with a briefing: dialog with character portraits and typewriter text. Tooltip cards introduce each new enemy and weapon.</p>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="leveldesign od-blocks">
+
+        <article class="ld-block">
+          <h3>Weapons</h3>
+          <div class="table-wrap">
+            <table class="fleet-table tower-table od-tip">
+              <thead>
+                <tr><th scope="col"><span class="sr-only">Tooltip card</span></th><th scope="col">Weapon</th><th scope="col">Role</th><th scope="col">Upgrade A</th><th scope="col">Upgrade B</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="ship"><img src="assets/orbital-defense/tip-cannon.webp" alt="The Orbital Cannon's tooltip card: a satellite firing a shot" width="300" height="300" loading="lazy"></td>
+                  <th scope="row" class="fleet">Orbital Cannon</th>
+                  <td class="desc" data-label="Role">Fast single-target projectiles</td>
+                  <td class="desc" data-label="Upgrade A">Damage</td>
+                  <td class="desc" data-label="Upgrade B">Fire rate</td>
+                </tr>
+                <tr>
+                  <td class="ship"><img src="assets/orbital-defense/tip-siegebreaker.webp" alt="The Siegebreaker's tooltip card: a missile platform in orbit" width="300" height="300" loading="lazy"></td>
+                  <th scope="row" class="fleet">Siegebreaker</th>
+                  <td class="desc" data-label="Role">Armor-breaking missiles with area damage</td>
+                  <td class="desc" data-label="Upgrade A">Damage, plus armor damage</td>
+                  <td class="desc" data-label="Upgrade B">Explosion area</td>
+                </tr>
+                <tr>
+                  <td class="ship"><img src="assets/orbital-defense/tip-laser.webp" alt="The Photon Emitter's tooltip card: a satellite on its orbit" width="300" height="300" loading="lazy"></td>
+                  <th scope="row" class="fleet">Photon Emitter</th>
+                  <td class="desc" data-label="Role">Pulsed beam that breaks shields and pierces enemies</td>
+                  <td class="desc" data-label="Upgrade A">Damage, plus shield damage</td>
+                  <td class="desc" data-label="Upgrade B">Pierce count</td>
+                </tr>
+                <tr>
+                  <td class="ship"><img src="assets/orbital-defense/tip-field.webp" alt="The Stasis Field's tooltip card: lightning arcing between two end handles" width="300" height="300" loading="lazy"></td>
+                  <th scope="row" class="fleet">Stasis Field</th>
+                  <td class="desc" data-label="Role">Draggable arc that slows enemies</td>
+                  <td class="desc" data-label="Upgrade A">Field size</td>
+                  <td class="desc" data-label="Upgrade B">Slow power</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="ld-block">
+          <h3>Enemies</h3>
+          <div class="table-wrap">
+            <table class="fleet-table tower-table od-tip">
+              <thead>
+                <tr><th scope="col"><span class="sr-only">Tooltip card</span></th><th scope="col">Enemy</th><th scope="col">What it is</th><th scope="col">Introduced</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="ship"><img src="assets/orbital-defense/tip-eye.webp" alt="The Eye: a pink alien vessel with a single eye" width="300" height="300" loading="lazy"></td>
+                  <th scope="row" class="fleet">Eye</th>
+                  <td class="desc" data-label="What it is">The basic alien vessel</td>
+                  <td class="desc" data-label="Introduced">Level 1 &middot; Pluto</td>
+                </tr>
+                <tr>
+                  <td class="ship"><img src="assets/orbital-defense/tip-snake.webp" alt="The Snake: a green, serpentine alien craft" width="300" height="300" loading="lazy"></td>
+                  <th scope="row" class="fleet">Snake</th>
+                  <td class="desc" data-label="What it is">A fast attack craft</td>
+                  <td class="desc" data-label="Introduced">Level 2 &middot; Neptune</td>
+                </tr>
+                <tr>
+                  <td class="ship"><img src="assets/orbital-defense/tip-mace.webp" alt="The Mace: a spiked, heavily armored alien vessel" width="300" height="300" loading="lazy"></td>
+                  <th scope="row" class="fleet">Mace</th>
+                  <td class="desc" data-label="What it is">A heavily armored assault vessel</td>
+                  <td class="desc" data-label="Introduced">Level 3 &middot; Jupiter</td>
+                </tr>
+                <tr>
+                  <td class="ship"><img src="assets/orbital-defense/tip-firefly.webp" alt="The Firefly: a golden winged vessel inside a green shield" width="300" height="300" loading="lazy"></td>
+                  <th scope="row" class="fleet">Firefly</th>
+                  <td class="desc" data-label="What it is">A shielded vessel that blocks all normal damage</td>
+                  <td class="desc" data-label="Introduced">Level 4 &middot; Mars</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="ld-block">
+          <h3>Counters: shield, armor and HP</h3>
+          <p>Every enemy shows its HP, armor and shield bars, and each layer has its own break effect. Each new enemy arrives together with the weapon built to counter it.</p>
+          <div class="table-wrap">
+            <table class="fleet-table cycle-table">
+              <thead>
+                <tr><th scope="col">Layer</th><th scope="col">Effect</th><th scope="col">Broken by</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="fleet">Shield</th>
+                  <td class="desc" data-label="Effect">Blocks all normal damage</td>
+                  <td class="desc" data-label="Broken by">The Photon Emitter's shield damage</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Armor</th>
+                  <td class="desc" data-label="Effect">Halves normal damage</td>
+                  <td class="desc" data-label="Broken by">The Siegebreaker's armor damage</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">HP</th>
+                  <td class="desc" data-label="Effect">Takes normal damage</td>
+                  <td class="desc" data-label="Broken by">Any weapon</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- Campaign -->
+    <section class="block" id="campaign">
+      <h2 class="label">Campaign: five planets, 72 waves</h2>
+      <p class="section-lead">In the jam version every level took place on Earth. After the jam I gave each level its own planet, with its own defense network, so the fresh start in each level has a reason. Each level also introduces a new enemy and the weapon that answers it.</p>
+      <div class="leveldesign">
+        <article class="ld-block">
+          <div class="table-wrap">
+            <table class="fleet-table tower-table od-planets">
+              <thead>
+                <tr><th scope="col"><span class="sr-only">Planet</span></th><th scope="col">Level</th><th scope="col">New enemy</th><th scope="col">New weapon or mechanic</th><th scope="col">Waves</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="ship"><img src="assets/orbital-defense/planet-pluto.webp" alt="Pluto" width="128" height="128" loading="lazy"></td>
+                  <th scope="row" class="fleet">1 &middot; Pluto</th>
+                  <td class="desc" data-label="New enemy">Eye</td>
+                  <td class="desc" data-label="New weapon">Orbital Cannon and Stasis Field</td>
+                  <td class="desc" data-label="Waves">5</td>
+                </tr>
+                <tr>
+                  <td class="ship"><img src="assets/orbital-defense/planet-neptune.webp" alt="Neptune" width="128" height="128" loading="lazy"></td>
+                  <th scope="row" class="fleet">2 &middot; Neptune</th>
+                  <td class="desc" data-label="New enemy">Snake</td>
+                  <td class="desc" data-label="New weapon">Scrap and upgrades</td>
+                  <td class="desc" data-label="Waves">13</td>
+                </tr>
+                <tr>
+                  <td class="ship"><img src="assets/orbital-defense/planet-jupiter.webp" alt="Jupiter" width="128" height="128" loading="lazy"></td>
+                  <th scope="row" class="fleet">3 &middot; Jupiter</th>
+                  <td class="desc" data-label="New enemy">Mace</td>
+                  <td class="desc" data-label="New weapon">Siegebreaker</td>
+                  <td class="desc" data-label="Waves">17</td>
+                </tr>
+                <tr>
+                  <td class="ship"><img src="assets/orbital-defense/planet-mars.webp" alt="Mars" width="128" height="128" loading="lazy"></td>
+                  <th scope="row" class="fleet">4 &middot; Mars</th>
+                  <td class="desc" data-label="New enemy">Firefly</td>
+                  <td class="desc" data-label="New weapon">Photon Emitter</td>
+                  <td class="desc" data-label="Waves">19</td>
+                </tr>
+                <tr>
+                  <td class="ship"><img src="assets/orbital-defense/planet-earth.webp" alt="Earth" width="128" height="128" loading="lazy"></td>
+                  <th scope="row" class="fleet">5 &middot; Earth</th>
+                  <td class="desc" data-label="New enemy">The full invasion force</td>
+                  <td class="desc" data-label="New weapon">Every weapon, in the final battle</td>
+                  <td class="desc" data-label="Waves">18</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Feedback -->
+    <section class="block" id="feedback">
+      <h2 class="label">Learning from player feedback</h2>
+      <p class="section-lead">After the jam I read every comment on the game and shipped a July update that addressed the most common complaints. Players also had plenty of good things to say.</p>
+
+      <div class="vv-quotes">
+        <blockquote class="vv-callout">Very ambitious for one week of work!</blockquote>
+        <blockquote class="vv-callout">played this for more than half an hour without getting bored</blockquote>
+        <blockquote class="vv-callout">Always get good upgrades against new types of enemies in each stage, cool music too.</blockquote>
+        <blockquote class="vv-callout">I played for more than I intended to.</blockquote>
+      </div>
+      <p class="od-note">Comments from jam players, on the game's jam page. <a href="https://itch.io/jam/theveryseriousjuniperdevgamejam/rate/4708162" target="_blank" rel="noopener">My jam entry and results ↗</a></p>
+
+      <div class="pt-list">
+
+        <article class="pt-card">
+          <header><span class="pt-tag">Feedback 1</span><h3>The Stasis Field was hard to grab</h3></header>
+          <div class="pt-grid">
+            <div>
+              <h4>Problem</h4>
+              <p>Six or more players could not reliably drag the Stasis Field. Clicking its edges or end handles did nothing, and only its centre responded.</p>
+              <blockquote>&ldquo;the hitbox on the slowing field is really weird&rdquo;</blockquote>
+            </div>
+            <div>
+              <h4>Fix</h4>
+              <p>I fixed the hit detection, so the field can now be <strong>grabbed from anywhere along its arc, including both end handles.</strong> I had always grabbed the middle while testing, so I never noticed.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="pt-card">
+          <header><span class="pt-tag">Feedback 2</span><h3>Upgrades reset every level</h3></header>
+          <div class="pt-grid">
+            <div>
+              <h4>Problem</h4>
+              <p>At least three players said it felt less rewarding to start upgrading from scratch in every level.</p>
+              <blockquote>&ldquo;a shame upgrades are reset in every level&rdquo;</blockquote>
+            </div>
+            <div>
+              <h4>Fix</h4>
+              <p>Rather than just carrying upgrades over, I treated this as a chance to expand the story. <strong>Every level now takes place on a different planet,</strong> from Pluto to Earth, each with its own defense network to upgrade independently. That keeps each level fresh and explains the fresh start.</p>
+            </div>
+          </div>
+          <p class="pt-takeaway"><strong>Takeaway:</strong> A complaint about a rule can sometimes be answered by changing the fiction around the rule instead of the rule itself.</p>
+        </article>
+
+        <article class="pt-card">
+          <header><span class="pt-tag">Feedback 3</span><h3>The early levels were too punishing</h3></header>
+          <div class="pt-grid">
+            <div>
+              <h4>Problem</h4>
+              <p>Players found the first levels hard to get into, before they had learned the mechanics.</p>
+              <blockquote>&ldquo;the game could be a bit easier for the starting levels&rdquo;</blockquote>
+            </div>
+            <div>
+              <h4>Fix</h4>
+              <p>I <strong>rebalanced the early levels</strong> so that difficulty ramps up gradually. The late game keeps its challenge, but players now have time to learn the mechanics before things get intense.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="pt-card">
+          <header><span class="pt-tag">Feedback 4</span><h3>Aiming felt imprecise</h3></header>
+          <div class="pt-grid">
+            <div>
+              <h4>Problem</h4>
+              <p>Players couldn't see exactly where a weapon's shots would go, so repositioning satellites felt like guesswork.</p>
+              <blockquote>&ldquo;Positioning the weapons was not super easy at first&rdquo;</blockquote>
+            </div>
+            <div>
+              <h4>Fix</h4>
+              <p>Every weapon now draws a <strong>visual sightline</strong>, so players can see exactly where their shots will go.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="pt-card">
+          <header><span class="pt-tag">Feedback 5</span><h3>Level 1 undersold the game</h3></header>
+          <div class="pt-grid">
+            <div>
+              <h4>Problem</h4>
+              <p>The first levels showed only a few of the weapons, so the game looked simpler than it really was.</p>
+              <blockquote>&ldquo;Level 1 is misleading, makes the game seem way too simple&rdquo;</blockquote>
+            </div>
+            <div>
+              <h4>Fix</h4>
+              <p>All the weapons are now <strong>visible from the start but locked, with a hover hint</strong> showing when each one unlocks. New players see the full scope of the game right away and have something to look forward to.</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- What came next -->
+    <section class="block" id="next">
+      <h2 class="label">What came next</h2>
+      <div class="ux-grid">
+        <article class="ux-card ux-wide">
+          <h3>From Orbital Defense to Orbital Defense 2</h3>
+          <p>This game was the first version of Orbital Defense 2. After the jam I took the ideas I had gained from building and playing it and made the sequel.</p>
+          <p class="od-next"><a class="tab tab-play" href="orbital-defense-2.html">See Orbital Defense 2 &rarr;</a></p>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <button class="to-top" id="to-top" type="button" aria-label="Back to top" hidden>↑</button>
+
+  <footer class="footer">© <span id="year"></span> Sudhakar Gnanaraj</footer>
+
+  <script src="script.js"></script>
+  <script src="game.js?v=24"></script>
+  <script src="section-nav.js?v=2"></script>
+</body>
+</html>

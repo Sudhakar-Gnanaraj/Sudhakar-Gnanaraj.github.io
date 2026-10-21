@@ -1000,3 +1000,28 @@ body.no-scroll { overflow: hidden; }
 .rb-source { display: none; }
 @media (prefers-reduced-motion: reduce) { .rb-book, .rb-leaf { transition-duration: 0.01s; } }
 @media (max-width: 480px) { .rb-controls { gap: 8px; } .rb-status { min-width: 110px; } }
+
+/* ---- Orbital Defense page --------------------------------------------------- */
+.od-blocks { margin-top: 16px; }
+.od-blocks .ld-block { padding: 24px 0; }
+.od-tip .ship img { image-rendering: auto; border-radius: 10px; }
+.od-planets .ship img { width: 64px; height: 64px; }
+.od-note { margin: 12px 0 0; font-size: 14px; color: var(--muted); }
+.od-links { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 16px 0 0; font-size: 15px; }
+.od-links a, .od-note a, .overview a { color: var(--accent); }
+.od-links a:hover, .od-note a:hover, .overview a:hover { color: #fff; }
+.vv-quotes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 16px; }
+.vv-quotes .vv-callout { margin: 0; font-size: 17px; }
+.od-next { margin: 16px 0 0; }
+.ux-card p + .od-next { margin-top: 16px; }
+@media (max-width: 860px) { .vv-quotes { grid-template-columns: 1fr; } .od-planets .ship img { width: 56px; height: 56px; } }
+.od-note + .pt-list { margin-top: 20px; }
+.od-planets .fleet { width: 160px; white-space: nowrap; }
+@media (max-width: 860px) { .od-planets .fleet { width: auto; white-space: normal; } }
+@media (max-width: 860px) { .od-tip .ship, .od-planets .ship { grid-row: 1 / span 4; } }
+
+.system p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--fg); }
+.system:has(.od-shot) { grid-template-columns: 1fr 1.3fr; }
+.system.gif-left:has(.od-shot) { grid-template-columns: 1.3fr 1fr; }
+.od-shot img { width: 100%; aspect-ratio: 16 / 9; }
+@media (max-width: 860px) { .system:has(.od-shot), .system.gif-left:has(.od-shot) { grid-template-columns: 1fr; } }
