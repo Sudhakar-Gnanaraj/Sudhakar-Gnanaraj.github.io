@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Last Bastion | Sudhakar Gnanaraj</title>
+  <meta name="description" content="Last Bastion: a two-player tabletop card game of attack and defence, played on a laser-cut board. Game design case study by Sudhakar Gnanaraj.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=55">
+</head>
+<body class="game-page">
+
+  <nav class="nav" aria-label="Main">
+    <a href="index.html">Home</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#contact">Contact</a>
+    <a class="nav-cta" href="index.html#contact">Resume</a>
+  </nav>
+
+  <main class="game">
+
+    <a class="back" href="index.html#projects">← Back to my works</a>
+    <h1 class="game-title">Last Bastion</h1>
+    <p class="tagline">A two-player tabletop game of attack and defence: build an army from a deck of cards, hold your walls and strike the enemy city.</p>
+
+    <nav class="section-bar" id="section-bar" aria-label="Jump to a section">
+      <a class="chip" href="#overview" data-target="overview" data-also="how-to-play">Overview</a>
+      <a class="chip" href="#core-loop" data-target="core-loop">Core loop</a>
+      <a class="chip" href="#cards" data-target="cards">Cards</a>
+      <a class="chip" href="#rules" data-target="rules">Rules</a>
+      <a class="chip" href="#board" data-target="board">Board</a>
+      <a class="chip" href="#process" data-target="process">Design process</a>
+    </nav>
+
+    <!-- Overview (left) + Details (right) -->
+    <section class="top" id="overview">
+      <div class="overview">
+        <h2 class="label">Overview</h2>
+        <p>Last Bastion is a two-player battlefield game. Each player builds an army from a deck of cards and uses it to attack and to defend. Both players start with five walls protecting their city, and the first to destroy all of the opponent's walls and strike the city wins.</p>
+        <p>It is a physical game, not a digital one: a 40-card deck, a laser-cut board with engraved tiles marking where each unit goes, and standing walls for each side. I designed the rules, the card layouts and the board, and tuned them over three rounds of playtesting.</p>
+      </div>
+
+      <aside class="details" aria-label="Game details">
+        <h2 class="label">Details</h2>
+        <dl>
+          <div><dt>Genre</dt><dd>Strategy card game</dd></div>
+          <div><dt>Players</dt><dd>2</dd></div>
+          <div><dt>Format</dt><dd><span class="plat"><svg class="plat-ico" aria-hidden="true"><use href="assets/platform-icons.svg#tabletop"/></svg>Tabletop</span></dd></div>
+          <div><dt>Components</dt><dd>40 cards, laser-cut board</dd></div>
+        </dl>
+      </aside>
+    </section>
+
+    <!-- How to play video / Rule book -->
+    <section class="media" id="how-to-play" aria-label="How to play and rule book">
+      <div class="tabs" role="tablist">
+        <button class="tab active" id="tab-video" type="button" role="tab" aria-selected="true" aria-controls="panel-video">How to play</button>
+        <button class="tab tab-play" id="tab-other" type="button" role="tab" aria-selected="false" aria-controls="panel-other"><svg class="plat-ico" aria-hidden="true"><use href="assets/platform-icons.svg#book"/></svg> Rule book</button>
+      </div>
+
+      <div class="screen" id="panel-video" role="tabpanel" aria-labelledby="tab-video">
+        <!-- Click-to-load: the YouTube player is only added when the poster is clicked. -->
+        <button class="video-facade" id="video-facade" type="button" data-video-id="FlSKNRYYiek" data-title="Last Bastion: how to play"
+                aria-label="Play the how-to-play video" style="background-image:url('assets/last-bastion/poster.webp')">
+          <span class="video-play" aria-hidden="true">&#9654;</span>
+          <span class="video-label">Watch how to play</span>
+        </button>
+      </div>
+
+      <div class="rb-panel" id="panel-other" role="tabpanel" aria-labelledby="tab-other" hidden>
+        <p class="rb-hint">The printed rule book that comes with the game. Flip through it with the buttons, the arrow keys, or by clicking a page.</p>
+        <div class="rb" id="rulebook" tabindex="0" role="group" aria-roledescription="rule book" aria-label="Last Bastion rule book">
+          <div class="rb-stage"></div>
+          <div class="rb-controls">
+            <button class="rb-prev tab" type="button" aria-label="Previous page">&larr; Previous</button>
+            <span class="rb-status" role="status" aria-live="polite"></span>
+            <button class="rb-next tab" type="button" aria-label="Next page">Next &rarr;</button>
+          </div>
+          <ol class="rb-source" hidden>
+            <li data-src="assets/last-bastion/rulebook-cover.webp" data-alt="Rule book cover: Last Bastion, Rule Book"></li>
+            <li data-src="assets/last-bastion/rulebook-cards.webp" data-alt="Cards: the Elephant, Infantry, Chariot and Horse cards and what each can do"></li>
+            <li data-src="assets/last-bastion/rulebook-how.webp" data-alt="How to play: preparation, and playing cards"></li>
+            <li data-src="assets/last-bastion/rulebook-attack.webp" data-alt="Attacking: how a player attacks the opponent's walls"></li>
+            <li data-src="assets/last-bastion/rulebook-defend.webp" data-alt="Defending: how Elephants block an attack"></li>
+            <li data-src="assets/last-bastion/rulebook-back.webp" data-alt="Rule book back cover"></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core loop -->
+    <section class="block" id="core-loop">
+      <h2 class="label">Core loop</h2>
+      <div class="features">
+        <figure class="loop" aria-label="Core loop of a turn: draw, place, attack, end turn">
+          <ol class="loop-steps">
+            <li class="step event"><h3>1. Draw</h3><p>Draw or discard until you hold six cards</p></li>
+            <li class="step decision"><h3>2. Place</h3><p>Put up to two units on the board</p></li>
+            <li class="step decision"><h3>3. Attack</h3><p>Attack as often as you can; the opponent may defend</p></li>
+            <li class="step event"><h3>4. End turn</h3><p>The opponent's turn begins</p></li>
+          </ol>
+          <div class="loop-return" aria-hidden="true"></div>
+          <figcaption class="loop-caption">Lose a wall and you draw a card; if it is an Elephant, you can play it at once</figcaption>
+          <ul class="legend">
+            <li><span class="swatch decision"></span>Player decision</li>
+            <li><span class="swatch event"></span>Game event</li>
+          </ul>
+        </figure>
+        <p class="lb-win"><strong>To win,</strong> destroy all of the opponent's walls and attack their city directly.</p>
+      </div>
+    </section>
+
+    <!-- Cards -->
+    <section class="block" id="cards">
+      <h2 class="label">The cards</h2>
+      <p class="section-lead">The deck has 40 cards: ten of each of four unit types, in two sets each. Every card shows its role in its title, its icon and its colour, so a player can tell what it does at a glance. I redesigned the cards this way after playtesting showed players mixing up their roles.</p>
+      <div class="lb-cards">
+        <article class="lb-card">
+          <img src="assets/last-bastion/card-infantry.webp" alt="The Infantry card: a turbaned soldier with a curved sword, power 10, role Attack" width="420" height="588" loading="lazy">
+          <h3>Infantry</h3>
+          <p class="lb-meta">10 cards &middot; two sets of 6 to 10</p>
+          <ul>
+            <li>Can only be used to attack</li>
+            <li>Cannot attack the same turn it is played</li>
+            <li>Maximum of 3 on the board</li>
+          </ul>
+        </article>
+        <article class="lb-card">
+          <img src="assets/last-bastion/card-chariot.webp" alt="The Chariot card: a horse-drawn chariot, power 5, role Quick Attack" width="420" height="588" loading="lazy">
+          <h3>Chariot</h3>
+          <p class="lb-meta">10 cards &middot; two sets of 1 to 5</p>
+          <ul>
+            <li>Can only be used to attack</li>
+            <li>Can attack the same turn it is played</li>
+            <li>Maximum of 3 on the board</li>
+          </ul>
+        </article>
+        <article class="lb-card">
+          <img src="assets/last-bastion/card-horse.webp" alt="The Horse card: a brown horse on blue, power 5, role Power Up" width="420" height="588" loading="lazy">
+          <h3>Horse</h3>
+          <p class="lb-meta">10 cards &middot; two sets of 1 to 5</p>
+          <ul>
+            <li>Can only be used to boost Infantry and Chariots</li>
+            <li>Cannot be played alone</li>
+            <li>Discarded after each attack</li>
+            <li>Maximum of 6 on the board</li>
+          </ul>
+        </article>
+        <article class="lb-card">
+          <img src="assets/last-bastion/card-elephant.webp" alt="The Elephant card: an armoured war elephant, power 10, role Defense" width="420" height="588" loading="lazy">
+          <h3>Elephant</h3>
+          <p class="lb-meta">10 cards &middot; two sets of 6 to 10</p>
+          <ul>
+            <li>Can only be used to block</li>
+            <li>Maximum of 5 on the board</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- Rules -->
+    <section class="block" id="rules">
+      <h2 class="label">Rules</h2>
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>Preparation</h3>
+          <ul>
+            <li>Each player starts with 5 walls to defend their city</li>
+            <li>The deck is shuffled</li>
+            <li>The player going first starts with 4 cards, and the player going second with 6</li>
+          </ul>
+        </article>
+        <article class="ux-card">
+          <h3>Playing cards</h3>
+          <ul>
+            <li>At the start of each turn, draw or discard so that you hold 6 cards (not on the first turn)</li>
+            <li>If the draw pile runs out, the discard pile is shuffled and becomes the draw pile</li>
+            <li>Place up to 2 units on the board each turn, then attack</li>
+            <li>The turn ends after attacking, and the opponent's turn begins</li>
+          </ul>
+        </article>
+        <article class="ux-card">
+          <h3>Attacking</h3>
+          <ul>
+            <li>Attack as many times as you like, but each unit can attack only once a turn</li>
+            <li>No attacks on the first turn of the game</li>
+            <li>A unit that has attacked is turned 90 degrees</li>
+            <li>If the combined power of the attackers is greater than the combined power of the defenders, the attack succeeds and the opponent loses a wall</li>
+            <li>Attacking cards cannot be used to defend</li>
+          </ul>
+        </article>
+        <article class="ux-card">
+          <h3>Defending</h3>
+          <ul>
+            <li>Only Elephants defend. You choose which ones to use, or choose not to defend</li>
+            <li>Several Elephants can band together, but only the strongest survives</li>
+            <li>A defence works only if the defenders' combined power is greater than the attackers'</li>
+            <li>After a successful defence all the attacking units are discarded and no wall is lost</li>
+            <li>When you lose a wall you draw a card, and if it is an Elephant you can play it immediately</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- Board -->
+    <section class="block" id="board">
+      <h2 class="label">The board</h2>
+      <p class="section-lead">The prototype board is laser-cut and engraved. Each tile carries the symbol of one unit type, so players know where Horses, Infantry, Chariots and Elephants belong. Standing walls line each side.</p>
+      <figure class="shot lb-board">
+        <img src="assets/last-bastion/board.webp" alt="The laser-cut Last Bastion board seen from above, with engraved unit tiles and a row of standing walls on each side" width="1400" height="1058" loading="lazy">
+        <figcaption>The finished board, set up for play</figcaption>
+      </figure>
+    </section>
+
+    <!-- Design process -->
+    <section class="block" id="process">
+      <h2 class="label">Designing through playtesting</h2>
+      <p class="section-lead">The first version was played with an ordinary deck of cards, so I could test the rules before making custom cards or a board. Each round of playtesting changed the rules, and the final deck and board came after the third.</p>
+
+      <div class="leveldesign">
+        <article class="ld-block">
+          <h3>First version: a standard deck</h3>
+          <p>The game used a regular deck without the face cards, with a separate deck for each player. Each suit had its own role. Some suits could only attack, one could attack or defend, and one could only defend, with a different limit on how many could sit on the board. On a turn a player had three actions, and could spend each on placing a card or on attacking.</p>
+          <figure class="shot lb-deck">
+            <img src="assets/last-bastion/deck-v1.webp" alt="The standard playing cards used in the first version: ace to ten in each of the four suits" width="1600" height="899" loading="lazy">
+            <figcaption>The first version used standard playing cards, ace to ten</figcaption>
+          </figure>
+          <div class="lb-photos">
+            <figure><img src="assets/last-bastion/sketch.webp" alt="A hand-drawn sketch of the first board layout" width="700" height="1028" loading="lazy"><figcaption>First board sketch</figcaption></figure>
+            <figure><img src="assets/last-bastion/playtest-1.webp" alt="Two players testing the first version with playing cards laid out on a table" width="687" height="1033" loading="lazy"><figcaption>Testing with playing cards</figcaption></figure>
+            <figure><img src="assets/last-bastion/playtest-2.webp" alt="Playing cards laid out on a table during a playtest" width="700" height="1071" loading="lazy"><figcaption>A playtest in progress</figcaption></figure>
+          </div>
+        </article>
+      </div>
+
+      <div class="pt-list">
+
+        <article class="pt-card">
+          <header><span class="pt-tag">Playtest 1</span><h3>Not enough attacking</h3></header>
+          <div class="pt-grid">
+            <div>
+              <h4>Problem</h4>
+              <p>Players weren't getting enough chances to attack, so the game took too long to progress. There were too many defensive cards and too few offensive ones. I also noted that a single shared draw pile could add randomness.</p>
+            </div>
+            <div>
+              <h4>Fix</h4>
+              <p>Players could now <strong>place three cards each turn and attack any number of times.</strong> The spade could no longer attack or defend and instead powered up attacking cards, and both players drew from a single draw pile.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="pt-card">
+          <header><span class="pt-tag">Playtest 2</span><h3>The board filled up too fast</h3></header>
+          <div class="pt-grid">
+            <div>
+              <h4>Problem</h4>
+              <p>The board filled with cards too quickly and there were not enough power-up cards. Diamonds were too strong: they had the same attacking power as hearts and could attack the turn they were placed, with no drawback.</p>
+            </div>
+            <div>
+              <h4>Fix</h4>
+              <p>Players could place only <strong>two cards a turn.</strong> Up to six power-up cards could be on the board, but their power dropped to a maximum of 5 (two sets of 1 to 5). Diamond power was cut to the same range.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="pt-card">
+          <header><span class="pt-tag">Playtest 3</span><h3>Weak defenders and unclear roles</h3></header>
+          <div class="pt-grid">
+            <div>
+              <h4>Problem</h4>
+              <p>The lower-powered club cards weren't strong enough to defend most attacks. Players also got confused about which cards did what.</p>
+            </div>
+            <div>
+              <h4>Fix</h4>
+              <p>Club power rose to <strong>two sets of 5 to 10</strong> (the final Elephants run 6 to 10). I redesigned the cards to show their roles, which became the four illustrated unit types: Infantry, Chariot, Horse and Elephant.</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+
+  <button class="to-top" id="to-top" type="button" aria-label="Back to top" hidden>↑</button>
+
+  <footer class="footer">© <span id="year"></span> Sudhakar Gnanaraj</footer>
+
+  <script src="script.js"></script>
+  <script src="rulebook.js?v=2"></script>
+  <script src="tabbed-media.js"></script>
+  <script src="section-nav.js?v=2"></script>
+</body>
+</html>

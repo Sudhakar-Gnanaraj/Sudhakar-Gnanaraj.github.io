@@ -13,4 +13,16 @@
     <path fill="currentColor" fill-rule="evenodd" d="M4.6 19a7.4 7.4 0 0 1 14.8 0zM8.6 14.4a1 1 0 1 0 2 0 1 1 0 1 0-2 0zM13.4 14.4a1 1 0 1 0 2 0 1 1 0 1 0-2 0z"/>
     <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M8.1 8.3 6.6 5.7M15.9 8.3l1.5-2.6"/>
   </symbol>
+  <symbol id="tabletop" viewBox="0 0 24 24">
+    <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round">
+      <rect x="3" y="6" width="9" height="12.5" rx="1.6" transform="rotate(-10 7.5 12.25)"/>
+      <rect x="11.5" y="5.5" width="9" height="12.5" rx="1.6" transform="rotate(9 16 11.75)"/>
+    </g>
+  </symbol>
+  <symbol id="book" viewBox="0 0 24 24">
+    <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M12 6.5C10.3 5.3 8 4.8 4 5v12.5c4-.2 6.3.3 8 1.5 1.7-1.2 4-1.7 8-1.5V5c-4-.2-6.3.3-8 1.5z"/>
+      <path d="M12 6.5V19"/>
+    </g>
+  </symbol>
 </svg>
