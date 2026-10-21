@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Size Matters | Sudhakar Gnanaraj</title>
+  <meta name="description" content="Size Matters: a 2D puzzle-platformer with no jump button, where two lasers shrink and enlarge the world. Made for Kenney Jam 2026 (theme: SCALE). Game design case study by Sudhakar Gnanaraj.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=84">
+</head>
+<body class="game-page">
+
+  <nav class="nav" aria-label="Main">
+    <a href="index.html">Home</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#contact">Contact</a>
+    <a class="nav-cta" href="index.html#contact">Resume</a>
+  </nav>
+
+  <main class="game">
+
+    <a class="back" href="index.html#projects">← Back to my works</a>
+    <h1 class="game-title">Size Matters</h1>
+    <p class="tagline">You can't jump. Shrink and enlarge the world to build your own path to the goal.</p>
+
+    <nav class="section-bar" id="section-bar" aria-label="Jump to a section">
+      <a class="chip" href="#overview" data-target="overview" data-also="media">Overview</a>
+      <a class="chip" href="#core-loop" data-target="core-loop">Core loop</a>
+      <a class="chip" href="#mechanics" data-target="mechanics">Mechanics</a>
+      <a class="chip" href="#levels" data-target="levels">Levels</a>
+      <a class="chip" href="#systems" data-target="systems">Systems</a>
+      <a class="chip" href="#tech" data-target="tech">Technical</a>
+      <a class="chip" href="#game-jam" data-target="game-jam">Game jam</a>
+      <a class="chip" href="#credits" data-target="credits">Credits</a>
+    </nav>
+
+    <!-- Overview (left) + Details (right) -->
+    <section class="top" id="overview">
+      <div class="overview">
+        <h2 class="label">Overview</h2>
+        <p>Size Matters is a 2D puzzle-platformer with no jump button. The player can only walk left and right, and carries two laser guns: a Shrink Ray and an Enlarge Ray. Grow blocks into staircases, shrink obstacles out of the way, bounce beams off mirrors to reach blocks out of sight, and ride moving platforms across nine hand-built levels.</p>
+        <p>I made it solo for <a href="https://itch.io/jam/kenney-jam-2026" target="_blank" rel="noopener">Kenney Jam 2026</a>, whose theme was <strong>SCALE</strong>, so scale became the core mechanic. I did the design, programming and level design.</p>
+      </div>
+
+      <aside class="details" aria-label="Game details">
+        <h2 class="label">Details</h2>
+        <dl>
+          <div><dt>Genre</dt><dd>Puzzle-platformer</dd></div>
+          <div><dt>Engine</dt><dd>Unity 6 (URP 2D)</dd></div>
+          <div><dt>Language</dt><dd>C#</dd></div>
+          <div><dt>Platform</dt><dd><span class="plat"><svg class="plat-ico" aria-hidden="true"><use href="assets/platform-icons.svg#web"/></svg>Web</span></dd></div>
+        </dl>
+        <div class="ai-disclosure">
+          <h3>AI Disclosure</h3>
+          <p>No generative AI was used to make this game, as the jam rules required.</p>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Gameplay video / Play -->
+    <section class="media" id="media" aria-label="Gameplay and play">
+      <div class="mobile-warning" id="mobile-warning" role="note" hidden>
+        <strong>Heads up:</strong> this game is played with a keyboard and mouse, so it won't work on phones or tablets. For the best experience, play on a desktop or laptop.
+      </div>
+      <div class="tabs" role="tablist">
+        <button class="tab active" id="tab-gameplay" role="tab" aria-selected="true" aria-controls="panel-gameplay">Gameplay</button>
+        <button class="tab tab-play" id="tab-play" role="tab" aria-selected="false" aria-controls="panel-play"><span aria-hidden="true">▶</span> Play the game</button>
+        <div class="play-tools" id="play-tools" hidden>
+          <button class="tab" id="btn-mute" type="button" aria-pressed="false">🔊 Sound on</button>
+          <button class="tab" id="btn-fullscreen" type="button">Fullscreen ⤢</button>
+        </div>
+        <a class="itch-badge" href="https://pixel-monkey-96.itch.io/size-matters" target="_blank" rel="noopener"><img src="assets/itch-badge.png" alt="Available on itch.io" width="130" height="40"></a>
+      </div>
+
+      <p class="play-note" id="load-note" role="status" hidden>The game takes a short time to load, especially the first time you play.</p>
+
+      <p class="play-note focus-note" id="focus-note" role="status" hidden>⏸ The game is paused. Click on the game screen to resume.</p>
+
+      <div class="screen" id="panel-gameplay" role="tabpanel" aria-labelledby="tab-gameplay">
+        <!-- Placeholder until the gameplay video is ready: add data-video-id to make it a click-to-load YouTube poster. -->
+        <div class="placeholder" id="gameplay-facade" data-title="Size Matters gameplay" style="background-image:url('assets/size-matters/shot-mirror.webp')">
+          <span>Gameplay video coming soon</span>
+        </div>
+      </div>
+
+      <div class="screen" id="panel-play" role="tabpanel" aria-labelledby="tab-play" hidden>
+        <iframe id="game-frame" title="Size Matters (WebGL build)" data-src="games/size-matters/index.html?v=1" allow="fullscreen; autoplay" allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <!-- Core loop -->
+    <section class="block" id="core-loop">
+      <h2 class="label">Core loop</h2>
+      <p class="section-lead">Read, resize, walk. The player changes the size of objects to build a path, then tests it on foot. With no jump button, resizing is the only way to change your route.</p>
+      <div class="features">
+        <figure class="loop" aria-label="Core loop: read the level, pick a ray, resize objects, walk the path">
+          <ol class="loop-steps">
+            <li class="step decision"><h3>1. Read the level</h3><p>Find the gaps between you and the goal</p></li>
+            <li class="step decision"><h3>2. Pick a ray</h3><p>Scroll to switch between Shrink and Enlarge</p></li>
+            <li class="step decision"><h3>3. Resize objects</h3><p>Hold click and let go at the right size</p></li>
+            <li class="step event"><h3>4. Walk the path</h3><p>Walk it, or ride the platforms, to the goal</p></li>
+          </ol>
+          <div class="loop-return" aria-hidden="true"></div>
+          <figcaption class="loop-caption">Fell or stuck? Press R or re-aim. Reach the goal and the next level adds one new idea, with the same two rays.</figcaption>
+          <ul class="legend">
+            <li><span class="swatch decision"></span>Player decision</li>
+            <li><span class="swatch event"></span>Player action</li>
+          </ul>
+        </figure>
+      </div>
+
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>Moment to moment</h3>
+          <p>Aim, hold click, watch the block grow or shrink, and let go at the right size. The beam's colour and hit particles show at once whether the target can be scaled.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Per level</h3>
+          <p>Spot the gap between you and the goal, work out which blocks to resize and in what order, then walk or ride the route. Press R to restart and try another order.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Across the game</h3>
+          <p>Each act adds a mechanic (scaling, then moving platforms, then mirrors), and later levels combine them. Tighter scale caps keep old tricks from solving new puzzles.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Why it works</h3>
+          <p>Every action can be undone (shrink what you grew), so experimenting is safe. A failed attempt costs seconds, not minutes: falling or getting stuck sends you straight back to aiming, which keeps players in the loop instead of punishing them.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Mechanics -->
+    <section class="block" id="mechanics">
+      <h2 class="label">Mechanics</h2>
+      <p class="section-lead">The whole game comes from two lasers and a world that reacts to size.</p>
+      <div class="systems">
+
+        <article class="system gif-right">
+          <div class="system-text">
+            <h3>Shrink Ray</h3>
+            <p>Hold left click to fire. Objects scale smoothly while the beam stays on them, so the player decides the exact size by when they let go. Shrinking clears obstacles out of the way or turns a block into a step that fits a gap.</p>
+          </div>
+          <figure class="media-shot od-shot"><img src="assets/size-matters/shot-shrink.webp" alt="The red Shrink Ray hitting an orange block on a high ledge" width="1280" height="720" loading="lazy"></figure>
+        </article>
+
+        <article class="system gif-left">
+          <div class="system-text">
+            <h3>Enlarge Ray</h3>
+            <p>Scroll the mouse wheel to switch to the Enlarge Ray. Growing a block is how the player gains height: a small block becomes a staircase or a bridge. A block pressed against a wall or the floor grows away from it instead of clipping through, and stops growing if it is boxed in on both sides.</p>
+          </div>
+          <figure class="media-shot od-shot"><img src="assets/size-matters/shot-enlarge.webp" alt="The green Enlarge Ray growing a large orange block next to the player" width="1280" height="720" loading="lazy"></figure>
+        </article>
+
+        <article class="system gif-right">
+          <div class="system-text">
+            <h3>Reflective surfaces</h3>
+            <p>The laser bounces off mirrors up to three times, which allows bank-shot puzzles: the player can resize a block they can't see or reach directly. Mirrors can't be resized themselves, so they are fixed points to plan around.</p>
+          </div>
+          <figure class="media-shot od-shot"><img src="assets/size-matters/shot-mirror.webp" alt="The Enlarge beam bouncing off a mirror on a platform to hit a block on the far side of the level" width="1280" height="720" loading="lazy"></figure>
+        </article>
+
+      </div>
+
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>Moving platforms</h3>
+          <p>Platforms reverse when they hit an obstacle and carry the player and any objects resting on them.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Immune objects</h3>
+          <p>Some surfaces can't be scaled, shown by a different hit effect, so the player learns which objects are tools.</p>
+        </article>
+        <article class="ux-card ux-wide">
+          <h3>No jumping</h3>
+          <p>All vertical movement comes from resizing the environment, so every level is a question about the world, not about reflexes.</p>
+        </article>
+      </div>
+
+      <div class="leveldesign">
+        <article class="ld-block">
+          <h3>Controls</h3>
+          <div class="table-wrap">
+            <table class="fleet-table cycle-table sm-controls">
+              <thead>
+                <tr><th scope="col">Input</th><th scope="col">Action</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="fleet">A / D or Left / Right arrows</th><td class="desc" data-label="Action">Move</td></tr>
+                <tr><th scope="row" class="fleet">Mouse</th><td class="desc" data-label="Action">Aim</td></tr>
+                <tr><th scope="row" class="fleet">Left click (hold)</th><td class="desc" data-label="Action">Fire the laser</td></tr>
+                <tr><th scope="row" class="fleet">Scroll wheel</th><td class="desc" data-label="Action">Switch between Shrink and Enlarge</td></tr>
+                <tr><th scope="row" class="fleet">R</th><td class="desc" data-label="Action">Restart the level</td></tr>
+                <tr><th scope="row" class="fleet">Esc</th><td class="desc" data-label="Action">Main menu</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Level design -->
+    <section class="block" id="levels">
+      <h2 class="label">Level design</h2>
+      <p class="section-lead">Each level adds one new idea, and the number of interactive objects grows from 2 in Level 1 to 21 in Level 9. Since there's no jump button, every level asks one question: how do I change the world so I can walk to the goal?</p>
+      <div class="leveldesign">
+
+        <article class="ld-block">
+          <h3>Three acts</h3>
+          <div class="table-wrap">
+            <table class="fleet-table cycle-table sm-acts">
+              <thead>
+                <tr><th scope="col">Act</th><th scope="col">Levels</th><th scope="col">Backdrop</th><th scope="col">Focus</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="fleet">I: Learn to Scale</th><td data-label="Levels">1 &ndash; 3</td><td data-label="Backdrop">Pyramids</td><td class="desc" data-label="Focus">Only scalable blocks: learn to grow and shrink</td></tr>
+                <tr><th scope="row" class="fleet">II: Things in Motion</th><td data-label="Levels">4 &ndash; 6</td><td data-label="Backdrop">Tall trees</td><td class="desc" data-label="Focus">Adds moving platforms and timing</td></tr>
+                <tr><th scope="row" class="fleet">III: Bend the Beam</th><td data-label="Levels">7 &ndash; 9</td><td data-label="Backdrop">Forest</td><td class="desc" data-label="Focus">Adds reflective surfaces and indirect aiming</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="ld-block">
+          <h3>Level by level</h3>
+          <div class="table-wrap">
+            <table class="fleet-table cycle-table sm-levels">
+              <thead>
+                <tr><th scope="col">Level</th><th scope="col">Blocks</th><th scope="col">Platforms</th><th scope="col">Mirrors</th><th scope="col">What's new</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="fleet">1 (Tutorial)</th><td data-label="Blocks">2</td><td data-label="Platforms">0</td><td data-label="Mirrors">0</td><td class="desc" data-label="What's new">Controls shown on screen. Grow a block to cross a gap.</td></tr>
+                <tr><th scope="row" class="fleet">2</th><td data-label="Blocks">3</td><td data-label="Platforms">0</td><td data-label="Mirrors">0</td><td class="desc" data-label="What's new">More blocks, so the order you scale them in matters.</td></tr>
+                <tr><th scope="row" class="fleet">3</th><td data-label="Blocks">2</td><td data-label="Platforms">0</td><td data-label="Mirrors">0</td><td class="desc" data-label="What's new">A block sits right under the goal, so you resize near it.</td></tr>
+                <tr><th scope="row" class="fleet">4</th><td data-label="Blocks">3</td><td data-label="Platforms">2</td><td data-label="Mirrors">0</td><td class="desc" data-label="What's new">Moving platforms appear. The goal is on the left, so you play in reverse.</td></tr>
+                <tr><th scope="row" class="fleet">5</th><td data-label="Blocks">2</td><td data-label="Platforms">2</td><td data-label="Mirrors">0</td><td class="desc" data-label="What's new">Platforms moving in opposite directions: timing.</td></tr>
+                <tr><th scope="row" class="fleet">6</th><td data-label="Blocks">3</td><td data-label="Platforms">3</td><td data-label="Mirrors">0</td><td class="desc" data-label="What's new">The goal is raised high up. Platforms move at different speeds.</td></tr>
+                <tr><th scope="row" class="fleet">7</th><td data-label="Blocks">3</td><td data-label="Platforms">3</td><td data-label="Mirrors">1</td><td class="desc" data-label="What's new">A reflective surface appears. You start mid-level and the goal is behind you.</td></tr>
+                <tr><th scope="row" class="fleet">8</th><td data-label="Blocks">6</td><td data-label="Platforms">6</td><td data-label="Mirrors">1</td><td class="desc" data-label="What's new">A vertical platform appears. The busiest level yet, with layered routes.</td></tr>
+                <tr><th scope="row" class="fleet">9 (Finale)</th><td data-label="Blocks">6</td><td data-label="Platforms">6</td><td data-label="Mirrors">9</td><td class="desc" data-label="What's new">Several mirrors. Every mechanic at once, including a mirror on a platform's route.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="ld-block">
+          <h3>Tuning tools</h3>
+          <div class="ux-grid">
+            <article class="ux-card">
+              <h3>Scale limits per object</h3>
+              <p>Each block has its own minimum and maximum size. Most can grow 4&ndash;5&times;, but some in Levels 7&ndash;9 stop at about 2.15&times;. That removes &ldquo;just make it huge&rdquo; solutions without adding any new mechanic.</p>
+            </article>
+            <article class="ux-card">
+              <h3>Starting size as a hint</h3>
+              <p>Blocks start at sizes from 0.6&times; to 3.5&times;. A tiny block hints &ldquo;grow me&rdquo; and an oversized one hints &ldquo;shrink me&rdquo;, so the player gets guidance without any text.</p>
+            </article>
+            <article class="ux-card">
+              <h3>Weight and gravity</h3>
+              <p>Blocks have very high mass, so the player can't push them around: changing a block's size is the only way to use it. Mirrors have extra-heavy gravity so they settle at once and stay put.</p>
+            </article>
+            <article class="ux-card">
+              <h3>Platform tuning</h3>
+              <p>Platforms run at speeds of 1.5&ndash;3, start in different directions, and move sideways or (later) up and down. That changes a level's timing without new code.</p>
+            </article>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- Systems behind the levels -->
+    <section class="block" id="systems">
+      <h2 class="label">Systems behind the levels</h2>
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>Objects ride on each other</h3>
+          <p>Blocks, mirrors and platforms all carry whatever rests on top of them, so mechanics stack instead of just sitting next to each other.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Fall means instant retry</h3>
+          <p>A kill zone along the bottom of every level restarts it with a screen fade. R restarts at any time, so trying ideas is cheap.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Goal feedback</h3>
+          <p>The goal pulses gently while you're on your way. Reaching it plays particles and a sound, then the next level loads with a transition.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Flow</h3>
+          <p>Main menu &rarr; level select (all nine levels) &rarr; Levels 1&ndash;9 &rarr; a &ldquo;Thanks for playing&rdquo; screen. The level select lets jam judges and players skip straight to the later puzzles.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Technical highlights -->
+    <section class="block" id="tech">
+      <h2 class="label">Technical highlights</h2>
+      <p class="section-lead">The main systems are about 1,200 lines of C#, built on Unity's 2D physics and the new Input System.</p>
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>Multi-bounce laser</h3>
+          <p>Physics2D raycasts with a contact filter, and <code>Vector2.Reflect</code> for bounces, with separate &ldquo;stop&rdquo; and &ldquo;hittable&rdquo; layer masks. Raycast buffers are allocated once and reused, so firing creates no garbage each frame, and hit particles spawn at a capped rate.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Constraint-aware scaling</h3>
+          <p>Before growing, an object casts rays from each side to find what it's touching, then shifts its position so it grows away from walls and floors.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Platform carrying</h3>
+          <p>A platform carries only objects resting on its top face. A registry picks one winning carrier when an object touches several at once.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Kinematic moving platforms</h3>
+          <p>A BoxCast look-ahead reverses a platform before contact, and a reversal cooldown prevents jitter.</p>
+        </article>
+        <article class="ux-card ux-wide">
+          <h3>Game flow</h3>
+          <p>A global input lock during transitions, screen-fade scene loading, a singleton audio manager and a level-select menu.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Game jam -->
+    <section class="block" id="game-jam">
+      <h2 class="label">Designing for the game jam</h2>
+      <p class="section-lead"><a href="https://itch.io/jam/kenney-jam-2026" target="_blank" rel="noopener">Kenney Jam 2026</a>, hosted by Kenney and Kay Lousberg on itch.io, ran from July 17 to 19, 2026 (about 50 hours) and received 568 entries. The theme was announced at the start: <strong>SCALE</strong>.</p>
+      <div class="leveldesign">
+        <article class="ld-block">
+          <div class="table-wrap">
+            <table class="fleet-table cycle-table pw-brief">
+              <thead>
+                <tr><th scope="col">Jam requirement</th><th scope="col">How Size Matters answers it</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="fleet">Incorporate the theme: SCALE</th>
+                  <td class="desc" data-label="How Size Matters answers it">Scale is the only verb. Changing the size of objects with two lasers is how the player moves, solves and progresses; there is no jump to fall back on.</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Use only Kenney or KayKit assets</th>
+                  <td class="desc" data-label="How Size Matters answers it">All the art comes from Kenney asset packs: pixel tilemaps, characters and backgrounds.</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">No generative AI</th>
+                  <td class="desc" data-label="How Size Matters answers it">No AI was used for code, art or audio.</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">About 50 hours</th>
+                  <td class="desc" data-label="How Size Matters answers it">Two tools and three supporting mechanics, reused across nine levels. Tuning numbers (scale caps, starting sizes, platform speeds) created new puzzles without new code.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="ld-block">
+          <h3>What I learned</h3>
+          <p>Without a jump, every bit of vertical movement had to come from the player's own actions, so the levels are built around what the player can change, not around platforming skill. Per-object scale caps turned out to be my strongest design tool: one number could remove a whole class of unintended solutions.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Credits -->
+    <section class="block" id="credits">
+      <h2 class="label">Assets and credits</h2>
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>Art</h3>
+          <p>Kenney asset packs (pixel tilemaps, characters and backgrounds), as the jam rules required.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Music and sound</h3>
+          <p>The Casual &amp; Relaxing Game Music and Casual Game Sounds packs.</p>
+        </article>
+        <article class="ux-card ux-wide">
+          <h3>Font</h3>
+          <p>Pixelify Sans (Google Fonts, Open Font License).</p>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <button class="to-top" id="to-top" type="button" aria-label="Back to top" hidden>↑</button>
+
+  <footer class="footer">© <span id="year"></span> Sudhakar Gnanaraj</footer>
+
+  <script src="script.js"></script>
+  <script src="game.js?v=29"></script>
+  <script src="section-nav.js?v=2"></script>
+</body>
+</html>

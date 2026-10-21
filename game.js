@@ -90,7 +90,8 @@ function watchLoading() {
 function makeVideo(tab, panel, facadeId) {
   const facade = document.getElementById(facadeId);
   const video = { tab, panel, facade, title: facade.dataset.title || "Video", frame: null };
-  facade.addEventListener("click", () => loadVideo(video));
+  // A placeholder poster (no data-video-id yet) stays a still image
+  facade.addEventListener("click", () => facade.dataset.videoId && loadVideo(video));
   return video;
 }
 
