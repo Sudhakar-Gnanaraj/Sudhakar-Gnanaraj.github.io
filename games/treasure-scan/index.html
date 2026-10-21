@@ -14,6 +14,11 @@
   html.embedded .phone-col { height: 100%; justify-content: center; gap: 0; }
   html.embedded .phone-frame { width: min(100vw, calc(100vh * 390 / 844)); padding: 0; border-radius: 0; background: none; box-shadow: none; }
   html.embedded .screen { border-radius: 0; }
+  /* Portrait viewports (any phone shape): fill the whole screen instead of letterboxing to 390:844 */
+  @media (max-aspect-ratio: 3/4) {
+    html.embedded .phone-col { align-items: stretch; }
+    html.embedded .phone-frame { width: 100%; height: 100%; aspect-ratio: auto; }
+  }
 </style>
 <title>Minefield Scanner</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
