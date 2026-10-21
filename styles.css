@@ -1055,3 +1055,50 @@ body.no-scroll { overflow: hidden; }
 /* Portrait game window (a phone-shaped build such as Paperwala) */
 .screen.screen-portrait { aspect-ratio: 9 / 16; width: auto; height: min(82vh, 860px); max-width: 100%; margin-inline: auto; }
 .screen.screen-portrait.cover-fullscreen, .screen.screen-portrait:fullscreen { width: 100vw; height: 100vh; height: 100dvh; max-width: none; aspect-ratio: auto; }
+
+/* ---- Treasure Scan page ------------------------------------------------------ */
+.ts-disclaimer { margin-top: 14px; padding: 10px 14px; font-size: 13px !important; line-height: 1.5; color: var(--muted) !important; border-left: 2px solid rgba(255, 255, 255, 0.18); }
+.screen.ts-phone { aspect-ratio: 390 / 844; width: auto; height: min(84vh, 860px); max-width: 100%; margin-inline: auto; }
+#goal .score strong { font-size: 24px; }
+.ts-fantasy { margin-top: 18px; }
+.ts-flow, .ts-popups { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; align-items: start; }
+.ts-flow { max-width: 760px; margin: 0 auto; }
+.ts-popups { margin-top: 22px; }
+.ts-flow figure, .ts-popups figure, .ts-art figure { margin: 0; text-align: center; }
+.ts-flow img { display: block; width: 100%; height: auto; border-radius: 16px; box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45); }
+.ts-popups img { display: block; width: 100%; height: auto; }
+.ts-flow figcaption, .ts-popups figcaption, .ts-art figcaption, .ts-key figcaption { margin-top: 10px; font-size: 14px; color: var(--muted); }
+.ts-clues { display: grid; grid-template-columns: 1.2fr 1fr; gap: 28px; align-items: center; }
+.ts-clue-list { display: flex; flex-direction: column; gap: 14px; }
+.ts-clue { display: grid; grid-template-columns: 72px 1fr; gap: 16px; align-items: center; padding: 14px 16px; background: rgba(0, 0, 0, 0.25); border-left: 3px solid var(--accent); border-radius: 4px; }
+.ts-clue img { width: 72px; height: auto; display: block; }
+.ts-clue h3 { margin: 0 0 4px; font-size: 18px; font-weight: 500; color: #fff; }
+.ts-clue p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--fg); }
+.ts-key { margin: 0; text-align: center; }
+.ts-key img { display: block; width: min(100%, 380px); height: auto; margin: 0 auto; }
+.ts-ladder .fleet { width: 220px; }
+.ts-ladder td:last-child { color: #fff; font-weight: 500; }
+.ts-changes td { vertical-align: top; }
+.ts-changes td.final { color: #fff; font-weight: 500; }
+.ts-art { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; padding: 22px 18px; background: rgba(0, 0, 0, 0.25); border-radius: 12px; }
+.ts-art img { display: block; width: 100%; max-width: 120px; height: auto; margin: 0 auto; }
+.ux-card li strong { color: #fff; font-weight: 500; }
+@media (max-width: 860px) {
+  .ts-clues { grid-template-columns: 1fr; }
+  .ts-art { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ts-ladder .fleet { width: auto; }
+}
+@media (max-width: 560px) {
+  .ts-flow, .ts-popups { grid-template-columns: 1fr; max-width: 300px; margin-inline: auto; }
+}
+/* Phone stays centred; the Fullscreen button sits just to its right, at the top */
+.ts-play-wrap { display: grid; grid-template-columns: 1fr auto 1fr; align-items: start; gap: 14px; }
+.ts-play-wrap .screen.ts-phone { grid-column: 2; margin-inline: 0; }
+.ts-play-wrap #ts-fs { grid-column: 3; justify-self: start; }
+@media (max-width: 560px) {
+  .ts-play-wrap { grid-template-columns: auto; justify-content: center; }
+  .ts-play-wrap .screen.ts-phone { grid-column: 1; justify-self: center; }
+  .ts-play-wrap #ts-fs { grid-column: 1; grid-row: 1; justify-self: end; }
+}
+.screen.ts-phone.cover-fullscreen, .screen.ts-phone:fullscreen { width: 100vw; height: 100vh; height: 100dvh; max-width: none; aspect-ratio: auto; }
+.screen.ts-phone:fullscreen iframe, .screen.ts-phone.cover-fullscreen iframe { width: 100%; height: 100%; }

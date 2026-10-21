@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Treasure Scan | Sudhakar Gnanaraj</title>
+  <meta name="description" content="Treasure Scan: a live-ops event concept for Coin Master, with an event one-pager, UI spec and a playable prototype. Event design case study by Sudhakar Gnanaraj.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=82">
+</head>
+<body class="game-page">
+
+  <nav class="nav" aria-label="Main">
+    <a href="index.html">Home</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#contact">Contact</a>
+    <a class="nav-cta" href="index.html#contact">Resume</a>
+  </nav>
+
+  <main class="game">
+
+    <a class="back" href="index.html#projects">← Back to my works</a>
+    <h1 class="game-title">Treasure Scan</h1>
+    <p class="tagline">A live-ops event concept for Coin Master: a daily minefield mini-game that gets veteran players to stay longer per visit.</p>
+
+    <nav class="section-bar" id="section-bar" aria-label="Jump to a section">
+      <a class="chip" href="#overview" data-target="overview">Overview</a>
+      <a class="chip" href="#prototype" data-target="prototype">Play it</a>
+      <a class="chip" href="#goal" data-target="goal">The goal</a>
+      <a class="chip" href="#core-loop" data-target="core-loop">Core loop</a>
+      <a class="chip" href="#screens" data-target="screens">Screen flow</a>
+      <a class="chip" href="#clues" data-target="clues">Clue system</a>
+      <a class="chip" href="#sectors" data-target="sectors">Sectors</a>
+      <a class="chip" href="#changes" data-target="changes">What changed</a>
+      <a class="chip" href="#art" data-target="art">Art direction</a>
+      <a class="chip" href="#measure" data-target="measure">Measurement</a>
+    </nav>
+
+    <!-- Overview (left) + Details (right) -->
+    <section class="top" id="overview">
+      <div class="overview">
+        <h2 class="label">Overview</h2>
+        <p>Coin Master players past Day 30 open the game 7.6 times a day, but each visit lasts only about four minutes. Treasure Scan is a live-ops event I designed to make those visits longer and more deliberate, without asking players to open the app more often.</p>
+        <p>The event sits on top of the existing loop. Every slot spin earns a Scanner Point. Players spend points to scan tiles on a minefield board, read colour clues, and find reward caches before they hit a mine. I wrote the event one-pager and the UI spec, set the art direction, and built a playable prototype.</p>
+        <p class="ts-disclaimer">Student concept made for the Design Management course at the National Institute of Design. Not affiliated with, or endorsed by, Moon Active. Coin Master and its characters belong to Moon Active. KPI values are targets, not results.</p>
+      </div>
+
+      <aside class="details" aria-label="Project details">
+        <h2 class="label">Details</h2>
+        <dl>
+          <div><dt>Type</dt><dd>Live-ops event concept</dd></div>
+          <div><dt>Game</dt><dd>Coin Master</dd></div>
+          <div><dt>Course</dt><dd>Design Management, NID</dd></div>
+          <div><dt>Platform</dt><dd><span class="plat"><svg class="plat-ico" aria-hidden="true"><use href="assets/platform-icons.svg#web"/></svg>Web prototype</span></dd></div>
+        </dl>
+        <div class="ai-disclosure">
+          <h3>AI Disclosure</h3>
+          <p>This prototype uses AI-generated art, and AI tools were used to assist with its coding.</p>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Playable prototype -->
+    <section class="block" id="prototype">
+      <h2 class="label">Play the prototype</h2>
+      <p class="section-lead">The prototype starts on a stand-in Coin Master main screen, already set up for testing at 3,960 ★, just under the 4,000 ★ unlock. Your first spin unlocks the event; tap its icon to open the briefing and the sector map. Each spin also banks a Scanner Point to spend on the board.</p>
+      <p class="play-note" id="ts-spin-note">Click on the spin button to start the event.</p>
+      <div class="ts-play-wrap">
+        <div class="screen ts-phone" id="ts-screen">
+          <button class="fs-exit" id="ts-fs-exit" type="button" hidden>Exit fullscreen ⤡</button>
+          <iframe id="ts-frame" title="Treasure Scan playable prototype" src="games/treasure-scan/index.html?v=1" loading="lazy"></iframe>
+        </div>
+        <button class="tab" id="ts-fs" type="button">Fullscreen ⤢</button>
+      </div>
+    </section>
+
+    <!-- The goal -->
+    <section class="block" id="goal">
+      <h2 class="label">The problem and the goal</h2>
+      <p class="section-lead">Veterans (players past Day 30) are 31% of daily active users, about 174,000 players a day. They play around 30 minutes a day, but in very small bites. The goal was longer visits, not more of them: give veterans a reason to linger, not a reason to open the app more often.</p>
+      <div class="score-grid">
+        <div class="score good"><strong>4.0 &rarr; 5.5 min</strong><span>Target average session length for players past Day 30</span></div>
+        <div class="score good"><strong>+37.5%</strong><span>Target uplift, measured over a three-week window</span></div>
+        <div class="score timer"><strong>&ge; 7.6</strong><span>Guardrail: sessions per day must not drop below today's level</span></div>
+        <div class="score ok"><strong>31%</strong><span>Of daily active users are veterans, about 174,000 players a day</span></div>
+      </div>
+    </section>
+
+    <!-- Core loop -->
+    <section class="block" id="core-loop">
+      <h2 class="label">Core loop</h2>
+      <div class="features">
+        <figure class="loop" aria-label="Core loop: spin, scan, resolve, progress">
+          <ol class="loop-steps">
+            <li class="step event"><h3>1. Spin</h3><p>Every slot spin banks 1 Scanner Point, whatever the result</p></li>
+            <li class="step decision"><h3>2. Scan</h3><p>Spend a point to reveal one tile on the board</p></li>
+            <li class="step event"><h3>3. Resolve</h3><p>A cache is banked; a mine restarts the sector</p></li>
+            <li class="step event"><h3>4. Progress</h3><p>Bank every cache to open the next sector</p></li>
+          </ol>
+          <div class="loop-return" aria-hidden="true"></div>
+          <figcaption class="loop-caption">There is no store inside the event: more Scanner Points only come from spinning</figcaption>
+          <ul class="legend">
+            <li><span class="swatch decision"></span>Player decision</li>
+            <li><span class="swatch event"></span>Game event</li>
+          </ul>
+        </figure>
+        <div class="vv-quotes ts-fantasy">
+          <blockquote class="vv-callout">&ldquo;I hope I find the right rewards.&rdquo;</blockquote>
+          <blockquote class="vv-callout">&ldquo;I hope I don't click on a bomb tile.&rdquo;</blockquote>
+        </div>
+        <p class="od-note">The player fantasy: every tap is a small bet, so even a 30 to 60 second session feels charged, through anticipation (what's under the tile?) and loss aversion (don't lose the run).</p>
+        <div class="ux-grid">
+          <article class="ux-card">
+            <h3>Entry</h3>
+            <p>The event unlocks at 4,000 stars, just above the typical Day 30 range of 1,000 to 3,000, so it reads as a near-term milestone. A new icon on the main screen's side rail glows whenever the player has unused Scanner Points.</p>
+          </article>
+          <article class="ux-card">
+            <h3>The monetizing pinch</h3>
+            <p>There is no offer to buy Scanner Points. A player who wants to push further, faster has to spin more, which routes the pinch back to the game's existing energy purchases and keeps the mini-game itself feeling fair.</p>
+          </article>
+          <article class="ux-card ux-wide">
+            <h3>Time box</h3>
+            <p>The event runs on a 24-hour timer with a live countdown on the sector map, so urgency is visible without push notifications. Clearing every sector, or running out of time, starts a cooldown before the event can trigger again.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen flow -->
+    <section class="block" id="screens">
+      <h2 class="label">Screen flow</h2>
+      <p class="section-lead">Unlock poster, then a one-time briefing, then the sector map, then the board, with pop-ups for each outcome. The briefing appears on the first visit; after that, the event icon jumps straight to the sector map.</p>
+      <div class="ts-flow">
+        <figure><img src="games/treasure-scan/assets/event_poster.webp" alt="The unlock poster: the scout pig with binoculars and a Start Game button" width="941" height="1672" loading="lazy"><figcaption>1 &middot; Unlock poster</figcaption></figure>
+        <figure><img src="games/treasure-scan/assets/tutorial_screen.webp" alt="The briefing screen with the scout pig and the three clue colours" width="941" height="1672" loading="lazy"><figcaption>2 &middot; Briefing</figcaption></figure>
+        <figure><img src="games/treasure-scan/assets/level_map.webp" alt="The sector map: an island with six sector nodes along a path, from trenches to a jungle base" width="941" height="1672" loading="lazy"><figcaption>3 &middot; Sector map</figcaption></figure>
+      </div>
+      <div class="ts-popups">
+        <figure><img src="games/treasure-scan/assets/win_popup.webp" alt="Level Complete pop-up with a Next button" width="900" height="844" loading="lazy"><figcaption>Sector cleared</figcaption></figure>
+        <figure><img src="games/treasure-scan/assets/lost_popup.webp" alt="Kaboom pop-up with a soot-covered pig, and Retry and Back to Map buttons" width="900" height="844" loading="lazy"><figcaption>Mine hit: a light, comedic loss</figcaption></figure>
+        <figure><img src="games/treasure-scan/assets/spin_popup.webp" alt="Out of Scanner Points pop-up with a Spin button" width="900" height="844" loading="lazy"><figcaption>Out of points: back to spinning</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- Clue system -->
+    <section class="block" id="clues">
+      <h2 class="label">The three-colour clue system</h2>
+      <p class="section-lead">Instead of Minesweeper numbers, every safe tile shows one of three colours, so the board can be read at a glance. A green tile means every tile next to it is safe to tap.</p>
+      <div class="ts-clues">
+        <div class="ts-clue-list">
+          <article class="ts-clue"><img src="games/treasure-scan/assets/tile-green.webp" alt="" width="311" height="320" loading="lazy"><div><h3>Green</h3><p>No mine next to it, so every neighbour is safe to tap, cache or not.</p></div></article>
+          <article class="ts-clue"><img src="games/treasure-scan/assets/tile-yellow.webp" alt="" width="312" height="320" loading="lazy"><div><h3>Yellow</h3><p>A mine and a cache are both next to it: risky, but a reward is close.</p></div></article>
+          <article class="ts-clue"><img src="games/treasure-scan/assets/tile-red.webp" alt="" width="311" height="320" loading="lazy"><div><h3>Red</h3><p>A mine is next to it, and no cache. Tread carefully.</p></div></article>
+        </div>
+        <figure class="ts-key"><img src="games/treasure-scan/assets/info_popup_t.webp" alt="The in-game Clue Key pop-up explaining the green, yellow and red tiles" width="800" height="960" loading="lazy"><figcaption>The in-game clue key, opened from the board's info button</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- Sectors -->
+    <section class="block" id="sectors">
+      <h2 class="label">Six sectors, one escalating ladder</h2>
+      <p class="section-lead">Each sector is a new battleground on the map. Caches and mines both climb by one per sector, from a safe, mine-free opener to a six-cache, five-mine finale. Clearing every sector pays out 345 spins in total.</p>
+      <div class="leveldesign">
+        <article class="ld-block">
+          <div class="table-wrap">
+            <table class="fleet-table cycle-table ts-ladder">
+              <thead>
+                <tr><th scope="col">Sector</th><th scope="col">Grid</th><th scope="col">Mines</th><th scope="col">Caches (spins)</th><th scope="col">Total</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="fleet">1 &middot; Sandbag Ridge</th><td data-label="Grid">3 &times; 3</td><td data-label="Mines">0</td><td data-label="Caches">5</td><td data-label="Total">5</td></tr>
+                <tr><th scope="row" class="fleet">2 &middot; Trench Line</th><td data-label="Grid">4 &times; 4</td><td data-label="Mines">1</td><td data-label="Caches">5, 10</td><td data-label="Total">15</td></tr>
+                <tr><th scope="row" class="fleet">3 &middot; Foxhole Flats</th><td data-label="Grid">4 &times; 4</td><td data-label="Mines">2</td><td data-label="Caches">10, 10, 15</td><td data-label="Total">35</td></tr>
+                <tr><th scope="row" class="fleet">4 &middot; Desert Outpost</th><td data-label="Grid">6 &times; 6</td><td data-label="Mines">3</td><td data-label="Caches">10, 15, 15, 20</td><td data-label="Total">60</td></tr>
+                <tr><th scope="row" class="fleet">5 &middot; Snowline Front</th><td data-label="Grid">6 &times; 6</td><td data-label="Mines">4</td><td data-label="Caches">15, 15, 20, 20, 25</td><td data-label="Total">95</td></tr>
+                <tr><th scope="row" class="fleet">6 &middot; Jungle HQ Assault</th><td data-label="Grid">6 &times; 6</td><td data-label="Mines">5</td><td data-label="Caches">15, 20, 20, 25, 25, 30</td><td data-label="Total">135</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+        <article class="ld-block">
+          <h3>Rules on the board</h3>
+          <ul>
+            <li>Each tile costs one Scanner Point to reveal.</li>
+            <li>The first tap on a board is never a mine.</li>
+            <li>Bank every cache in a sector to clear it. Hitting a mine restarts the sector on a fresh board, but the caches already found stay banked, and earlier sectors are never lost.</li>
+            <li>Sectors unlock in order on the map; later ones stay locked until the one before is cleared.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- What changed -->
+    <section class="block" id="changes">
+      <h2 class="label">Documents vs prototype: what changed</h2>
+      <p class="section-lead">The one-pager and the UI spec disagreed in places and left some questions open. Building the prototype settled them, and showed that the first level needed to be risk-free.</p>
+      <div class="leveldesign">
+        <article class="ld-block">
+          <div class="table-wrap">
+            <table class="fleet-table cycle-table ts-changes">
+              <thead>
+                <tr><th scope="col">Question</th><th scope="col">One-pager</th><th scope="col">UI spec</th><th scope="col">Prototype</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="fleet">Number of levels</th>
+                  <td data-label="One-pager">6 levels</td>
+                  <td data-label="UI spec">5 levels</td>
+                  <td class="final" data-label="Prototype">6 sectors</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">First level</th>
+                  <td data-label="One-pager">4 &times; 4 grid with 2 mines</td>
+                  <td data-label="UI spec">&mdash;</td>
+                  <td class="final" data-label="Prototype">3 &times; 3 grid with no mines, so the first run teaches without punishing</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Win condition</th>
+                  <td data-label="One-pager">Clear all the safe tiles</td>
+                  <td data-label="UI spec">Tap the reward tile</td>
+                  <td class="final" data-label="Prototype">Bank every cache before you hit a mine</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Clues</th>
+                  <td data-label="One-pager">Safe tiles reveal rewards</td>
+                  <td data-label="UI spec">A Minesweeper-style clue on each tile</td>
+                  <td class="final" data-label="Prototype">Three colours: green, yellow, red</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Hitting a mine</th>
+                  <td data-label="One-pager">Run over, the level restarts</td>
+                  <td data-label="UI spec">Loss pop-up with Retry</td>
+                  <td class="final" data-label="Prototype">The sector restarts, but caches already found stay banked</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Art direction -->
+    <section class="block" id="art">
+      <h2 class="label">Art direction</h2>
+      <p class="section-lead">A military theme starring the Coin Master pig as a battlefield scout, kept bright and casual rather than gritty, and following the game's existing reward and chest language. Safe and danger tiles read instantly without text.</p>
+      <div class="ts-art">
+        <figure><img src="games/treasure-scan/assets/Treasure_locked.webp" alt="A locked treasure chest on a green base" width="300" height="320" loading="lazy"><figcaption>Locked sector</figcaption></figure>
+        <figure><img src="games/treasure-scan/assets/Treasure_closed.webp" alt="A closed treasure chest on a green base" width="307" height="320" loading="lazy"><figcaption>Current sector</figcaption></figure>
+        <figure><img src="games/treasure-scan/assets/Treasure_open.webp" alt="An open treasure chest full of coins" width="277" height="320" loading="lazy"><figcaption>Cleared sector</figcaption></figure>
+        <figure><img src="games/treasure-scan/assets/tile-unbroken.webp" alt="An unrevealed stone tile" width="311" height="320" loading="lazy"><figcaption>Unrevealed tile</figcaption></figure>
+        <figure><img src="games/treasure-scan/assets/bomb-icon.webp" alt="A grenade with a pig coin on it" width="320" height="299" loading="lazy"><figcaption>Mine</figcaption></figure>
+        <figure><img src="games/treasure-scan/assets/reward_15.webp" alt="A 15-spin energy reward" width="300" height="320" loading="lazy"><figcaption>Cache reward</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- Measurement -->
+    <section class="block" id="measure">
+      <h2 class="label">Measurement and what to test next</h2>
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>Success metrics</h3>
+          <ul>
+            <li><strong>Primary:</strong> average session length for players past Day 30, over a three-week rolling window (4.0 to 5.5 minutes).</li>
+            <li><strong>Guardrail:</strong> sessions per day for the same players must not drop below 7.6.</li>
+            <li><strong>Secondary:</strong> completion rate per sector, to find where the difficulty curve breaks, and energy-purchase conversion while the event is live.</li>
+          </ul>
+        </article>
+        <article class="ux-card">
+          <h3>Tuning knobs to test</h3>
+          <ul>
+            <li><strong>Mines per sector:</strong> the main lever for pacing and perceived risk, and the first thing to A/B test.</li>
+            <li><strong>Reward scaling:</strong> how cache spins compare with the core energy economy, so the event feels rewarding without being inflationary.</li>
+            <li><strong>Cooldown length:</strong> between 24 and 72 hours, set from session-length and re-entry data.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <button class="to-top" id="to-top" type="button" aria-label="Back to top" hidden>↑</button>
+
+  <footer class="footer">© <span id="year"></span> Sudhakar Gnanaraj</footer>
+
+  <script src="script.js"></script>
+  <script src="section-nav.js?v=2"></script>
+  <script>
+    // Fullscreen for the prototype: real fullscreen where the browser allows it,
+    // otherwise the phone screen is stretched over the page with its own Exit button.
+    (function () {
+      const screen = document.getElementById("ts-screen");
+      const btn = document.getElementById("ts-fs");
+      const exitBtn = document.getElementById("ts-fs-exit");
+      const label = btn.textContent;
+      let cover = false;
+      function setCover(on) {
+        cover = on;
+        screen.classList.toggle("cover-fullscreen", on);
+        document.body.classList.toggle("no-scroll", on);
+        exitBtn.hidden = !on;
+        btn.textContent = on ? "Exit fullscreen ⤡" : label;
+      }
+      function exit() {
+        if (document.fullscreenElement) document.exitFullscreen();
+        if (cover) setCover(false);
+      }
+      btn.addEventListener("click", () => {
+        if (document.fullscreenElement || cover) return exit();
+        const request = screen.requestFullscreen ? screen.requestFullscreen() : null;
+        const fallback = setTimeout(() => !document.fullscreenElement && setCover(true), 400);
+        document.addEventListener("fullscreenchange", () => clearTimeout(fallback), { once: true });
+        if (request && request.catch) request.catch(() => { clearTimeout(fallback); setCover(true); });
+        else if (!request) { clearTimeout(fallback); setCover(true); }
+      });
+      exitBtn.addEventListener("click", exit);
+
+      // Hide the "click spin" note once the player has spun in the prototype
+      const frame = document.getElementById("ts-frame");
+      const note = document.getElementById("ts-spin-note");
+      function watchSpin() {
+        try {
+          const spin = frame.contentDocument.getElementById("btnSpin");
+          if (spin) spin.addEventListener("click", () => (note.hidden = true), { once: true });
+        } catch { /* prototype not reachable: keep the note */ }
+      }
+      frame.addEventListener("load", watchSpin);
+      try { if (frame.contentDocument && frame.contentDocument.readyState === "complete") watchSpin(); } catch {}
+      addEventListener("keydown", (e) => e.key === "Escape" && cover && setCover(false));
+    })();
+  </script>
+</body>
+</html>

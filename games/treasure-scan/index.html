@@ -1,0 +1,1235 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  // Inside the portfolio page, show only the phone screen (the notes live on the page itself).
+  try { if (window.self !== window.top) document.documentElement.classList.add("embedded"); } catch (e) { document.documentElement.classList.add("embedded"); }
+</script>
+<style>
+  html.embedded, html.embedded body { height: 100%; overflow: hidden; background: #000; }
+  html.embedded body { min-height: 0; }
+  html.embedded .stage { max-width: none; margin: 0; padding: 0; height: 100%; }
+  html.embedded .dossier-head, html.embedded .dossier-notes, html.embedded .phone-caption, html.embedded .phone-notch { display: none !important; }
+  html.embedded .dossier-body { display: block; height: 100%; }
+  html.embedded .phone-col { height: 100%; justify-content: center; gap: 0; }
+  html.embedded .phone-frame { width: min(100vw, calc(100vh * 390 / 844)); padding: 0; border-radius: 0; background: none; box-shadow: none; }
+  html.embedded .screen { border-radius: 0; }
+</style>
+<title>Minefield Scanner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* ---------- tokens ---------- */
+:root{
+  --doc-bg:#ECE6D4;
+  --doc-bg2:#E0D8BE;
+  --doc-ink:#241D14;
+  --doc-sub:#6E6650;
+  --doc-accent:#D9531F;
+  --doc-accent2:#66803A;
+  --doc-line:rgba(36,29,20,.16);
+  --doc-card:#FAF6EA;
+  --doc-card-line:rgba(36,29,20,.12);
+  --doc-shadow:rgba(36,29,20,.18);
+
+  --g-sky:#5FC2EF; --g-sky-deep:#2A93CE;
+  --g-gold:#FFCB3E; --g-gold-deep:#E2960F;
+  --g-ember:#FF7A45; --g-ember-deep:#D9531F;
+  --g-wood:#8B5A2B; --g-wood-deep:#5E3B1B;
+  --g-cream:#FFF7E6;
+  --g-ink:#2B2318;
+  --g-olive:#8FA84E; --g-olive-deep:#61782F;
+  --g-sand:#EFDFB0; --g-sand-deep:#D8C186;
+  --g-danger:#E5473A; --g-danger-deep:#B22E22;
+  --g-safe:#3FA968; --g-safe-deep:#277C48;
+  --g-tile:#DFCF9F; --g-tile-edge:#B69C63;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --doc-bg:#141E18;
+    --doc-bg2:#0F1712;
+    --doc-ink:#EAF0E4;
+    --doc-sub:#93A78F;
+    --doc-accent:#FF8452;
+    --doc-accent2:#9BC168;
+    --doc-line:rgba(234,240,228,.14);
+    --doc-card:#1B2820;
+    --doc-card-line:rgba(234,240,228,.10);
+    --doc-shadow:rgba(0,0,0,.45);
+  }
+}
+:root[data-theme="dark"]{
+  --doc-bg:#141E18;
+  --doc-bg2:#0F1712;
+  --doc-ink:#EAF0E4;
+  --doc-sub:#93A78F;
+  --doc-accent:#FF8452;
+  --doc-accent2:#9BC168;
+  --doc-line:rgba(234,240,228,.14);
+  --doc-card:#1B2820;
+  --doc-card-line:rgba(234,240,228,.10);
+  --doc-shadow:rgba(0,0,0,.45);
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;}
+body{
+  background:
+    radial-gradient(1100px 620px at 14% -8%, color-mix(in srgb, var(--doc-accent2) 14%, transparent), transparent 60%),
+    var(--doc-bg);
+  color:var(--doc-ink);
+  font-family:'Nunito',system-ui,sans-serif;
+  min-height:100vh;
+}
+
+/* ---------- dossier chrome ---------- */
+.stage{
+  max-width:1180px;
+  margin:0 auto;
+  padding:2.4rem 1.4rem 3.5rem;
+}
+.dossier-head{
+  border-bottom:1px solid var(--doc-line);
+  padding-bottom:1.1rem;
+  margin-bottom:1.8rem;
+  display:flex;
+  flex-direction:column;
+  gap:.35rem;
+}
+.dossier-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;
+  font-weight:700;
+  letter-spacing:.14em;
+  color:var(--doc-accent);
+  text-transform:uppercase;
+}
+.dossier-title{
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  font-size:clamp(2.1rem,4.4vw,3rem);
+  letter-spacing:.01em;
+  text-transform:uppercase;
+  margin:0;
+  text-wrap:balance;
+}
+.dossier-sub{
+  margin:0;
+  color:var(--doc-sub);
+  font-size:.95rem;
+  max-width:52ch;
+}
+
+.dossier-body{
+  display:grid;
+  grid-template-columns:250px 1fr;
+  gap:2.2rem;
+  align-items:start;
+}
+@media (max-width:860px){
+  .dossier-body{grid-template-columns:1fr;}
+}
+
+.dossier-notes{
+  display:flex;
+  flex-direction:column;
+  gap:.9rem;
+  position:sticky;
+  top:1.6rem;
+}
+@media (max-width:860px){ .dossier-notes{position:static;} }
+.note-card{
+  background:var(--doc-card);
+  border:1px solid var(--doc-card-line);
+  border-radius:14px;
+  padding:.95rem 1rem 1.05rem;
+  box-shadow:0 1px 0 var(--doc-card-line) inset;
+}
+.note-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;
+  font-weight:700;
+  color:var(--doc-accent);
+  letter-spacing:.08em;
+}
+.note-card h3{
+  font-family:'Rajdhani',sans-serif;
+  font-size:1.05rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.02em;
+  margin:.25rem 0 .3rem;
+}
+.note-card p{
+  margin:0;
+  font-size:.86rem;
+  line-height:1.45;
+  color:var(--doc-sub);
+}
+
+.phone-col{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.85rem;
+}
+.phone-frame{
+  position:relative;
+  width:min(390px,88vw);
+  aspect-ratio:390/844;
+  background:linear-gradient(160deg,#2A2A2E,#131316);
+  border-radius:46px;
+  padding:14px;
+  box-shadow:0 30px 60px -20px var(--doc-shadow), 0 2px 0 rgba(255,255,255,.06) inset;
+}
+.phone-notch{
+  position:absolute;
+  top:14px; left:50%;
+  transform:translateX(-50%);
+  width:34%;
+  height:22px;
+  background:#131316;
+  border-radius:0 0 14px 14px;
+  z-index:5;
+}
+.screen{
+  position:relative;
+  width:100%;
+  height:100%;
+  border-radius:32px;
+  overflow:hidden;
+  background:var(--g-sky);
+  font-family:'Nunito',sans-serif;
+  color:var(--g-ink);
+}
+.phone-caption{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--doc-sub);
+}
+
+/* ---------- panels ---------- */
+.panel{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  opacity:0; pointer-events:none;
+  transform:translateX(4%);
+  transition:opacity .3s ease, transform .3s ease;
+}
+.panel.active{opacity:1; pointer-events:auto; transform:translateX(0);}
+
+/* ---------- shared bits ---------- */
+.icon-btn{
+  width:36px;height:36px;border-radius:50%;
+  border:none; display:flex; align-items:center; justify-content:center;
+  background:rgba(255,255,255,.55);
+  font-size:1.05rem; cursor:pointer;
+  box-shadow:0 2px 0 rgba(0,0,0,.12);
+}
+.icon-btn:active{transform:translateY(1px); box-shadow:none;}
+.icon-btn.small{width:32px;height:32px;font-size:.95rem;}
+.icon-btn.round{position:relative;background:var(--g-cream);}
+.icon-btn.corner{position:absolute; top:14px; left:14px; z-index:4;}
+.icon-btn.img-btn{width:48px; height:48px; background:transparent; box-shadow:none;}
+.icon-btn.img-btn img{width:100%; height:100%; object-fit:contain;}
+.icon-btn.img-btn:active{box-shadow:none;}
+
+.cta-btn{
+  font-family:'Baloo 2',sans-serif;
+  font-weight:800;
+  font-size:1.05rem;
+  letter-spacing:.03em;
+  color:#fff;
+  border:none;
+  border-radius:18px;
+  padding:.95rem 1.2rem;
+  background:linear-gradient(180deg, var(--g-ember), var(--g-ember-deep));
+  box-shadow:0 4px 0 var(--g-ember-deep), 0 8px 16px -6px rgba(217,83,31,.5);
+  cursor:pointer;
+}
+.cta-btn:active{transform:translateY(3px); box-shadow:0 1px 0 var(--g-ember-deep);}
+.cta-btn.danger{background:linear-gradient(180deg, var(--g-danger), var(--g-danger-deep)); box-shadow:0 4px 0 var(--g-danger-deep);}
+.link-btn{
+  background:none;border:none;
+  font-family:'Nunito',sans-serif;font-weight:800;
+  color:var(--g-ink);opacity:.65;
+  font-size:.85rem;text-decoration:underline;
+  cursor:pointer;padding:.4rem;
+}
+
+/* ---------- main screen ---------- */
+#scr-main{background:linear-gradient(180deg,var(--g-sky) 0%, var(--g-sky-deep) 62%, var(--g-wood-deep) 62%, var(--g-wood) 100%);}
+.game-topbar{
+  display:flex; align-items:center; gap:.5rem;
+  padding:14px 16px 0;
+}
+.stat-chip{
+  display:flex; align-items:center; gap:.35rem;
+  background:rgba(0,0,0,.28);
+  color:#fff; font-weight:800;
+  font-variant-numeric:tabular-nums;
+  border-radius:999px;
+  padding:.35rem .7rem;
+  font-size:.82rem;
+}
+.game-topbar .icon-btn{margin-left:auto;}
+.village-art{
+  flex:1; position:relative;
+  display:flex; align-items:center; justify-content:center;
+  min-height:0;
+}
+.village-banner{
+  position:absolute; top:10px; left:50%; transform:translateX(-50%);
+  font-family:'Baloo 2',sans-serif; font-weight:800; font-size:.95rem;
+  color:#fff; text-shadow:0 2px 0 rgba(0,0,0,.25);
+  background:rgba(0,0,0,.18); padding:.25rem .8rem; border-radius:999px;
+}
+.village-banner span{opacity:.75; font-weight:600;}
+.pig-hero{font-size:5.2rem; filter:drop-shadow(0 10px 14px rgba(0,0,0,.25));}
+.side-rail{
+  position:absolute; right:10px; top:64px;
+  display:flex; flex-direction:column; gap:10px; z-index:3;
+}
+.rail-icon{
+  width:42px;height:42px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.55); font-size:1.15rem;
+  box-shadow:0 2px 0 rgba(0,0,0,.15);
+}
+.rail-icon.dim{opacity:.55; filter:grayscale(.2);}
+.scanner-icon{
+  border:none; position:relative; cursor:pointer;
+  opacity:0; transform:scale(.6);
+  transition:opacity .35s ease, transform .35s ease;
+}
+.icon-btn.round.scanner-icon{background:transparent; box-shadow:none;}
+.scanner-icon.reveal{opacity:1; transform:scale(1);}
+.scanner-icon.hidden{display:none;}
+.scanner-icon.glow{animation:scannerGlow 1.6s ease-in-out infinite;}
+@keyframes scannerGlow{
+  0%,100%{box-shadow:0 0 0 0 rgba(255,203,62,.55), 0 2px 0 rgba(0,0,0,.15);}
+  50%{box-shadow:0 0 0 9px rgba(255,203,62,0), 0 2px 0 rgba(0,0,0,.15);}
+}
+.scanner-icon.cooldown{filter:grayscale(1); opacity:.6;}
+.scanner-glyph-img{width:122%; height:122%; object-fit:contain;}
+.scanner-badge{
+  position:absolute; top:-6px; right:-6px;
+  background:var(--g-ember-deep); color:#fff;
+  font-size:.65rem; font-weight:800;
+  min-width:18px;height:18px;border-radius:999px;
+  display:flex;align-items:center;justify-content:center;
+  padding:0 4px;
+  font-variant-numeric:tabular-nums;
+}
+.scanner-badge.zero{display:none;}
+
+.slot-deck{
+  background:linear-gradient(180deg,var(--g-wood),var(--g-wood-deep));
+  border-top:4px solid rgba(255,255,255,.15);
+  padding:12px 16px 16px;
+  display:flex; flex-direction:column; gap:10px; align-items:center;
+}
+.reel-window{
+  display:flex; gap:8px;
+  background:var(--g-cream);
+  border-radius:14px;
+  padding:10px 14px;
+  box-shadow:inset 0 3px 8px rgba(0,0,0,.25);
+}
+.reel{
+  width:42px;height:42px;border-radius:10px;
+  background:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;
+  box-shadow:0 1px 0 rgba(0,0,0,.1) inset;
+}
+.energy-row{display:flex; align-items:center; gap:8px;}
+.energy-chip{
+  display:flex; align-items:center; gap:.3rem;
+  background:rgba(255,255,255,.16); color:#fff;
+  border-radius:999px; padding:.3rem .7rem;
+  font-weight:800; font-size:.8rem;
+  font-variant-numeric:tabular-nums;
+}
+.freespins-chip{
+  background:linear-gradient(180deg,var(--g-gold),var(--g-gold-deep));
+  color:#5b3a00; font-weight:800; font-size:.78rem;
+  border-radius:999px; padding:.3rem .7rem;
+}
+.freespins-chip.hidden{display:none;}
+.spin-btn{
+  width:100%;
+  font-family:'Baloo 2',sans-serif; font-weight:800; font-size:1.4rem;
+  letter-spacing:.06em; color:#5b3a00;
+  border:none; border-radius:20px; padding:.85rem;
+  background:linear-gradient(180deg,var(--g-gold),var(--g-gold-deep));
+  box-shadow:0 5px 0 #a86e08, 0 10px 18px -6px rgba(0,0,0,.35);
+  cursor:pointer;
+}
+.spin-btn:active{transform:translateY(3px); box-shadow:0 2px 0 #a86e08;}
+.spin-btn.spinning{opacity:.75;}
+
+/* ---------- entry screen ---------- */
+.entry-bg{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+.entry-start-hotspot{
+  position:absolute; left:15%; right:15%; bottom:13%; height:9%;
+  border:none; background:transparent; cursor:pointer; padding:0; z-index:2;
+}
+/* ---------- level select ---------- */
+#scr-levels{background:linear-gradient(180deg,#1C3A52,#122636);}
+.levels-topbar{
+  display:flex; align-items:center; gap:.6rem;
+  padding:12px 14px;
+  background:linear-gradient(180deg,#EFE3BE,#E4D6A8);
+  box-shadow:0 2px 6px rgba(0,0,0,.25);
+  position:relative; z-index:2;
+}
+.levels-title{
+  font-family:'Baloo 2',sans-serif; font-weight:800; font-size:1.05rem;
+  color:var(--g-ink);
+}
+.event-timer{
+  margin-left:auto;
+  font-family:'JetBrains Mono',monospace; font-weight:700; font-size:.75rem;
+  background:rgba(0,0,0,.14); color:var(--g-ink);
+  padding:.3rem .55rem; border-radius:8px;
+  font-variant-numeric:tabular-nums;
+}
+.levels-scroll{
+  flex:1; overflow:hidden;
+}
+.map-wrap{position:relative; width:100%; height:100%;}
+.map-img{display:block; width:100%; height:100%; object-fit:fill;}
+.map-node{
+  position:absolute; transform:translate(-50%,-50%);
+  width:14%; height:auto;
+  border:none; padding:0; cursor:pointer; background:transparent;
+}
+.map-node-icon{display:block; width:100%; height:auto;}
+.event-complete-banner{
+  position:absolute; left:16px; right:16px; top:50%; transform:translateY(-50%); z-index:5;
+  background:linear-gradient(180deg,var(--g-gold),var(--g-gold-deep));
+  border-radius:14px; padding:.8rem 1rem; text-align:center;
+  font-family:'Baloo 2',sans-serif; font-weight:800; color:#5b3a00;
+  box-shadow:0 8px 20px -6px rgba(0,0,0,.5);
+}
+.event-complete-banner.hidden{display:none;}
+
+/* ---------- game event screen ---------- */
+#scr-game{background-image:url('assets/Background.webp'); background-size:cover; background-position:center;}
+.game-topbar--event{
+  align-items:flex-start;
+  padding:12px 12px 0;
+  gap:.5rem;
+}
+.goal-banner{flex:1; display:flex; flex-direction:column; gap:.35rem; padding-top:.1rem;}
+.goal-logo{
+  display:block; width:100%; height:auto;
+  object-fit:contain; margin:0 auto;
+}
+.progress-row{display:flex; align-items:center; gap:.5rem;}
+.progress-track{
+  flex:1; height:10px; border-radius:999px; background:rgba(0,0,0,.15); overflow:hidden;
+}
+.progress-fill{height:100%; width:0%; background:linear-gradient(90deg,var(--g-gold),var(--g-ember)); transition:width .35s ease;}
+.progress-count{
+  font-family:'JetBrains Mono',monospace; font-weight:700; font-size:.72rem;
+  background:rgba(0,0,0,.14); border-radius:6px; padding:.15rem .4rem;
+  font-variant-numeric:tabular-nums;
+}
+.pip-row{display:flex; gap:5px; justify-content:center; flex-wrap:wrap;}
+.rpip{
+  width:16px;height:16px;border-radius:5px;
+  background:rgba(0,0,0,.18);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.5rem;
+}
+.rpip.filled{background:linear-gradient(180deg,var(--g-gold),var(--g-gold-deep));}
+.level-tag{
+  text-align:center; font-family:'JetBrains Mono',monospace; font-weight:700;
+  font-size:.72rem; color:rgba(43,35,24,.72); letter-spacing:.03em;
+  margin:.35rem 0 .1rem;
+}
+.board-wrap{flex:1; display:flex; align-items:center; justify-content:center; padding:8px 16px;}
+.board{
+  width:100%; max-width:320px;
+  display:grid; gap:6px;
+  grid-template-columns:repeat(var(--cols),1fr);
+}
+.tile{
+  aspect-ratio:1; border:none; border-radius:9px; cursor:pointer;
+  box-shadow:0 2px 0 rgba(0,0,0,.2), inset 0 0 0 1px rgba(255,255,255,.25);
+  position:relative;
+  background-image:url('assets/tile-unbroken.webp');
+  background-size:cover;
+  background-position:center;
+}
+.tile:active{transform:translateY(1px);}
+.tile.revealed{cursor:default; box-shadow:inset 0 2px 4px rgba(0,0,0,.15);}
+.tile.revealed.reward{background-image:none; background:linear-gradient(160deg,var(--g-sky),var(--g-sky-deep)); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px;}
+.tile.revealed.reward.reward-pop{animation:popIn .25s ease;}
+.reward-icon{width:78%; height:78%; object-fit:contain; filter:drop-shadow(0 2px 3px rgba(0,0,0,.35));}
+.tile.revealed.reward.claimed{opacity:.5; animation:none; box-shadow:inset 0 2px 4px rgba(0,0,0,.15), 0 0 0 2px rgba(255,255,255,.35) inset;}
+.claimed-badge{
+  position:absolute; top:3px; right:3px;
+  width:13px;height:13px;border-radius:50%;
+  background:rgba(0,0,0,.4); color:#fff;
+  font-size:.5rem; display:flex; align-items:center; justify-content:center;
+}
+.tile.revealed.mine{background-image:none; background:linear-gradient(160deg,var(--g-danger),var(--g-danger-deep)); display:flex; align-items:center; justify-content:center; animation:shake .4s ease;}
+.mine-icon{width:72%; height:72%; object-fit:contain; filter:drop-shadow(0 2px 3px rgba(0,0,0,.45));}
+.explosion-fx{
+  position:absolute; top:50%; left:50%;
+  width:840%; height:840%;
+  transform:translate(-50%,-50%);
+  background-image:url('assets/explosion sprite sheet.webp');
+  background-repeat:no-repeat;
+  pointer-events:none;
+  z-index:8;
+}
+.reward-fx{
+  position:absolute; top:50%; left:50%;
+  width:780%; height:780%;
+  transform:translate(-50%,-50%);
+  background-image:url('assets/reward sprite sheet.webp');
+  background-repeat:no-repeat;
+  pointer-events:none;
+  z-index:8;
+}
+@keyframes popIn{0%{transform:scale(.5); opacity:0;} 100%{transform:scale(1); opacity:1;}}
+@keyframes shake{0%,100%{transform:translateX(0);} 20%{transform:translateX(-3px);} 40%{transform:translateX(3px);} 60%{transform:translateX(-2px);} 80%{transform:translateX(2px);}}
+.tile.revealed.clue-green{background:none; background-image:url('assets/tile-green.webp'); background-size:cover; background-position:center;}
+.tile.revealed.clue-yellow{background:none; background-image:url('assets/tile-yellow.webp'); background-size:cover; background-position:center;}
+.tile.revealed.clue-red{background:none; background-image:url('assets/tile-red.webp'); background-size:cover; background-position:center;}
+.val{font-family:'Nunito',sans-serif; font-size:.55rem; font-weight:900; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.5);}
+.game-bottombar{
+  display:flex; align-items:center; justify-content:center;
+  padding:8px 16px 16px;
+}
+.scanner-balance{
+  display:flex; align-items:center; gap:.8rem;
+  background:rgba(255,255,255,.6); border-radius:999px; padding:.7rem 1.6rem;
+  font-weight:800; font-size:2.2rem; font-variant-numeric:tabular-nums;
+}
+.scan-icon{width:60px; height:60px; object-fit:contain;}
+
+/* ---------- overlays ---------- */
+.overlay{
+  position:absolute; inset:0; z-index:10;
+  display:flex; align-items:flex-end; justify-content:center;
+  background:rgba(20,16,10,.5);
+  opacity:0; pointer-events:none;
+  transition:opacity .25s ease;
+}
+.overlay.show{opacity:1; pointer-events:auto;}
+.poster-wrap{position:absolute; inset:0;}
+.poster-img-btn{position:absolute; inset:0; width:100%; height:100%; border:none; background:none; padding:0; cursor:pointer;}
+.poster-img{width:100%; height:100%; object-fit:cover; display:block;}
+.poster-close{position:absolute; top:14px; right:14px; z-index:2;}
+.overlay.img-popup{align-items:center; padding:0 22px;}
+.popup-wrap{position:relative; width:100%;}
+.popup-wrap img{display:block; width:100%; height:auto;}
+.popup-hot{position:absolute; border:none; background:transparent; padding:0; cursor:pointer;}
+.sheet{
+  width:100%;
+  background:var(--g-cream); color:var(--g-ink);
+  border-radius:22px 22px 0 0;
+  padding:1.3rem 1.3rem 1.6rem;
+  display:flex; flex-direction:column; gap:.7rem;
+  transform:translateY(6%);
+  transition:transform .25s ease;
+  max-height:82%; overflow-y:auto;
+}
+.overlay.show .sheet{transform:translateY(0);}
+.sheet h3{
+  font-family:'Baloo 2',sans-serif; font-weight:800; font-size:1.15rem; margin:0;
+}
+.sheet p{margin:0; font-size:.86rem; color:#5c4f3a; line-height:1.4;}
+.tut-steps{margin:0; padding-left:1.2rem; display:flex; flex-direction:column; gap:.5rem; font-size:.86rem;}
+.sheet .cta-btn{width:100%;}
+
+/* ---------- toast ---------- */
+.toast{
+  position:absolute; left:50%; bottom:18px; transform:translate(-50%,10px);
+  background:rgba(20,16,10,.88); color:#fff;
+  font-weight:700; font-size:.78rem;
+  padding:.55rem .9rem; border-radius:999px;
+  max-width:88%; text-align:center;
+  opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
+  z-index:20;
+}
+.toast.show{opacity:1; transform:translate(-50%,0);}
+
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-thumb{background:rgba(0,0,0,.2); border-radius:99px;}
+
+:focus-visible{outline:2px solid var(--doc-accent); outline-offset:2px;}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+}
+</style>
+
+<div class="stage">
+  <header class="dossier-head">
+    <div class="dossier-tag">Field prototype · Build 0.9 · Coin Master event</div>
+    <h1 class="dossier-title">Minefield Scanner</h1>
+    <p class="dossier-sub">A playable pass at the “Minefield Scanner” mini-game event — built from the mechanics one-pager and UI screen spec, sections 1–13.</p>
+  </header>
+
+  <div class="dossier-body">
+    <aside class="dossier-notes">
+      <div class="note-card">
+        <span class="note-num">§4</span>
+        <h3>Core loop</h3>
+        <p>Every spin banks 1 Scanner Point. Spend points to tap tiles, read the clue color, and bank every cache before you find the mine.</p>
+      </div>
+      <div class="note-card">
+        <span class="note-num">§5</span>
+        <h3>Entry</h3>
+        <p>Cross 4,000 ★ to unlock the icon. First tap opens the briefing screen; every tap after that jumps straight to the sector map.</p>
+      </div>
+      <div class="note-card">
+        <span class="note-num">§7</span>
+        <h3>Escalation</h3>
+        <p>6 sectors, 3×3 → 6×6. Caches and mines both climb by 1 each sector, from a safe zero-mine opener up to a 6-cache, 5-mine finale.</p>
+      </div>
+      <div class="note-card">
+        <span class="note-num">§9</span>
+        <h3>The pinch</h3>
+        <p>No IAP inside the mini-game — Scanner Points only come from spinning. Run dry on Energy mid-event, and that's the upsell moment.</p>
+      </div>
+    </aside>
+
+    <div class="phone-col">
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="screen" id="screen">
+
+          <!-- 1. MAIN GAME SCREEN -->
+          <section class="panel active" id="scr-main">
+            <div class="game-topbar">
+              <div class="stat-chip"><span>🪙</span><span id="hudCoins">128,400</span></div>
+              <div class="stat-chip"><span>⭐</span><span id="hudStars">3,960</span></div>
+              <button class="icon-btn small" aria-label="Settings">⚙️</button>
+            </div>
+            <div class="village-art">
+              <div class="village-banner">PIGVILLE <span>· Lv.42</span></div>
+              <div class="pig-hero">🐷</div>
+              <div class="side-rail">
+                <div class="rail-icon dim" title="Raid event">🗡️</div>
+                <div class="rail-icon dim" title="Card event">🎁</div>
+                <button class="icon-btn round rail-icon scanner-icon hidden" id="btnScanner" aria-label="Minefield Scanner event">
+                  <img src="assets/game_icon.webp" class="scanner-glyph-img" alt="">
+                  <span class="scanner-badge zero" id="scannerBadge">0</span>
+                </button>
+              </div>
+            </div>
+            <div class="slot-deck">
+              <div class="reel-window">
+                <div class="reel" id="reel0">🐷</div>
+                <div class="reel" id="reel1">🪙</div>
+                <div class="reel" id="reel2">💎</div>
+              </div>
+              <div class="energy-row">
+                <div class="energy-chip"><span>⚡</span><span id="hudEnergy">30</span>/<span id="hudMaxEnergy">30</span></div>
+                <div class="freespins-chip hidden" id="freeSpinsChip">+<span id="hudFreeSpins">0</span> free</div>
+              </div>
+              <button class="spin-btn" id="btnSpin">SPIN</button>
+            </div>
+          </section>
+
+          <!-- 2. ENTRY SCREEN -->
+          <section class="panel" id="scr-entry">
+            <button class="icon-btn corner" id="btnEntryBack" aria-label="Back">←</button>
+            <img src="assets/tutorial_screen.webp" class="entry-bg" alt="Treasure Scan tutorial">
+            <button class="entry-start-hotspot" id="btnEntryStart" aria-label="Start"></button>
+          </section>
+
+          <!-- 3. LEVEL SELECTION SCREEN -->
+          <section class="panel" id="scr-levels">
+            <div class="levels-topbar">
+              <button class="icon-btn small" id="btnLevelsBack" aria-label="Back">←</button>
+              <div class="levels-title">Sector Map</div>
+              <div class="event-timer" id="eventTimer">24:00:00</div>
+            </div>
+            <div class="levels-scroll" id="levelsScroll">
+              <div class="map-wrap">
+                <img class="map-img" src="assets/level_map.webp" alt="Sector map">
+                <div id="mapNodes"></div>
+                <div class="event-complete-banner hidden" id="mapDone"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 4. GAME EVENT SCREEN -->
+          <section class="panel" id="scr-game">
+            <div class="game-topbar game-topbar--event">
+              <button class="icon-btn small img-btn" id="btnInfo" aria-label="Clue rules"><img src="assets/icon-info.webp" alt=""></button>
+              <div class="goal-banner">
+                <img class="goal-logo" src="assets/Game_title.webp" alt="Treasure Scan">
+                <div class="progress-row">
+                  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+                  <div class="progress-count" id="progressCount">0/1</div>
+                </div>
+                <div class="pip-row" id="pipRow"></div>
+              </div>
+              <button class="icon-btn small img-btn" id="btnClose" aria-label="Close event"><img src="assets/icon-close.webp" alt=""></button>
+            </div>
+            <div class="level-tag" id="levelTag">Sector 1</div>
+            <div class="board-wrap"><div class="board" id="board"></div></div>
+            <div class="game-bottombar">
+              <div class="scanner-balance"><img src="assets/icon-scan.webp" class="scan-icon" alt=""><span id="scannerBalance">0</span></div>
+            </div>
+          </section>
+
+          <!-- overlays -->
+          <div class="overlay poster-overlay" id="ovEventPoster">
+            <div class="poster-wrap">
+              <button class="poster-img-btn" id="btnPosterStart" aria-label="Start game">
+                <img src="assets/event_poster.webp" class="poster-img" alt="Treasure Scan">
+              </button>
+              <button class="icon-btn small img-btn poster-close" id="btnPosterClose" aria-label="Close"><img src="assets/icon-close.webp" alt=""></button>
+            </div>
+          </div>
+
+          <div class="overlay" id="ovTutorial">
+            <div class="sheet">
+              <h3>How to scan a sector</h3>
+              <ol class="tut-steps">
+                <li><b>Tap a tile</b> — costs 1 Scanner Point.</li>
+                <li><b>Read the color</b> — green means no mine nearby, red means a mine is close, yellow means a mine AND a cache are both close.</li>
+                <li><b>Deduce</b> — a green tile means every tile next to it is safe to tap.</li>
+                <li><b>Bank every cache</b> before you find the mine.</li>
+              </ol>
+              <button class="cta-btn" id="btnTutClose">GOT IT, SCOUT</button>
+            </div>
+          </div>
+
+          <div class="overlay img-popup" id="ovInfo">
+            <div class="popup-wrap">
+              <img src="assets/info_popup_t.webp" alt="Clue key">
+              <button class="popup-hot" id="btnInfoClose" aria-label="Close" style="left:84%; top:15.5%; width:11%; height:9%"></button>
+            </div>
+          </div>
+
+          <div class="overlay" id="ovEnergy">
+            <div class="sheet">
+              <h3>Out of Energy</h3>
+              <p>Spin again once Energy refills, or grab a pack now to keep scanning while the countdown runs.</p>
+              <button class="cta-btn" id="btnBuyEnergy">GET ENERGY PACK</button>
+              <button class="link-btn" id="btnEnergyClose">Not now</button>
+            </div>
+          </div>
+
+          <div class="overlay img-popup" id="popupWin">
+            <div class="popup-wrap">
+              <img src="assets/win_popup.webp" alt="Level complete">
+              <button class="popup-hot" id="btnWinNext" aria-label="Next" style="left:26%; top:78%; width:38%; height:11%"></button>
+            </div>
+          </div>
+
+          <div class="overlay img-popup" id="popupLoss">
+            <div class="popup-wrap">
+              <img src="assets/lost_popup.webp" alt="Kaboom">
+              <button class="popup-hot" id="btnRetry" aria-label="Retry" style="left:9%; top:76%; width:36%; height:9%"></button>
+              <button class="popup-hot" id="btnLossMap" aria-label="Back to map" style="left:56%; top:76%; width:35%; height:9%"></button>
+            </div>
+          </div>
+
+          <div class="overlay img-popup" id="ovScannerEmpty">
+            <div class="popup-wrap">
+              <img src="assets/spin_popup.webp" alt="Out of scanner points">
+              <button class="popup-hot" id="btnScannerEmptySpin" aria-label="Spin" style="left:28%; top:78%; width:44%; height:11%"></button>
+            </div>
+          </div>
+
+          <div class="toast" id="toast"></div>
+        </div>
+      </div>
+      <div class="phone-caption" id="phoneCaption">Main Game Screen</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var CAPTIONS = {main:'Main Game Screen', entry:'Entry Screen', levels:'Level Selection Screen', game:'Game Event Screen'};
+
+  var REWARD_IMAGES = {5:'reward_5.webp', 10:'reward_10.webp', 15:'reward_15.webp', 25:'reward_25.webp'};
+
+  var LEVELS = [
+    {name:"Sandbag Ridge",     cols:3, rows:3, mines:0, rewards:[5]},
+    {name:"Trench Line",       cols:4, rows:4, mines:1, rewards:[5,10]},
+    {name:"Foxhole Flats",     cols:4, rows:4, mines:2, rewards:[10,10,15]},
+    {name:"Desert Outpost",    cols:6, rows:6, mines:3, rewards:[10,15,15,20]},
+    {name:"Snowline Front",    cols:6, rows:6, mines:4, rewards:[15,15,20,20,25]},
+    {name:"Jungle HQ Assault", cols:6, rows:6, mines:5, rewards:[15,20,20,25,25,30]}
+  ];
+
+  var state = {
+    coins: 128400,
+    stars: 3960,
+    energy: 30,
+    maxEnergy: 30,
+    scannerPoints: 0,
+    freeSpins: 0,
+    spinning:false,
+    eventUnlocked:false,
+    hasSeenEntry:false,
+    hasSeenTutorial:false,
+    hasSeenPoster:false,
+    maxUnlocked:0,
+    completedLevels:[false,false,false,false,false,false],
+    attempts:{},
+    levelProgress:{},
+    currentLevel:null,
+    eventWindowEnd:null,
+    cooldownEnd:null
+  };
+
+  try{ state.hasSeenTutorial = localStorage.getItem('ms_tut_seen')==='1'; }catch(e){}
+
+  // ---------- helpers ----------
+  function $(id){ return document.getElementById(id); }
+  function rand(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+  function fmt(n){ return n.toLocaleString('en-US'); }
+  function msToHMS(ms){
+    if(ms<0) ms=0;
+    var s=Math.floor(ms/1000);
+    var h=String(Math.floor(s/3600)).padStart(2,'0');
+    var m=String(Math.floor((s%3600)/60)).padStart(2,'0');
+    var sec=String(s%60).padStart(2,'0');
+    return h+':'+m+':'+sec;
+  }
+  function neighborsOf(idx, cols, rows){
+    var r=Math.floor(idx/cols), c=idx%cols, list=[];
+    for(var dr=-1; dr<=1; dr++){
+      for(var dc=-1; dc<=1; dc++){
+        if(dr===0 && dc===0) continue;
+        var nr=r+dr, nc=c+dc;
+        if(nr>=0 && nr<rows && nc>=0 && nc<cols) list.push(nr*cols+nc);
+      }
+    }
+    return list;
+  }
+  function shuffle(arr){
+    for(var i=arr.length-1;i>0;i--){ var j=rand(0,i); var t=arr[i]; arr[i]=arr[j]; arr[j]=t; }
+    return arr;
+  }
+  function remainingRewardValues(lvl, already){
+    var pool = lvl.rewards.slice();
+    already.forEach(function(v){
+      var idx = pool.indexOf(v);
+      if(idx>-1) pool.splice(idx,1);
+    });
+    return pool;
+  }
+
+  var toastTimer=null;
+  function showToast(msg){
+    var t=$('toast');
+    t.textContent=msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(function(){ t.classList.remove('show'); }, 2600);
+  }
+
+  function showScreen(name){
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+    $('scr-'+name).classList.add('active');
+    $('phoneCaption').textContent = CAPTIONS[name];
+  }
+  function openOverlay(id){ $(id).classList.add('show'); }
+  function closeOverlay(id){ $(id).classList.remove('show'); }
+
+  // ---------- HUD ----------
+  function updateHUD(){
+    $('hudCoins').textContent = fmt(state.coins);
+    $('hudStars').textContent = fmt(state.stars);
+    $('hudEnergy').textContent = state.energy;
+    $('hudMaxEnergy').textContent = state.maxEnergy;
+    $('hudFreeSpins').textContent = state.freeSpins;
+    $('freeSpinsChip').classList.toggle('hidden', state.freeSpins<=0);
+
+    var badge = $('scannerBadge');
+    badge.textContent = state.scannerPoints;
+    badge.classList.toggle('zero', state.scannerPoints<=0);
+    $('scannerBalance').textContent = state.scannerPoints;
+
+    var btn = $('btnScanner');
+    var onCooldown = state.cooldownEnd && Date.now() < state.cooldownEnd;
+    btn.classList.toggle('glow', state.eventUnlocked && state.scannerPoints>0 && !onCooldown);
+    btn.classList.toggle('cooldown', !!onCooldown);
+  }
+
+  function checkThreshold(){
+    if(!state.eventUnlocked && state.stars>=4000){
+      state.eventUnlocked = true;
+      var btn = $('btnScanner');
+      btn.classList.remove('hidden');
+      requestAnimationFrame(function(){ btn.classList.add('reveal'); });
+      if(!state.hasSeenPoster){ openOverlay('ovEventPoster'); return true; }
+    }
+    return false;
+  }
+
+  // ---------- spin ----------
+  var SYMBOLS = ['🐷','🪙','💎','🦴','🐔','⭐'];
+  function spin(){
+    if(state.spinning) return;
+    if(state.freeSpins<=0 && state.energy<=0){ openOverlay('ovEnergy'); return; }
+    state.spinning = true;
+    var btn=$('btnSpin'); btn.disabled=true; btn.classList.add('spinning');
+    var reels=[$('reel0'),$('reel1'),$('reel2')];
+    var ticks=0;
+    var iv=setInterval(function(){
+      reels.forEach(function(r){ r.textContent = SYMBOLS[rand(0,SYMBOLS.length-1)]; });
+      ticks++;
+      if(ticks>9){ clearInterval(iv); settleSpin(); }
+    }, 65);
+  }
+  function settleSpin(){
+    if(state.freeSpins>0){ state.freeSpins--; } else { state.energy--; }
+    var coinsWon = rand(800,5200), starsWon = rand(40,140);
+    state.coins += coinsWon;
+    state.stars += starsWon;
+    state.scannerPoints += 1;
+    [$('reel0'),$('reel1'),$('reel2')].forEach(function(r){ r.textContent = SYMBOLS[rand(0,SYMBOLS.length-1)]; });
+    updateHUD();
+    var posterShown = checkThreshold();
+    state.spinning=false;
+    var btn=$('btnSpin'); btn.disabled=false; btn.classList.remove('spinning');
+    if(!posterShown){ showToast('+'+fmt(coinsWon)+' coins · +'+starsWon+' ★ · +1 🧭 scanner point'); }
+  }
+
+  setInterval(function(){
+    if(state.energy < state.maxEnergy){ state.energy++; updateHUD(); }
+  }, 4500);
+
+  // ---------- level select ----------
+  var NODE_POS = [
+    {x:78,   y:79.3}, // Sandbag Ridge · #1
+    {x:51,   y:72.3}, // Trench Line · #2
+    {x:51,   y:62.0}, // Foxhole Flats · #3
+    {x:51,   y:53.3}, // Desert Outpost · #4
+    {x:51,   y:43.3}, // Snowline Front · #5
+    {x:51,   y:31.5}  // Jungle HQ Assault · #6
+  ];
+  var NODE_ICONS = {locked:'Treasure_locked.webp', current:'Treasure_closed.webp', completed:'Treasure_open.webp'};
+  function renderLevels(){
+    var html = LEVELS.map(function(lvl,i){
+      var status = state.completedLevels[i] ? 'completed' : (i===state.maxUnlocked ? 'current' : 'locked');
+      var pos = NODE_POS[i];
+      return '<button class="level-node map-node" data-idx="'+i+'" style="left:'+pos.x+'%; top:'+pos.y+'%" aria-label="'+lvl.name+' · Sector '+(i+1)+'"><img class="map-node-icon" src="assets/'+NODE_ICONS[status]+'" alt=""></button>';
+    }).join('');
+    $('mapNodes').innerHTML = html;
+
+    var doneEl = $('mapDone');
+    if(state.completedLevels.every(Boolean)){
+      doneEl.innerHTML = '🏅 All sectors cleared!<br>Reopens in <span id="cooldownInline">'+msToHMS((state.cooldownEnd||Date.now())-Date.now())+'</span>';
+      doneEl.classList.remove('hidden');
+    } else {
+      doneEl.classList.add('hidden');
+    }
+  }
+  $('levelsScroll').addEventListener('click', function(e){
+    var node = e.target.closest('.level-node');
+    if(!node) return;
+    var i = +node.dataset.idx;
+    if(i > state.maxUnlocked && !state.completedLevels[i]){ showToast('Clear the previous sector first.'); return; }
+    openLevel(i);
+  });
+
+  // ---------- game attempt / board ----------
+  function newAttempt(levelIdx){
+    return { level:levelIdx, board:null, firstClickDone:false, gameOver:false, won:false, lost:false };
+  }
+  function currentAttempt(){ return state.attempts[state.currentLevel]; }
+
+  function generateBoard(levelIdx, excludeIdx){
+    var lvl = LEVELS[levelIdx];
+    var n = lvl.cols*lvl.rows;
+    var already = state.levelProgress[levelIdx] || [];
+    var remaining = remainingRewardValues(lvl, already);
+
+    var pool = [];
+    for(var i=0;i<n;i++){ if(i!==excludeIdx) pool.push(i); }
+    shuffle(pool);
+    var minePositions = pool.splice(0, lvl.mines);
+    var claimedPositions = pool.splice(0, already.length);
+    var rewardPositions = pool.splice(0, remaining.length);
+    var rewardValues = shuffle(remaining.slice());
+
+    var cells = new Array(n);
+    for(i=0;i<n;i++) cells[i] = {type:'neutral', revealed:false};
+    minePositions.forEach(function(p){ cells[p] = {type:'mine', revealed:false}; });
+    claimedPositions.forEach(function(p,idx){ cells[p] = {type:'reward', rewardValue:already[idx], revealed:true, claimed:true}; });
+    rewardPositions.forEach(function(p,idx){ cells[p] = {type:'reward', rewardValue:rewardValues[idx], revealed:false}; });
+
+    for(i=0;i<n;i++){
+      if(cells[i].type!=='neutral') continue;
+      var nbs = neighborsOf(i, lvl.cols, lvl.rows);
+      var hasReward=false, hasMine=false;
+      nbs.forEach(function(j){
+        if(cells[j].type==='reward') hasReward=true;
+        if(cells[j].type==='mine') hasMine=true;
+      });
+      cells[i].clue = hasMine ? (hasReward ? 'yellow' : 'red') : 'green';
+    }
+    return cells;
+  }
+
+  function openLevel(i){
+    state.currentLevel = i;
+    if(state.levelProgress[i] === undefined) state.levelProgress[i] = [];
+    var prev = state.attempts[i];
+    if(!prev || prev.gameOver){
+      if(prev && prev.won){ state.levelProgress[i] = []; }
+      state.attempts[i] = newAttempt(i);
+    }
+    showScreen('game');
+    renderGameHeader();
+    renderBoard();
+    if(!state.hasSeenTutorial) openOverlay('ovTutorial');
+  }
+
+  function renderGameHeader(){
+    var a = currentAttempt(), lvl = LEVELS[a.level];
+    var total = lvl.rewards.length;
+    var found = (state.levelProgress[a.level]||[]).length;
+    $('levelTag').textContent = 'Sector '+(a.level+1);
+    $('progressFill').style.width = (total? (found/total*100):0)+'%';
+    $('progressCount').textContent = found+'/'+total;
+    var sorted = lvl.rewards.slice().sort(function(x,y){return x-y;});
+    $('pipRow').innerHTML = sorted.map(function(v,idx){
+      return '<div class="rpip '+(idx<found?'filled':'')+'"></div>';
+    }).join('');
+  }
+
+  function cellHTML(cell, idx){
+    if(!cell || !cell.revealed){
+      return '<button class="tile" data-idx="'+idx+'"></button>';
+    }
+    if(cell.type==='mine'){
+      return '<button class="tile revealed mine" data-idx="'+idx+'" disabled><img src="assets/bomb-icon.webp" class="mine-icon" alt=""></button>';
+    }
+    if(cell.type==='reward'){
+      var claimedClass = cell.claimed ? ' claimed' : '';
+      var badge = cell.claimed ? '<span class="claimed-badge">✓</span>' : '';
+      var rewardImg = REWARD_IMAGES[cell.rewardValue];
+      var rewardContent = rewardImg
+        ? '<img src="assets/'+rewardImg+'" class="reward-icon" alt="">'
+        : '<img src="assets/reward.webp" class="reward-icon" alt=""><span class="val">+'+cell.rewardValue+'</span>';
+      return '<button class="tile revealed reward'+claimedClass+'" data-idx="'+idx+'" disabled>'+rewardContent+badge+'</button>';
+    }
+    return '<button class="tile revealed clue-'+cell.clue+'" data-idx="'+idx+'" disabled></button>';
+  }
+
+  function renderBoard(){
+    var a = currentAttempt(), lvl = LEVELS[a.level];
+    var boardEl = $('board');
+    boardEl.style.setProperty('--cols', lvl.cols);
+    var n = lvl.cols*lvl.rows;
+    var html = '';
+    for(var i=0;i<n;i++){
+      var cell = a.board ? a.board[i] : null;
+      html += cellHTML(cell, i);
+    }
+    boardEl.innerHTML = html;
+  }
+
+  $('board').addEventListener('click', function(e){
+    var t = e.target.closest('.tile');
+    if(!t || t.disabled) return;
+    revealTile(+t.dataset.idx);
+  });
+
+  function revealTile(idx){
+    var a = currentAttempt();
+    if(a.gameOver) return;
+    var lvl = LEVELS[a.level];
+
+    if(!a.firstClickDone){
+      a.board = generateBoard(a.level, idx);
+      a.firstClickDone = true;
+    }
+    var cell = a.board[idx];
+    if(cell.revealed) return;
+
+    if(state.scannerPoints < 1){
+      openOverlay('ovScannerEmpty');
+      return;
+    }
+    state.scannerPoints -= 1;
+    updateHUD();
+
+    if(cell.type==='mine'){
+      cell.revealed = true;
+      a.gameOver = true; a.lost = true;
+    } else if(cell.type==='reward'){
+      cell.revealed = true;
+      state.levelProgress[a.level].push(cell.rewardValue);
+      if(state.levelProgress[a.level].length === lvl.rewards.length){ a.gameOver = true; a.won = true; }
+    } else {
+      cell.revealed = true;
+    }
+
+    renderBoard();
+    renderGameHeader();
+
+    if(a.lost){
+      var mineTile = $('board').querySelector('[data-idx="'+idx+'"]');
+      if(mineTile) playExplosion(mineTile);
+      setTimeout(openLossPopup, 850);
+    }
+    else if(cell.type==='reward'){
+      var rewardTile = $('board').querySelector('[data-idx="'+idx+'"]');
+      if(rewardTile){
+        rewardTile.classList.add('reward-pop');
+        playRewardFX(rewardTile);
+      }
+      if(a.won) setTimeout(openWinPopup, 500);
+    }
+  }
+
+  var EXPLOSION_FRAMES = 10, EXPLOSION_COLS = 5, EXPLOSION_FRAME_MS = 60;
+  var REWARD_FRAMES = 10, REWARD_COLS = 5, REWARD_FRAME_MS = 50;
+  function playSpriteFX(tileEl, className, frames, cols, frameMs){
+    var rows = Math.ceil(frames / cols);
+    var fx = document.createElement('div');
+    fx.className = className;
+    fx.style.backgroundSize = (cols*100)+'% '+(rows*100)+'%';
+    tileEl.appendChild(fx);
+    var frame = 0;
+    var iv = setInterval(function(){
+      var col = frame % cols, row = Math.floor(frame / cols);
+      var xPct = cols>1 ? col*100/(cols-1) : 0;
+      var yPct = rows>1 ? row*100/(rows-1) : 0;
+      fx.style.backgroundPosition = xPct+'% '+yPct+'%';
+      frame++;
+      if(frame >= frames){
+        clearInterval(iv);
+        fx.remove();
+      }
+    }, frameMs);
+  }
+  function playExplosion(tileEl){ playSpriteFX(tileEl, 'explosion-fx', EXPLOSION_FRAMES, EXPLOSION_COLS, EXPLOSION_FRAME_MS); }
+  function playRewardFX(tileEl){ playSpriteFX(tileEl, 'reward-fx', REWARD_FRAMES, REWARD_COLS, REWARD_FRAME_MS); }
+
+  function openWinPopup(){
+    var a = currentAttempt(), lvl = LEVELS[a.level];
+    state.completedLevels[a.level] = true;
+    if(a.level+1 <= 5) state.maxUnlocked = Math.max(state.maxUnlocked, a.level+1);
+    var values = state.levelProgress[a.level] || [];
+    var total = values.reduce(function(x,y){return x+y;},0);
+    state.freeSpins += total;
+    updateHUD();
+
+    openOverlay('popupWin');
+  }
+  $('btnWinNext').addEventListener('click', function(){
+    closeOverlay('popupWin');
+    if(state.completedLevels.every(Boolean)){
+      state.cooldownEnd = Date.now() + 24*3600*1000;
+      showScreen('main');
+      showToast('🏅 All sectors cleared — Minefield reopens in 24h.');
+      updateHUD();
+    } else {
+      showScreen('levels');
+      renderLevels();
+    }
+  });
+
+  function openLossPopup(){ openOverlay('popupLoss'); }
+  $('btnRetry').addEventListener('click', function(){
+    state.attempts[state.currentLevel] = newAttempt(state.currentLevel);
+    closeOverlay('popupLoss');
+    renderBoard();
+    renderGameHeader();
+  });
+  $('btnLossMap').addEventListener('click', function(){
+    state.attempts[state.currentLevel] = newAttempt(state.currentLevel);
+    closeOverlay('popupLoss');
+    showScreen('levels');
+    renderLevels();
+  });
+
+  $('btnScannerEmptySpin').addEventListener('click', function(){
+    closeOverlay('ovScannerEmpty');
+    showScreen('main');
+  });
+
+  // ---------- wiring ----------
+  $('btnSpin').addEventListener('click', spin);
+
+  function openScannerFlow(){
+    if(state.cooldownEnd && Date.now() < state.cooldownEnd){
+      showToast('Minefield reopens in '+msToHMS(state.cooldownEnd-Date.now()));
+      return;
+    }
+    if(!state.hasSeenEntry){ showScreen('entry'); return; }
+    var lvlIdx = state.currentLevel;
+    var attempt = lvlIdx!=null ? state.attempts[lvlIdx] : null;
+    if(attempt && !attempt.won){ openLevel(lvlIdx); }
+    else { showScreen('levels'); renderLevels(); }
+  }
+  $('btnScanner').addEventListener('click', openScannerFlow);
+  $('btnEntryBack').addEventListener('click', function(){ showScreen('main'); });
+  $('btnEntryStart').addEventListener('click', function(){
+    state.hasSeenEntry = true;
+    if(!state.eventWindowEnd) state.eventWindowEnd = Date.now() + 24*3600*1000;
+    showScreen('levels');
+    renderLevels();
+  });
+  $('btnLevelsBack').addEventListener('click', function(){ showScreen('main'); });
+
+  $('btnInfo').addEventListener('click', function(){ openOverlay('ovInfo'); });
+  $('btnInfoClose').addEventListener('click', function(){ closeOverlay('ovInfo'); });
+
+  $('btnClose').addEventListener('click', function(){ showScreen('levels'); renderLevels(); });
+
+  $('btnTutClose').addEventListener('click', function(){
+    state.hasSeenTutorial = true;
+    try{ localStorage.setItem('ms_tut_seen','1'); }catch(e){}
+    closeOverlay('ovTutorial');
+  });
+
+  $('btnEnergyClose').addEventListener('click', function(){ closeOverlay('ovEnergy'); });
+  $('btnBuyEnergy').addEventListener('click', function(){
+    closeOverlay('ovEnergy');
+    showToast('This is where the Energy Pack purchase flow would open.');
+  });
+
+  function markPosterSeen(){
+    state.hasSeenPoster = true;
+  }
+  $('btnPosterClose').addEventListener('click', function(){
+    markPosterSeen();
+    closeOverlay('ovEventPoster');
+  });
+  $('btnPosterStart').addEventListener('click', function(){
+    markPosterSeen();
+    closeOverlay('ovEventPoster');
+    openScannerFlow();
+  });
+
+  // ---------- timers ----------
+  setInterval(function(){
+    if(state.eventWindowEnd){
+      var remaining = state.eventWindowEnd - Date.now();
+      $('eventTimer').textContent = remaining>0 ? msToHMS(remaining) : 'Window closed';
+    }
+    var inline = $('cooldownInline');
+    if(inline && state.cooldownEnd){ inline.textContent = msToHMS(state.cooldownEnd-Date.now()); }
+    updateHUD();
+  }, 1000);
+
+  // ---------- init ----------
+  updateHUD();
+  showScreen('main');
+})();
+</script>
