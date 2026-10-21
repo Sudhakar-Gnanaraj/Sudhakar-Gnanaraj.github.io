@@ -67,6 +67,7 @@
     <section class="block" id="prototype">
       <h2 class="label">Play the prototype</h2>
       <p class="section-lead">The prototype starts on a stand-in Coin Master main screen, already set up for testing at 3,960 ★, just under the 4,000 ★ unlock. Your first spin unlocks the event; tap its icon to open the briefing and the sector map. Each spin also banks a Scanner Point to spend on the board.</p>
+      <p class="play-note desktop-only" id="ts-mobile-note">It is recommended to play this prototype on a mobile device.</p>
       <p class="play-note" id="ts-spin-note">Click on the spin button to start the event.</p>
       <div class="ts-play-wrap">
         <div class="screen ts-phone" id="ts-screen">
@@ -316,6 +317,12 @@
         else if (!request) { clearTimeout(fallback); setCover(true); }
       });
       exitBtn.addEventListener("click", exit);
+
+      // Players already on a phone don't need the "play on a mobile device" note
+      const isMobile =
+        /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ||
+        (matchMedia("(pointer: coarse)").matches && !matchMedia("(any-pointer: fine)").matches);
+      if (isMobile) document.getElementById("ts-mobile-note").hidden = true;
 
       // Hide the "click spin" note once the player has spun in the prototype
       const frame = document.getElementById("ts-frame");

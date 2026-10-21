@@ -142,7 +142,8 @@ function show(which) {
   playTools.hidden = !play;
   if (mobileWarning) mobileWarning.hidden = !(isMobile && play);
   // Any note a page marks as play-only is shown just while the Play tab is open
-  document.querySelectorAll(".play-only").forEach((el) => (el.hidden = !play));
+  // (desktop-only ones, like "play this on a mobile device", never on a phone)
+  document.querySelectorAll(".play-only").forEach((el) => (el.hidden = !play || (isMobile && el.classList.contains("desktop-only"))));
 
   // Stop any video we just left (its sound with it)
   for (const [name, v] of Object.entries(videos)) if (name !== which) resetVideo(v);
