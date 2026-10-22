@@ -32,9 +32,7 @@
       <a class="chip" href="#mechanics" data-target="mechanics">Mechanics</a>
       <a class="chip" href="#levels" data-target="levels">Levels</a>
       <a class="chip" href="#systems" data-target="systems">Systems</a>
-      <a class="chip" href="#tech" data-target="tech">Technical</a>
       <a class="chip" href="#game-jam" data-target="game-jam">Game jam</a>
-      <a class="chip" href="#credits" data-target="credits">Credits</a>
     </nav>
 
     <!-- Overview (left) + Details (right) -->
@@ -49,7 +47,7 @@
         <h2 class="label">Details</h2>
         <dl>
           <div><dt>Genre</dt><dd>Puzzle-platformer</dd></div>
-          <div><dt>Engine</dt><dd>Unity 6 (URP 2D)</dd></div>
+          <div><dt>Engine</dt><dd>Unity 6</dd></div>
           <div><dt>Language</dt><dd>C#</dd></div>
           <div><dt>Platform</dt><dd><span class="plat"><svg class="plat-ico" aria-hidden="true"><use href="assets/platform-icons.svg#web"/></svg>Web</span></dd></div>
         </dl>
@@ -80,10 +78,12 @@
       <p class="play-note focus-note" id="focus-note" role="status" hidden>⏸ The game is paused. Click on the game screen to resume.</p>
 
       <div class="screen" id="panel-gameplay" role="tabpanel" aria-labelledby="tab-gameplay">
-        <!-- Placeholder until the gameplay video is ready: add data-video-id to make it a click-to-load YouTube poster. -->
-        <div class="placeholder" id="gameplay-facade" data-title="Size Matters gameplay" style="background-image:url('assets/size-matters/shot-mirror.webp')">
-          <span>Gameplay video coming soon</span>
-        </div>
+        <!-- Click-to-load: the YouTube player is only added when the poster is clicked. -->
+        <button class="video-facade" id="gameplay-facade" type="button" data-video-id="UHETlbEzcyg" data-title="Size Matters gameplay"
+                aria-label="Play the gameplay video" style="background-image:url('https://i.ytimg.com/vi/UHETlbEzcyg/maxresdefault.jpg')">
+          <span class="video-play" aria-hidden="true">&#9654;</span>
+          <span class="video-label">Watch the gameplay</span>
+        </button>
       </div>
 
       <div class="screen" id="panel-play" role="tabpanel" aria-labelledby="tab-play" hidden>
@@ -143,7 +143,7 @@
             <h3>Shrink Ray</h3>
             <p>Hold left click to fire. Objects scale smoothly while the beam stays on them, so the player decides the exact size by when they let go. Shrinking clears obstacles out of the way or turns a block into a step that fits a gap.</p>
           </div>
-          <figure class="media-shot od-shot"><img src="assets/size-matters/shot-shrink.webp" alt="The red Shrink Ray hitting an orange block on a high ledge" width="1280" height="720" loading="lazy"></figure>
+          <figure class="media-shot od-shot"><img src="assets/size-matters/anim-shrink.webp" alt="The red Shrink Ray shrinking an orange block on a high ledge" width="960" height="540" loading="lazy"></figure>
         </article>
 
         <article class="system gif-left">
@@ -151,32 +151,36 @@
             <h3>Enlarge Ray</h3>
             <p>Scroll the mouse wheel to switch to the Enlarge Ray. Growing a block is how the player gains height: a small block becomes a staircase or a bridge. A block pressed against a wall or the floor grows away from it instead of clipping through, and stops growing if it is boxed in on both sides.</p>
           </div>
-          <figure class="media-shot od-shot"><img src="assets/size-matters/shot-enlarge.webp" alt="The green Enlarge Ray growing a large orange block next to the player" width="1280" height="720" loading="lazy"></figure>
+          <figure class="media-shot od-shot"><img src="assets/size-matters/anim-enlarge.webp" alt="The green Enlarge Ray growing a small block near the goal" width="960" height="540" loading="lazy"></figure>
         </article>
 
         <article class="system gif-right">
           <div class="system-text">
+            <h3>Moving platforms</h3>
+            <p>Platforms reverse when they hit an obstacle and carry the player and any objects resting on them.</p>
+          </div>
+          <figure class="media-shot od-shot"><img src="assets/size-matters/anim-moving.webp" alt="A level with moving platforms carrying the player and blocks" width="960" height="540" loading="lazy"></figure>
+        </article>
+
+        <article class="system gif-left">
+          <div class="system-text">
             <h3>Reflective surfaces</h3>
             <p>The laser bounces off mirrors up to three times, which allows bank-shot puzzles: the player can resize a block they can't see or reach directly. Mirrors can't be resized themselves, so they are fixed points to plan around.</p>
           </div>
-          <figure class="media-shot od-shot"><img src="assets/size-matters/shot-mirror.webp" alt="The Enlarge beam bouncing off a mirror on a platform to hit a block on the far side of the level" width="1280" height="720" loading="lazy"></figure>
+          <figure class="media-shot od-shot"><img src="assets/size-matters/anim-reflect.webp" alt="The Enlarge beam bouncing off a mirror to grow a block on the far side of the level" width="960" height="540" loading="lazy"></figure>
         </article>
 
-      </div>
+        <div class="ux-grid">
+          <article class="ux-card">
+            <h3>Immune objects</h3>
+            <p>Some surfaces can't be scaled, shown by a different hit effect, so the player learns which objects are tools.</p>
+          </article>
+          <article class="ux-card">
+            <h3>No jumping</h3>
+            <p>All vertical movement comes from resizing the environment, so every level is a question about the world, not about reflexes.</p>
+          </article>
+        </div>
 
-      <div class="ux-grid">
-        <article class="ux-card">
-          <h3>Moving platforms</h3>
-          <p>Platforms reverse when they hit an obstacle and carry the player and any objects resting on them.</p>
-        </article>
-        <article class="ux-card">
-          <h3>Immune objects</h3>
-          <p>Some surfaces can't be scaled, shown by a different hit effect, so the player learns which objects are tools.</p>
-        </article>
-        <article class="ux-card ux-wide">
-          <h3>No jumping</h3>
-          <p>All vertical movement comes from resizing the environment, so every level is a question about the world, not about reflexes.</p>
-        </article>
       </div>
 
       <div class="leveldesign">
@@ -282,42 +286,6 @@
           <h3>Fall means instant retry</h3>
           <p>A kill zone along the bottom of every level restarts it with a screen fade. R restarts at any time, so trying ideas is cheap.</p>
         </article>
-        <article class="ux-card">
-          <h3>Goal feedback</h3>
-          <p>The goal pulses gently while you're on your way. Reaching it plays particles and a sound, then the next level loads with a transition.</p>
-        </article>
-        <article class="ux-card">
-          <h3>Flow</h3>
-          <p>Main menu &rarr; level select (all nine levels) &rarr; Levels 1&ndash;9 &rarr; a &ldquo;Thanks for playing&rdquo; screen. The level select lets jam judges and players skip straight to the later puzzles.</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- Technical highlights -->
-    <section class="block" id="tech">
-      <h2 class="label">Technical highlights</h2>
-      <p class="section-lead">The main systems are about 1,200 lines of C#, built on Unity's 2D physics and the new Input System.</p>
-      <div class="ux-grid">
-        <article class="ux-card">
-          <h3>Multi-bounce laser</h3>
-          <p>Physics2D raycasts with a contact filter, and <code>Vector2.Reflect</code> for bounces, with separate &ldquo;stop&rdquo; and &ldquo;hittable&rdquo; layer masks. Raycast buffers are allocated once and reused, so firing creates no garbage each frame, and hit particles spawn at a capped rate.</p>
-        </article>
-        <article class="ux-card">
-          <h3>Constraint-aware scaling</h3>
-          <p>Before growing, an object casts rays from each side to find what it's touching, then shifts its position so it grows away from walls and floors.</p>
-        </article>
-        <article class="ux-card">
-          <h3>Platform carrying</h3>
-          <p>A platform carries only objects resting on its top face. A registry picks one winning carrier when an object touches several at once.</p>
-        </article>
-        <article class="ux-card">
-          <h3>Kinematic moving platforms</h3>
-          <p>A BoxCast look-ahead reverses a platform before contact, and a reversal cooldown prevents jitter.</p>
-        </article>
-        <article class="ux-card ux-wide">
-          <h3>Game flow</h3>
-          <p>A global input lock during transitions, screen-fade scene loading, a singleton audio manager and a level-select menu.</p>
-        </article>
       </div>
     </section>
 
@@ -357,25 +325,6 @@
         <article class="ld-block">
           <h3>What I learned</h3>
           <p>Without a jump, every bit of vertical movement had to come from the player's own actions, so the levels are built around what the player can change, not around platforming skill. Per-object scale caps turned out to be my strongest design tool: one number could remove a whole class of unintended solutions.</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- Credits -->
-    <section class="block" id="credits">
-      <h2 class="label">Assets and credits</h2>
-      <div class="ux-grid">
-        <article class="ux-card">
-          <h3>Art</h3>
-          <p>Kenney asset packs (pixel tilemaps, characters and backgrounds), as the jam rules required.</p>
-        </article>
-        <article class="ux-card">
-          <h3>Music and sound</h3>
-          <p>The Casual &amp; Relaxing Game Music and Casual Game Sounds packs.</p>
-        </article>
-        <article class="ux-card ux-wide">
-          <h3>Font</h3>
-          <p>Pixelify Sans (Google Fonts, Open Font License).</p>
         </article>
       </div>
     </section>
