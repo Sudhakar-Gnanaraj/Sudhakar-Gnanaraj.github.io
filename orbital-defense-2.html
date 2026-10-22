@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=103">
+  <link rel="stylesheet" href="styles.css?v=106">
 </head>
 <body class="game-page">
 
@@ -16,8 +16,8 @@
     <a href="index.html">Home</a>
     <a href="index.html#projects">Projects</a>
     <a href="index.html#about">About</a>
-    <a href="index.html#contact">Contact</a>
-    <a class="nav-cta" href="index.html#contact">Resume</a>
+    <a href="#contact">Contact</a>
+    <a class="nav-cta" href="#contact">Resume</a>
   </nav>
 
   <main class="game">
@@ -441,11 +441,26 @@
 
   </main>
 
+  <!-- Contact: the last panel on every page -->
+  <div class="panel-section contact-panel">
+    <section class="contact" id="contact">
+      <h2 class="section-title">Contact me</h2>
+      <p class="contact-lead">Got a game idea, a role, or just want to talk design? I'd love to hear from you.</p>
+      <div class="contact-email">
+        <a class="btn-email" href="mailto:sudhakar.g.5796@gmail.com"><svg class="contact-ico" aria-hidden="true"><use href="assets/platform-icons.svg?v=2#mail"/></svg>Email me</a>
+        <span class="email-text">sudhakar.g.5796@gmail.com</span>
+      </div>
+      <ul class="contact-links">
+        <li><a href="https://www.linkedin.com/in/sudhakar-gnanaraj/" target="_blank" rel="noopener"><svg class="contact-ico" aria-hidden="true"><use href="assets/platform-icons.svg?v=2#linkedin"/></svg>LinkedIn</a></li>
+        <li><a href="https://pixel-monkey-96.itch.io/" target="_blank" rel="noopener"><svg class="contact-ico" aria-hidden="true"><use href="assets/platform-icons.svg?v=2#gamepad"/></svg>itch.io</a></li>
+      </ul>
+    </section>
+  </div>
+
   <button class="to-top" id="to-top" type="button" aria-label="Back to top" hidden>↑</button>
 
-  <footer class="footer">© <span id="year"></span> Sudhakar Gnanaraj</footer>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
   <script src="game.js?v=32"></script>
   <script src="section-nav.js?v=2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" defer></script>

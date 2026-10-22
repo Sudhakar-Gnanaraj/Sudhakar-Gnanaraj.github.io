@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=103">
+  <link rel="stylesheet" href="styles.css?v=106">
 </head>
 <body>
 
@@ -134,7 +134,7 @@
         <!-- Skills float around the photo; hovering (or tapping) one shows its note below the photo -->
         <ul class="skills" aria-label="Skills">
           <li class="skill" style="--x: 50%; --y: 7%; --d: 0.0s"><button type="button" data-note="My years at Thoughtworks taught me to listen first, and to turn messy ideas into something a team can build.">Business Analysis</button></li>
-          <li class="skill" style="--x: 25%; --y: 22%; --d: 0.7s"><button type="button" data-note="I love setting up small rules that bump into each other and surprise me, like a toddler who refuses to eat.">Systems Design</button></li>
+          <li class="skill" style="--x: 25%; --y: 22%; --d: 0.7s"><button type="button" data-note="I love setting up small rules that bump into each other and surprise me.">Systems Design</button></li>
           <li class="skill" style="--x: 75%; --y: 22%; --d: 1.4s"><button type="button" data-note="Placing every block and gap so players work it out on their own is my favourite kind of puzzle.">Level Design</button></li>
           <li class="skill" style="--x: 21%; --y: 44%; --d: 2.1s"><button type="button" data-note="Nobody reads instructions, me included, so I try to teach through play.">Player Onboarding</button></li>
           <li class="skill" style="--x: 79%; --y: 44%; --d: 2.8s"><button type="button" data-note="Watching someone play my game is humbling. I've learned more from players than from my own plans.">Playtesting</button></li>
@@ -153,15 +153,26 @@
     </div>
 
 
-    <section class="contact" id="contact">
-      <h2>Contact me</h2>
-      <p>Email, itch.io and LinkedIn links will go here.</p>
-    </section>
   </main>
 
-  <footer class="footer">© <span id="year"></span> Sudhakar Gnanaraj</footer>
+  <!-- Contact: the last panel on every page -->
+  <div class="panel-section contact-panel">
+    <section class="contact" id="contact">
+      <h2 class="section-title">Contact me</h2>
+      <p class="contact-lead">Got a game idea, a role, or just want to talk design? I'd love to hear from you.</p>
+      <div class="contact-email">
+        <a class="btn-email" href="mailto:sudhakar.g.5796@gmail.com"><svg class="contact-ico" aria-hidden="true"><use href="assets/platform-icons.svg?v=2#mail"/></svg>Email me</a>
+        <span class="email-text">sudhakar.g.5796@gmail.com</span>
+      </div>
+      <ul class="contact-links">
+        <li><a href="https://www.linkedin.com/in/sudhakar-gnanaraj/" target="_blank" rel="noopener"><svg class="contact-ico" aria-hidden="true"><use href="assets/platform-icons.svg?v=2#linkedin"/></svg>LinkedIn</a></li>
+        <li><a href="https://pixel-monkey-96.itch.io/" target="_blank" rel="noopener"><svg class="contact-ico" aria-hidden="true"><use href="assets/platform-icons.svg?v=2#gamepad"/></svg>itch.io</a></li>
+      </ul>
+    </section>
+  </div>
 
-  <script src="script.js"></script>
+
+  <script src="script.js?v=2"></script>
   <script src="hero-bg.js?v=2"></script>
   <script src="about.js?v=9"></script>
 </body>
