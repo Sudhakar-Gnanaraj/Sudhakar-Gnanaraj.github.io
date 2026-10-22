@@ -5,7 +5,8 @@ const panel = document.getElementById("panel-gameplay");
 let player = null;
 
 facade.addEventListener("click", () => {
-  if (player) return;
+  // A placeholder poster (no data-video-id yet) stays a still image
+  if (player || !facade.dataset.videoId) return;
   player = document.createElement("iframe");
   player.src = "https://www.youtube-nocookie.com/embed/" + facade.dataset.videoId + "?autoplay=1&rel=0&playsinline=1&enablejsapi=1";
   player.title = facade.dataset.title || "Video";

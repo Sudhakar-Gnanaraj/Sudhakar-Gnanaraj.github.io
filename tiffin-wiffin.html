@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tiffin Wiffin | Sudhakar Gnanaraj</title>
+  <meta name="description" content="Tiffin Wiffin: an applied game about baby nutrition, made for the Science Gallery Bangalore exhibition on the theme Calorie. Game design case study by Sudhakar Gnanaraj.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=86">
+</head>
+<body class="game-page">
+
+  <nav class="nav" aria-label="Main">
+    <a href="index.html">Home</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#contact">Contact</a>
+    <a class="nav-cta" href="index.html#contact">Resume</a>
+  </nav>
+
+  <main class="game">
+
+    <a class="back" href="index.html#projects">← Back to my works</a>
+    <h1 class="game-title">Tiffin Wiffin</h1>
+    <p class="tagline">Feed a fussy toddler a healthy meal, one bite at a time, before tiffin time runs out.</p>
+
+    <nav class="section-bar" id="section-bar" aria-label="Jump to a section">
+      <a class="chip" href="#overview" data-target="overview" data-also="media">Overview</a>
+      <a class="chip" href="#core-loop" data-target="core-loop">Core loop</a>
+      <a class="chip" href="#how-to-play" data-target="how-to-play">How to play</a>
+      <a class="chip" href="#tricks" data-target="tricks">Coaxing tricks</a>
+      <a class="chip" href="#food" data-target="food">Food data</a>
+      <a class="chip" href="#endings" data-target="endings">Endings</a>
+      <a class="chip" href="#exhibition" data-target="exhibition">Exhibition</a>
+    </nav>
+
+    <!-- Overview (left) + Details (right) -->
+    <section class="top" id="overview">
+      <div class="overview">
+        <h2 class="label">Overview</h2>
+        <p>Tiffin Wiffin puts you in charge of a fussy toddler's mealtime. Choose foods for the bowl, pick the right cutlery, and coax the baby into eating with aeroplane spoons, star-shaped food and colourful beet juice. Hit the calorie target with real, nutritious food before the timer ends, or the baby falls sick.</p>
+        <p>It is an applied game about baby nutrition, made for the <strong>Science Gallery Bangalore</strong> exhibition on the theme <strong>&ldquo;Calorie&rdquo;</strong>. I did the game design and programming, and Bhaswati Gogoi (NID) made the art.</p>
+      </div>
+
+      <aside class="details" aria-label="Game details">
+        <h2 class="label">Details</h2>
+        <dl>
+          <div><dt>Genre</dt><dd>Applied game</dd></div>
+          <div><dt>Engine</dt><dd>Unity 6</dd></div>
+          <div><dt>Language</dt><dd>C#</dd></div>
+          <div><dt>Platform</dt><dd><span class="plat"><svg class="plat-ico" aria-hidden="true"><use href="assets/platform-icons.svg#web"/></svg>Web</span></dd></div>
+          <div><dt>Exhibited</dt><dd>Science Gallery Bangalore, January 2026</dd></div>
+          <div><dt>Session</dt><dd>2 minutes</dd></div>
+        </dl>
+      </aside>
+    </section>
+
+    <!-- Gameplay video / Play -->
+    <section class="media" id="media" aria-label="Gameplay and play">
+      <div class="mobile-warning" id="mobile-warning" role="note" hidden>
+        <strong>Heads up:</strong> this game is played with a mouse and is not optimized for mobile devices. For the best experience, play on a desktop or laptop.
+      </div>
+      <div class="tabs" role="tablist">
+        <button class="tab active" id="tab-gameplay" role="tab" aria-selected="true" aria-controls="panel-gameplay">Gameplay</button>
+        <button class="tab tab-play" id="tab-play" role="tab" aria-selected="false" aria-controls="panel-play"><span aria-hidden="true">▶</span> Play the game</button>
+        <div class="play-tools" id="play-tools" hidden>
+          <button class="tab" id="btn-mute" type="button" aria-pressed="false">🔊 Sound on</button>
+          <button class="tab" id="btn-fullscreen" type="button">Fullscreen ⤢</button>
+        </div>
+      </div>
+
+      <p class="play-note" id="load-note" role="status" hidden>The game takes a short time to load, especially the first time you play.</p>
+
+      <p class="play-note focus-note" id="focus-note" role="status" hidden>⏸ The game is paused. Click on the game screen to resume.</p>
+
+      <div class="screen" id="panel-gameplay" role="tabpanel" aria-labelledby="tab-gameplay">
+        <!-- Placeholder until the gameplay video is ready: add data-video-id to make it a click-to-load YouTube poster. -->
+        <div class="placeholder" id="gameplay-facade" data-title="Tiffin Wiffin gameplay" style="background-image:url('assets/tiffin-wiffin/title.webp')">
+          <span>Gameplay video coming soon</span>
+        </div>
+      </div>
+
+      <div class="screen" id="panel-play" role="tabpanel" aria-labelledby="tab-play" hidden>
+        <iframe id="game-frame" title="Tiffin Wiffin (WebGL build)" data-src="games/tiffin-wiffin/index.html?v=1" allow="fullscreen; autoplay" allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <!-- Core loop -->
+    <section class="block" id="core-loop">
+      <h2 class="label">Core loop</h2>
+      <p class="section-lead">Every round is two minutes long. The calorie counter climbs with every bite, and the meal is judged when the timer ends.</p>
+      <div class="features">
+        <figure class="loop" aria-label="Core loop: fill the bowl, pick the cutlery, offer a bite, win the baby over">
+          <ol class="loop-steps">
+            <li class="step decision"><h3>1. Fill the bowl</h3><p>Tap foods to place them on the plate</p></li>
+            <li class="step decision"><h3>2. Pick the cutlery</h3><p>A fork for carrot and banana, a spoon for everything else</p></li>
+            <li class="step decision"><h3>3. Offer a bite</h3><p>Scoop and drag the food to the baby's mouth</p></li>
+            <li class="step event"><h3>4. Baby refuses?</h3><p>Win them over with the trick the baby asks for</p></li>
+          </ol>
+          <div class="loop-return" aria-hidden="true"></div>
+          <figcaption class="loop-caption">Keep feeding, bite by bite, until the bowl is empty or the 2-minute timer ends.</figcaption>
+          <ul class="legend">
+            <li><span class="swatch decision"></span>Player decision</li>
+            <li><span class="swatch event"></span>Game event</li>
+          </ul>
+        </figure>
+      </div>
+    </section>
+
+    <!-- How to play -->
+    <section class="block" id="how-to-play">
+      <h2 class="label">How to play</h2>
+      <p class="section-lead">Exhibition visitors walk up and play with no one to explain the rules, so a five-step illustrated tutorial plays before every round.</p>
+      <div class="tw-steps">
+        <figure><img src="assets/tiffin-wiffin/step-1.webp" alt="Tutorial step 1: tap a food to place it on the plate" width="960" height="540" loading="lazy"><figcaption>1. Tap a food to place it on the plate</figcaption></figure>
+        <figure><img src="assets/tiffin-wiffin/step-2.webp" alt="Tutorial step 2: select the spoon type" width="960" height="540" loading="lazy"><figcaption>2. Select the spoon type</figcaption></figure>
+        <figure><img src="assets/tiffin-wiffin/step-3.webp" alt="Tutorial step 3: scoop and try to feed" width="960" height="540" loading="lazy"><figcaption>3. Scoop and try to feed</figcaption></figure>
+        <figure><img src="assets/tiffin-wiffin/step-4.webp" alt="Tutorial step 4: the baby turns away from the spoon" width="960" height="540" loading="lazy"><figcaption>4. If the baby refuses&hellip;</figcaption></figure>
+        <figure><img src="assets/tiffin-wiffin/step-5.webp" alt="Tutorial step 5: coax the baby to eat before time runs out" width="960" height="540" loading="lazy"><figcaption>5. Coax the baby to eat before time runs out</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- Coaxing tricks -->
+    <section class="block" id="tricks">
+      <h2 class="label">Coaxing tricks</h2>
+      <p class="section-lead">Refusal is normal for toddlers, so it is the heart of the game. Each bite has a 35% chance of being accepted straight away. Otherwise the baby asks for one of three tricks that real parents use, weighted by the food on the spoon.</p>
+      <div class="systems">
+        <article class="system gif-right">
+          <div class="system-text">
+            <h3>Feeding the baby</h3>
+            <p>The cursor changes with the job: a hand to pick foods, then a fork or a spoon with the food sprite attached. The sprite swaps when the food is shaped or coloured, so the player always sees what they are about to offer.</p>
+          </div>
+          <figure class="media-shot od-shot"><img src="assets/tiffin-wiffin/gameplay.webp" alt="The toddler at the table with a bowl of rice, the food tray and the spoon and fork" width="1280" height="720" loading="lazy"></figure>
+        </article>
+      </div>
+      <div class="ux-grid">
+        <article class="ux-card">
+          <h3>Aeroplane</h3>
+          <p>Trace a dotted flight path to &ldquo;fly&rdquo; the spoon in. Stray from the line and the trick fails. Every food accepts it.</p>
+        </article>
+        <article class="ux-card">
+          <h3>Food shaping</h3>
+          <p>Turn pumpkin or rice into a star shape, because fun shapes make food more appealing.</p>
+        </article>
+        <article class="ux-card ux-wide">
+          <h3>Colouring</h3>
+          <p>Add beet juice to make rice or cereal pink, because colourful food catches a toddler's eye.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Food data -->
+    <section class="block" id="food">
+      <h2 class="label">Food data</h2>
+      <p class="section-lead">Each food has a fixed number of bites and calories per bite, the cutlery it needs, and the tricks it accepts.</p>
+      <div class="leveldesign">
+        <article class="ld-block">
+          <div class="table-wrap">
+            <table class="fleet-table cycle-table tw-food">
+              <thead>
+                <tr><th scope="col">Food</th><th scope="col">Bites</th><th scope="col">kcal / bite</th><th scope="col">Bowl total</th><th scope="col">Cutlery</th><th scope="col">Tricks accepted</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" class="fleet">Rice + peas</th><td data-label="Bites">7</td><td data-label="kcal / bite">40</td><td data-label="Bowl total">280</td><td data-label="Cutlery">Spoon</td><td class="desc" data-label="Tricks accepted">Aeroplane, star, colour</td></tr>
+                <tr><th scope="row" class="fleet">Rice</th><td data-label="Bites">7</td><td data-label="kcal / bite">40</td><td data-label="Bowl total">280</td><td data-label="Cutlery">Spoon</td><td class="desc" data-label="Tricks accepted">Aeroplane, star, colour</td></tr>
+                <tr><th scope="row" class="fleet">Cerelac</th><td data-label="Bites">7</td><td data-label="kcal / bite">50</td><td data-label="Bowl total">350</td><td data-label="Cutlery">Spoon</td><td class="desc" data-label="Tricks accepted">Aeroplane, colour</td></tr>
+                <tr><th scope="row" class="fleet">Banana</th><td data-label="Bites">4</td><td data-label="kcal / bite">30</td><td data-label="Bowl total">120</td><td data-label="Cutlery">Fork</td><td class="desc" data-label="Tricks accepted">Aeroplane</td></tr>
+                <tr><th scope="row" class="fleet">Carrot</th><td data-label="Bites">4</td><td data-label="kcal / bite">25</td><td data-label="Bowl total">100</td><td data-label="Cutlery">Fork</td><td class="desc" data-label="Tricks accepted">Aeroplane</td></tr>
+                <tr><th scope="row" class="fleet">Pumpkin</th><td data-label="Bites">3</td><td data-label="kcal / bite">15</td><td data-label="Bowl total">45</td><td data-label="Cutlery">Spoon</td><td class="desc" data-label="Tricks accepted">Aeroplane, star</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="od-note">Only one base (rice, rice + peas or Cerelac) fits in the bowl, so the healthiest full meal is about 545 kcal.</p>
+        </article>
+
+        <article class="ld-block">
+          <h3>Bowl rules</h3>
+          <div class="ux-grid">
+            <article class="ux-card">
+              <h3>One base per bowl</h3>
+              <p>Rice and Cerelac can't share the bowl, so the player has to choose between a whole food and an instant one.</p>
+            </article>
+            <article class="ux-card">
+              <h3>Upgrading the rice</h3>
+              <p>Peas can only be added to untouched rice, turning it into the more nutritious rice + peas.</p>
+            </article>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Endings -->
+    <section class="block" id="endings">
+      <h2 class="label">Endings</h2>
+      <p class="section-lead">The meal is judged when the timer ends. Two of the three endings are failures, and each one teaches something different about feeding a baby.</p>
+      <div class="tw-endings">
+        <figure>
+          <img src="assets/tiffin-wiffin/end-perfect.webp" alt="The Perfect ending: the toddler laughing with a big YAY" width="960" height="540" loading="lazy">
+          <figcaption><strong>Perfect</strong>More than 300 kcal, with less than half of it from Cerelac. &ldquo;Calories and nutrition were met.&rdquo;</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/tiffin-wiffin/end-nutrition.webp" alt="The Nutrition missed ending: the toddler sick, with a thermometer and an OH NO" width="960" height="540" loading="lazy">
+          <figcaption><strong>Nutrition missed</strong>More than 300 kcal, but half or more from Cerelac. &ldquo;Energy was filled but nutrition was missed. The baby fell sick.&rdquo;</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/tiffin-wiffin/end-timeout.webp" alt="The Time out ending: the toddler sick, with a thermometer and an OH NO" width="960" height="540" loading="lazy">
+          <figcaption><strong>Time out</strong>300 kcal or less when the timer ends. &ldquo;Feeding time slipped away. Babies need to be fed on time.&rdquo;</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Exhibition -->
+    <section class="block" id="exhibition">
+      <h2 class="label">Designing for the exhibition</h2>
+      <p class="section-lead">The game was made for gallery visitors of all ages at the Science Gallery Bangalore exhibition on the theme &ldquo;Calorie&rdquo;. It is an applied game: the fun carries a message about baby nutrition.</p>
+      <div class="leveldesign">
+        <article class="ld-block">
+          <div class="table-wrap">
+            <table class="fleet-table cycle-table pw-brief">
+              <thead>
+                <tr><th scope="col">What the player learns</th><th scope="col">How the game teaches it</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="fleet">Calories are not nutrition</th>
+                  <td class="desc" data-label="How the game teaches it">You can hit the calorie target by spooning in only instant cereal, but the baby still gets sick: &ldquo;Energy was filled, but nutrition was missed.&rdquo;</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Food choice matters</th>
+                  <td class="desc" data-label="How the game teaches it">Whole foods such as rice with peas, vegetables and fruit lead to the healthy ending.</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Feeding toddlers takes patience</th>
+                  <td class="desc" data-label="How the game teaches it">Refusal is normal. The game models the real strategies parents use: the aeroplane spoon, fun shapes and colourful food.</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="fleet">Timing matters</th>
+                  <td class="desc" data-label="How the game teaches it">Babies need regular, timely meals. Running out of time with too few calories ends in &ldquo;Time out&rdquo;.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="ld-block">
+          <h3>Built for walk-up players</h3>
+          <div class="ux-grid">
+            <article class="ux-card">
+              <h3>Two-minute rounds</h3>
+              <p>A short, fixed round keeps the queue moving at a busy exhibit, and the timer adds gentle pressure.</p>
+            </article>
+            <article class="ux-card">
+              <h3>Mouse only</h3>
+              <p>Tap, pick and drag are the only actions, so visitors of any age can play straight away.</p>
+            </article>
+            <article class="ux-card ux-wide">
+              <h3>Kiosk-friendly flow</h3>
+              <p>Intro &rarr; how to play (five illustrated steps) &rarr; a two-minute round &rarr; an ending with the final calorie count &rarr; replay. The music changes mood for each ending.</p>
+            </article>
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <button class="to-top" id="to-top" type="button" aria-label="Back to top" hidden>↑</button>
+
+  <footer class="footer">© <span id="year"></span> Sudhakar Gnanaraj</footer>
+
+  <script src="script.js"></script>
+  <script src="game.js?v=31"></script>
+  <script src="section-nav.js?v=2"></script>
+</body>
+</html>

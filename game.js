@@ -301,7 +301,8 @@ frame.addEventListener("load", () => {
       html, body { height: 100%; margin: 0; overflow: hidden; background: #000; }
       body { display: flex; align-items: center; justify-content: center; }
       #unity-container.unity-desktop { position: static !important; transform: none !important; left: auto !important; top: auto !important; }
-      #unity-canvas { display: block; width: min(100vw, ${ratio * 100}vh) !important; height: min(${100 / ratio}vw, 100vh) !important; }
+      #unity-fullscreen-container { width: auto !important; height: auto !important; } /* newer templates fix this to the export size */
+      #unity-canvas { display: block; position: static !important; width: min(100vw, ${ratio * 100}vh) !important; height: min(${100 / ratio}vw, 100vh) !important; }
       #unity-footer { display: none !important; }
       html.fill #unity-canvas { width: 100vw !important; height: 100vh !important; }`;
     doc.head.appendChild(style);

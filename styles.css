@@ -1103,3 +1103,21 @@ body.no-scroll { overflow: hidden; }
 }
 .screen.ts-phone.cover-fullscreen, .screen.ts-phone:fullscreen { width: 100vw; height: 100vh; height: 100dvh; max-width: none; aspect-ratio: auto; }
 .screen.ts-phone:fullscreen iframe, .screen.ts-phone.cover-fullscreen iframe { width: 100%; height: 100%; }
+
+/* Tiffin Wiffin: tutorial steps and ending screens */
+/* Steps wrap as a flex row so a short last row stays centred */
+.tw-steps { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; }
+.tw-steps figure { flex: 0 1 calc((100% - 36px) / 3); }
+.tw-endings { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; align-items: start; }
+.tw-steps figure, .tw-endings figure { margin: 0; }
+.tw-steps img, .tw-endings img { display: block; width: 100%; height: auto; border-radius: 12px; box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4); }
+.tw-steps figcaption { margin-top: 10px; font-size: 14px; color: var(--muted); text-align: center; }
+.tw-endings figcaption { margin-top: 12px; font-size: 14px; line-height: 1.55; color: var(--muted); }
+.tw-endings figcaption strong { display: block; margin-bottom: 4px; font-size: 16px; font-weight: 500; color: #fff; }
+@media (max-width: 860px) {
+  .tw-steps figure { flex-basis: calc((100% - 18px) / 2); }
+}
+@media (max-width: 560px) {
+  .tw-steps figure { flex-basis: 100%; }
+  .tw-endings { grid-template-columns: 1fr; }
+}
