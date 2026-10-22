@@ -1121,3 +1121,22 @@ body.no-scroll { overflow: hidden; }
   .tw-steps figure { flex-basis: 100%; }
   .tw-endings { grid-template-columns: 1fr; }
 }
+
+/* Business analysis: home-page list and case-study pages */
+.projects.ba { padding-top: 0; }
+.ba-intro { max-width: 720px; margin: -8px 0 28px; font-size: 17px; line-height: 1.6; color: var(--muted); }
+.ba-list { display: grid; gap: 14px; }
+.ba-card { display: grid; grid-template-columns: 120px 1fr; gap: 22px; align-items: center; padding: 18px; background: var(--panel); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 16px; transition: border-color 0.2s, transform 0.2s; }
+.ba-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, transparent); transform: translateY(-2px); }
+.ba-card img { width: 120px; height: 120px; object-fit: cover; border-radius: 12px; display: block; }
+.ba-meta small { text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; color: var(--muted); }
+.ba-meta h3 { margin: 4px 0 2px; font-size: 21px; font-weight: 400; letter-spacing: -0.01em; color: #fff; }
+.ba-meta .ba-domain { margin: 0 0 6px; font-size: 13px; color: var(--accent); }
+.ba-meta p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--fg); }
+.ba-thumb { display: block; width: 100%; max-width: 160px; height: auto; aspect-ratio: 1; object-fit: cover; margin: 0 0 16px; border-radius: 12px; }
+.ba-outcomes { gap: 10px; }
+.ba-outcomes li { padding: 9px 16px; font-size: 15px; }
+@media (max-width: 560px) {
+  .ba-card { grid-template-columns: 72px 1fr; gap: 14px; padding: 14px; align-items: start; }
+  .ba-card img { width: 72px; height: 72px; }
+}
