@@ -169,12 +169,14 @@ a { color: inherit; text-decoration: none; }
 /* Projects */
 .projects, .about, .contact { max-width: 1100px; margin: 0 auto; padding: 72px 24px; }
 .section-title, .about h2, .contact h2 {
-  margin: 0 0 36px;
-  font-size: clamp(32px, 4vw, 56px);
-  font-weight: 300;
-  letter-spacing: -0.03em;
+  margin: 0 0 40px;
+  font-size: clamp(40px, 5.4vw, 72px);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
   color: #fff;
 }
+.section-title::after, .about h2::after, .contact h2::after { content: ""; display: block; width: 64px; height: 4px; margin-top: 18px; background: var(--cta); border-radius: 999px; }
 .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
 .card { display: block; }
 .thumb {
@@ -1124,7 +1126,7 @@ body.no-scroll { overflow: hidden; }
 
 /* Business analysis: home-page list and case-study pages */
 .projects.ba { padding-top: 0; }
-.ba-intro { max-width: 720px; margin: -8px 0 28px; font-size: 17px; line-height: 1.6; color: var(--muted); }
+.ba-intro { margin: -8px 0 28px; font-size: 17px; line-height: 1.6; color: var(--muted); }
 .ba-list { display: grid; gap: 14px; }
 .ba-card { display: grid; grid-template-columns: 120px 1fr; gap: 22px; align-items: center; padding: 18px; background: var(--panel); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 16px; transition: border-color 0.2s, transform 0.2s; }
 .ba-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, transparent); transform: translateY(-2px); }
@@ -1139,4 +1141,37 @@ body.no-scroll { overflow: hidden; }
 @media (max-width: 560px) {
   .ba-card { grid-template-columns: 72px 1fr; gap: 14px; padding: 14px; align-items: start; }
   .ba-card img { width: 72px; height: 72px; }
+}
+
+/* About: photo with skills floating around it */
+.about h2 { margin-bottom: 56px; }
+/* Sections with the hero's starfield behind them (hero-bg.js) */
+.starfield { position: relative; overflow: hidden; }
+.starfield > section { position: relative; z-index: 1; }
+/* A bordered, rounded panel like the hero */
+.panel-section { margin: 8px; border-radius: var(--radius); background: linear-gradient(135deg, var(--top-glow) 0%, #161b26 55%, #0e1118 100%); border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent); }
+.about-stage { position: relative; height: 620px; }
+.about-photo { --rx: 0deg; --ry: 0deg; position: absolute; left: 50%; top: 50%; width: 460px; height: auto; transform: translate(-50%, -50%) perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)); transition: transform 0.3s ease-out; }
+.skills { position: absolute; inset: 0; margin: 0; padding: 0; list-style: none; }
+.skill { position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, -50%); }
+.skill button { display: block; padding: 9px 16px; font: inherit; font-size: 14px; font-weight: 500; white-space: nowrap; color: #fff; background: color-mix(in srgb, var(--accent) 16%, var(--panel)); border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); border-radius: 999px; cursor: default; box-shadow: 0 8px 20px -10px rgba(0, 0, 0, 0.6); animation: skill-float 6s ease-in-out var(--d) infinite; transition: background 0.2s, border-color 0.2s, box-shadow 0.2s; }
+.skill:hover button, .skill button:focus-visible, .skill.active button { background: var(--accent); border-color: var(--accent); color: var(--bg-deep); box-shadow: 0 0 22px color-mix(in srgb, var(--accent) 60%, transparent); animation-play-state: paused; }
+@keyframes skill-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+/* The hovered skill's note, in a fixed spot so it never covers the photo or text */
+.about .skill-note { max-width: 640px; min-height: 3.2em; margin: 4px auto 24px; text-align: center; font-size: 17px; font-style: italic; color: var(--accent); transition: opacity 0.2s; }
+.about .about-bio { max-width: 760px; margin: 0 auto; text-align: center; font-size: 18px; color: var(--fg); }
+.about .about-cta { max-width: none; margin: 32px 0 0; text-align: center; }
+.btn-resume { display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; font-size: 16px; font-weight: 500; color: var(--cta-text); background: var(--cta); border-radius: 999px; text-decoration: none; box-shadow: 0 10px 24px -12px var(--cta-2); transition: transform 0.2s, box-shadow 0.2s; }
+.btn-resume:hover { transform: translateY(-2px); box-shadow: 0 14px 28px -12px var(--cta-2); }
+@media (max-width: 760px) {
+  .about-stage { height: auto; }
+  .about-photo { position: static; display: block; width: min(320px, 90%); margin: 0 auto; transform: none; }
+  .skills { position: relative; inset: auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 4px; }
+  .skill { position: static; transform: none; }
+  .about .skill-note { margin: 18px auto 20px; }
+  .about .about-bio { text-align: left; font-size: 17px; }
+  .panel-section { margin: 6px; border-radius: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skill button { animation: none; }
 }

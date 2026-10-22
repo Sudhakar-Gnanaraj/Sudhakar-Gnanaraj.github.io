@@ -1,10 +1,8 @@
-// Home-page hero background: a slow starfield. Stars near the cursor (or a tap) brighten and
-// link up like a constellation; a click sends out a small burst. Pauses when the hero is off
-// screen, and draws a still frame for people who prefer reduced motion.
-(() => {
-  const hero = document.querySelector(".hero");
-  if (!hero) return;
-
+// Home-page starfield background (behind the hero and any section marked .starfield).
+// Stars near the cursor (or a tap) brighten and link up like a constellation; a click sends
+// out a small burst. Pauses when off screen, and draws a still frame for people who prefer
+// reduced motion.
+document.querySelectorAll(".hero, .starfield").forEach((hero) => {
   const canvas = document.createElement("canvas");
   canvas.className = "hero-bg";
   canvas.setAttribute("aria-hidden", "true");
@@ -93,4 +91,4 @@
   addEventListener("resize", resize);
   resize();
   if (!reduceMotion) requestAnimationFrame(loop);
-})();
+});

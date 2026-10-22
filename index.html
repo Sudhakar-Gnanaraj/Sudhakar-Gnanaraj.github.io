@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=90">
+  <link rel="stylesheet" href="styles.css?v=98">
 </head>
 <body>
 
@@ -125,11 +125,33 @@
       </div>
     </section>
 
+    <div class="starfield panel-section">
     <section class="about" id="about">
-      <p class="eyebrow">Designer. Engineer. Lifelong learner.</p>
-      <h2>Placeholder about section</h2>
-      <p>Write a short intro here about how you blend game design, business analysis and software engineering.</p>
+      <h2 class="section-title">About me</h2>
+
+      <div class="about-stage">
+        <img class="about-photo" src="assets/about/portrait.webp?v=2" alt="Sudhakar Gnanaraj" width="900" height="900" loading="lazy">
+        <!-- Skills float around the photo; hovering (or tapping) one shows its note below the photo -->
+        <ul class="skills" aria-label="Skills">
+          <li class="skill" style="--x: 50%; --y: 3%; --d: 0.0s"><button type="button" data-note="My years at Thoughtworks taught me to listen first, and to turn messy ideas into something a team can build.">Business Analysis</button></li>
+          <li class="skill" style="--x: 17%; --y: 14%; --d: 0.7s"><button type="button" data-note="I love setting up small rules that bump into each other and surprise me, like a toddler who refuses to eat.">Systems Design</button></li>
+          <li class="skill" style="--x: 83%; --y: 14%; --d: 1.4s"><button type="button" data-note="Placing every block and gap so players work it out on their own is my favourite kind of puzzle.">Level Design</button></li>
+          <li class="skill" style="--x: 11%; --y: 40%; --d: 2.1s"><button type="button" data-note="Nobody reads instructions, me included, so I try to teach through play.">Player Onboarding</button></li>
+          <li class="skill" style="--x: 89%; --y: 40%; --d: 2.8s"><button type="button" data-note="Watching someone play my game is humbling. I've learned more from players than from my own plans.">Playtesting</button></li>
+          <li class="skill" style="--x: 15%; --y: 66%; --d: 3.5s"><button type="button" data-note="If a player has to stop and think about the menu, I've already lost them.">UI/UX</button></li>
+          <li class="skill" style="--x: 85%; --y: 66%; --d: 4.2s"><button type="button" data-note="Unity is where my ideas turn into something I can actually play.">Unity &amp; C#</button></li>
+          <li class="skill" style="--x: 26%; --y: 90%; --d: 4.9s"><button type="button" data-note="Paper, HTML, whatever is fastest. I'd rather play a rough idea today than plan a perfect one.">Prototyping</button></li>
+          <li class="skill" style="--x: 74%; --y: 90%; --d: 5.6s"><button type="button" data-default data-note="Game design is where it all comes together for me: an idea, a few rules, and a player who makes it their own.">Game Design</button></li>
+        </ul>
+      </div>
+
+      <p class="skill-note" id="skill-note" aria-live="polite"></p>
+
+      <p class="about-bio">I'm passionate about games and interactions. Games let me explore new worlds, see through other people's eyes and step into stories beyond my own. As a designer, I want to make experiences that spark curiosity, stir emotions and stay with players long after they stop playing. I love turning an idea into something people can explore and connect with in their own way, and understanding what makes a game work so I can build my own.</p>
+      <p class="about-cta"><a class="btn-resume" href="assets/resume.pdf" download="Sudhakar-Gnanaraj-Resume.pdf">Download resume <span aria-hidden="true">&#11015;</span></a></p>
     </section>
+    </div>
+
 
     <section class="contact" id="contact">
       <h2>Contact me</h2>
@@ -140,6 +162,7 @@
   <footer class="footer">© <span id="year"></span> Sudhakar Gnanaraj</footer>
 
   <script src="script.js"></script>
-  <script src="hero-bg.js?v=1"></script>
+  <script src="hero-bg.js?v=2"></script>
+  <script src="about.js?v=6"></script>
 </body>
 </html>
