@@ -126,14 +126,13 @@
         const loadingContainer = document.querySelector("#unity-loading-container");
         const progressBarFull = document.querySelector("#unity-progress-bar-full");
 
+        // Keep the loading screen up until the game is actually ready. GitHub Pages gzips the
+        // build files, so Unity's progress can pass 100% while they are still downloading.
+        loadingContainer.style.display = "block";
         createUnityInstance(canvas, config, (progress) => {
-          if (progress < 1) {
-            loadingContainer.style.display = "block";
-            progressBarFull.style.width = 100 * progress + "%";
-          } else {
-            loadingContainer.style.display = "none";
-          }
+          progressBarFull.style.width = Math.min(100, 100 * progress) + "%";
         }).then((unityInstance) => {
+                loadingContainer.style.display = "none";
                 document.querySelector("#unity-fullscreen-button").onclick = () => {
                   unityInstance.SetFullscreen(1);
                 };

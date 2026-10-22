@@ -26,7 +26,8 @@ function gameLoaded() {
   try {
     const doc = frame.contentDocument;
     const canvas = doc && doc.querySelector("#unity-canvas");
-    const bar = doc && doc.querySelector("#unity-loading-bar");
+    // Newer Unity templates hide the container around the bar instead of the bar itself
+    const bar = doc && (doc.querySelector("#unity-loading-container") || doc.querySelector("#unity-loading-bar"));
     return !!(canvas && bar && getComputedStyle(bar).display === "none");
   } catch {
     return false;
