@@ -1151,8 +1151,11 @@ body.no-scroll { overflow: hidden; }
 .starfield > section { position: relative; z-index: 1; }
 /* A bordered, rounded panel like the hero */
 .panel-section { margin: 8px; border-radius: var(--radius); background: linear-gradient(135deg, var(--top-glow) 0%, #161b26 55%, #0e1118 100%); border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent); }
-.about-stage { position: relative; height: 640px; }
-.about-photo { position: absolute; left: 50%; bottom: 0; width: auto; height: 550px; filter: drop-shadow(0 0 24px color-mix(in srgb, var(--accent) 12%, transparent)); transform: translateX(-50%); }
+.about-stage { position: relative; height: 540px; }
+.about-art { position: absolute; left: 50%; top: 50%; width: 440px; max-width: 46%; transform: translate(-50%, -50%); display: grid; filter: drop-shadow(0 0 22px color-mix(in srgb, var(--accent) 16%, transparent)); }
+/* All the illustrations share one grid cell; the chosen one fades in */
+.skill-art { grid-area: 1 / 1; width: 100%; height: auto; opacity: 0; transition: opacity 0.35s ease; }
+.skill-art.is-active { opacity: 1; }
 .skills { position: absolute; inset: 0; margin: 0; padding: 0; list-style: none; }
 .skill { position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, -50%); }
 .skill button { display: block; padding: 9px 16px; font: inherit; font-size: 14px; font-weight: 500; white-space: nowrap; color: #fff; background: color-mix(in srgb, var(--accent) 16%, var(--panel)); border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); border-radius: 999px; cursor: default; box-shadow: 0 8px 20px -10px rgba(0, 0, 0, 0.6); animation: skill-float 6s ease-in-out var(--d) infinite; transition: background 0.2s, border-color 0.2s, box-shadow 0.2s; }
@@ -1166,7 +1169,7 @@ body.no-scroll { overflow: hidden; }
 .btn-resume:hover { transform: translateY(-2px); box-shadow: 0 14px 28px -12px var(--cta-2); }
 @media (max-width: 760px) {
   .about-stage { height: auto; }
-  .about-photo { position: static; display: block; width: auto; height: min(420px, 110vw); max-width: 100%; margin: 0 auto; transform: none; }
+  .about-art { position: static; width: min(380px, 100%); max-width: none; margin: 0 auto; transform: none; }
   .skills { position: relative; inset: auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 4px; }
   .skill { position: static; transform: none; }
   .about .skill-note { margin: 18px auto 20px; }
@@ -1175,6 +1178,7 @@ body.no-scroll { overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) {
   .skill button { animation: none; }
+  .skill-art { transition: none; }
 }
 
 /* Contact panel (on every page) */

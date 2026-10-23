@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=112">
+  <link rel="stylesheet" href="styles.css?v=114">
 </head>
 <body>
 
@@ -137,18 +137,29 @@
       <h2 class="section-title">About me</h2>
 
       <div class="about-stage">
-        <img class="about-photo" src="assets/about/portrait.webp?v=11" alt="Sudhakar Gnanaraj smiling" width="514" height="820" loading="lazy">
-        <!-- Skills float around the photo; hovering (or tapping) one shows its note below the photo -->
+        <div class="about-art">
+          <img class="skill-art is-active" data-art="game-design" src="assets/about/skills/game-design.webp" alt="Illustration of Sudhakar sketching game ideas on a tablet" width="760" height="519">
+          <img class="skill-art" data-art="programming" src="assets/about/skills/programming.webp" alt="Illustration of Sudhakar writing code on a laptop" width="760" height="519" loading="lazy">
+          <img class="skill-art" data-art="playtesting" src="assets/about/skills/playtesting.webp" alt="Illustration of Sudhakar playtesting a game with a controller" width="760" height="519" loading="lazy">
+          <img class="skill-art" data-art="level-design" src="assets/about/skills/level-design.webp" alt="Illustration of Sudhakar building a level from blocks" width="760" height="519" loading="lazy">
+          <img class="skill-art" data-art="business-analysis" src="assets/about/skills/business-analysis.webp" alt="Illustration of Sudhakar presenting charts and a checklist" width="760" height="519" loading="lazy">
+          <img class="skill-art" data-art="systems-design" src="assets/about/skills/systems-design.webp" alt="Illustration of Sudhakar thinking through a system diagram" width="760" height="519" loading="lazy">
+          <img class="skill-art" data-art="player-onboarding" src="assets/about/skills/player-onboarding.webp" alt="Illustration of Sudhakar pointing along a tutorial path" width="760" height="519" loading="lazy">
+          <img class="skill-art" data-art="ui-ux" src="assets/about/skills/ui-ux.webp" alt="Illustration of Sudhakar designing app screens on a tablet" width="760" height="519" loading="lazy">
+          <img class="skill-art" data-art="prototyping" src="assets/about/skills/prototyping.webp" alt="Illustration of Sudhakar building a prototype from shapes" width="760" height="519" loading="lazy">
+        </div>
+        <!-- Skills float around the illustration; hovering (or tapping) one shows its own illustration
+             and its note below -->
         <ul class="skills" aria-label="Skills">
-          <li class="skill" style="--x: 50%; --y: 7%; --d: 0.0s"><button type="button" data-note="My years at Thoughtworks taught me to listen first, and to turn messy ideas into something a team can build.">Business Analysis</button></li>
-          <li class="skill" style="--x: 25%; --y: 22%; --d: 0.7s"><button type="button" data-note="I love setting up small rules that bump into each other and surprise me.">Systems Design</button></li>
-          <li class="skill" style="--x: 75%; --y: 22%; --d: 1.4s"><button type="button" data-note="Placing every block and gap so players work it out on their own is my favourite kind of puzzle.">Level Design</button></li>
-          <li class="skill" style="--x: 21%; --y: 44%; --d: 2.1s"><button type="button" data-note="Nobody reads instructions, me included, so I try to teach through play.">Player Onboarding</button></li>
-          <li class="skill" style="--x: 79%; --y: 44%; --d: 2.8s"><button type="button" data-note="Watching someone play my game is humbling. I've learned more from players than from my own plans.">Playtesting</button></li>
-          <li class="skill" style="--x: 23%; --y: 66%; --d: 3.5s"><button type="button" data-note="If a player has to stop and think about the menu, I've already lost them.">UI/UX</button></li>
-          <li class="skill" style="--x: 77%; --y: 66%; --d: 4.2s"><button type="button" data-note="Code is where my ideas turn into something I can actually play.">Programming</button></li>
-          <li class="skill" style="--x: 28%; --y: 88%; --d: 4.9s"><button type="button" data-note="Paper, HTML, whatever is fastest. I'd rather play a rough idea today than plan a perfect one.">Prototyping</button></li>
-          <li class="skill" style="--x: 72%; --y: 88%; --d: 5.6s"><button type="button" data-default data-note="Game design is where it all comes together for me: an idea, a few rules, and a player who makes it their own.">Game Design</button></li>
+          <li class="skill" style="--x: 50%; --y: 8%; --d: 0.0s"><button type="button" data-art="business-analysis" data-note="My years at Thoughtworks taught me to listen first, and to turn messy ideas into something a team can build.">Business Analysis</button></li>
+          <li class="skill" style="--x: 24%; --y: 16%; --d: 0.7s"><button type="button" data-art="systems-design" data-note="I love setting up small rules that bump into each other and surprise me.">Systems Design</button></li>
+          <li class="skill" style="--x: 76%; --y: 16%; --d: 1.4s"><button type="button" data-art="level-design" data-note="Placing every block and gap so players work it out on their own is my favourite kind of puzzle.">Level Design</button></li>
+          <li class="skill" style="--x: 12%; --y: 42%; --d: 2.1s"><button type="button" data-art="player-onboarding" data-note="Nobody reads instructions, me included, so I try to teach through play.">Player Onboarding</button></li>
+          <li class="skill" style="--x: 88%; --y: 42%; --d: 2.8s"><button type="button" data-art="playtesting" data-note="Watching someone play my game is humbling. I've learned more from players than from my own plans.">Playtesting</button></li>
+          <li class="skill" style="--x: 12%; --y: 62%; --d: 3.5s"><button type="button" data-art="ui-ux" data-note="If a player has to stop and think about the menu, I've already lost them.">UI/UX</button></li>
+          <li class="skill" style="--x: 88%; --y: 62%; --d: 4.2s"><button type="button" data-art="programming" data-note="Code is where my ideas turn into something I can actually play.">Programming</button></li>
+          <li class="skill" style="--x: 24%; --y: 88%; --d: 4.9s"><button type="button" data-art="prototyping" data-note="Paper, HTML, whatever is fastest. I'd rather play a rough idea today than plan a perfect one.">Prototyping</button></li>
+          <li class="skill" style="--x: 76%; --y: 88%; --d: 5.6s"><button type="button" data-default data-art="game-design" data-note="Game design is where it all comes together for me: an idea, a few rules, and a player who makes it their own.">Game Design</button></li>
         </ul>
       </div>
 
@@ -182,6 +193,6 @@
   <script src="script.js?v=2"></script>
   <script src="hero-bg.js?v=2"></script>
   <script src="marquee.js?v=1"></script>
-  <script src="about.js?v=9"></script>
+  <script src="about.js?v=10"></script>
 </body>
 </html>
