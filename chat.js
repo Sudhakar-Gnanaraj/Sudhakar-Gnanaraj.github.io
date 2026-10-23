@@ -43,7 +43,6 @@
     <header class="chat-head">
       <div class="chat-stage" aria-hidden="true">
         <img class="chat-face" alt="" width="168" height="168">
-        <span class="chat-speech"><i></i><i></i><i></i></span>
       </div>
       <div class="chat-head-text">
         <p class="chat-title">Hi, I'm Sudhakar</p>
@@ -137,7 +136,6 @@
     bubble("user", question);
     const pending = bubble("assistant", "Thinking…", "thinking");
     pending.classList.add("chat-pending");
-    panel.classList.add("is-thinking");
 
     let answer = FALLBACK;
     let mood = "sorry";
@@ -156,7 +154,6 @@
     }
 
     pending.classList.remove("chat-pending");
-    panel.classList.remove("is-thinking");
     pending.innerHTML = linkify(answer);
     setMood(mood, true);
     // Only real answers join the history, so an error doesn't confuse the next question
