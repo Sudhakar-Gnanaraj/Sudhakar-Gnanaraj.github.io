@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=114">
+  <link rel="stylesheet" href="styles.css?v=115">
 </head>
 <body>
 
@@ -56,9 +56,12 @@
       <aside class="peek" aria-label="Sneak peek of my works">
         <p class="peek-title">Sneak peek of my works</p>
         <div class="peek-card">
-          <div class="peek-frame">
-            <span class="peek-big">SUDHAKAR’s</span>
-            <span class="peek-sub">Game Design Portfolio</span>
+          <div class="peek-frame" id="showreel">
+            <button class="video-facade" type="button" data-video-id="8Fl062KV60Q" data-title="Sudhakar Gnanaraj showreel"
+                    aria-label="Play my showreel" style="background-image:url('https://i.ytimg.com/vi/8Fl062KV60Q/maxresdefault.jpg')">
+              <span class="video-play" aria-hidden="true">&#9654;</span>
+              <span class="video-label">Watch my showreel</span>
+            </button>
           </div>
         </div>
       </aside>
@@ -166,7 +169,7 @@
       <p class="skill-note" id="skill-note" aria-live="polite"></p>
 
       <p class="about-bio">I'm passionate about games and interactions. Games let me explore new worlds, see through other people's eyes and step into stories beyond my own. As a designer, I want to make experiences that spark curiosity, stir emotions and stay with players long after they stop playing. I love turning an idea into something people can explore and connect with in their own way, and understanding what makes a game work so I can build my own.</p>
-      <p class="about-cta"><a class="btn-resume" href="assets/resume.pdf" download="Sudhakar-Gnanaraj-Resume.pdf">Download resume <span aria-hidden="true">&#11015;</span></a></p>
+      <p class="about-cta"><a class="btn-resume" href="assets/resume.pdf?v=2" download="Sudhakar-Gnanaraj-Resume.pdf">Download resume <span aria-hidden="true">&#11015;</span></a></p>
     </section>
     </div>
 
@@ -191,6 +194,7 @@
 
 
   <script src="script.js?v=2"></script>
+  <script src="showreel.js?v=1"></script>
   <script src="hero-bg.js?v=2"></script>
   <script src="marquee.js?v=1"></script>
   <script src="about.js?v=10"></script>
