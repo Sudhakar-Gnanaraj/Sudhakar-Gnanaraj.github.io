@@ -1196,13 +1196,11 @@ body.no-scroll { overflow: hidden; }
 }
 .contact .section-title { margin-bottom: 28px; }
 .contact p.contact-lead { max-width: 640px; margin: 0 0 28px; font-size: 22px; line-height: 1.5; color: #fff; }
-.contact-email { display: flex; align-items: center; flex-wrap: wrap; gap: 14px 20px; margin-bottom: 28px; }
-.btn-email { display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; font-size: 17px; font-weight: 500; color: var(--cta-text); background: var(--cta); border-radius: 999px; text-decoration: none; box-shadow: 0 10px 24px -12px var(--cta-2); transition: transform 0.2s, box-shadow 0.2s; }
-.btn-email:hover { transform: translateY(-2px); box-shadow: 0 14px 28px -12px var(--cta-2); }
+.contact-email { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 20px; margin-bottom: 12px; }
 .email-text { font-size: 16px; color: var(--fg); user-select: all; }
 .contact-links { display: flex; flex-wrap: wrap; gap: 12px; margin: 0; padding: 0; list-style: none; }
-.contact-links a { display: inline-flex; align-items: center; gap: 9px; padding: 10px 18px; font-size: 15px; font-weight: 500; color: #fff; text-decoration: none; background: color-mix(in srgb, var(--accent) 12%, var(--panel)); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); border-radius: 999px; transition: border-color 0.2s, background 0.2s; }
-.contact-links a:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--panel)); }
+.btn-email, .contact-links a { display: inline-flex; align-items: center; gap: 9px; padding: 10px 18px; font-size: 15px; font-weight: 500; color: #fff; text-decoration: none; background: color-mix(in srgb, var(--accent) 12%, var(--panel)); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); border-radius: 999px; transition: border-color 0.2s, background 0.2s; }
+.btn-email:hover, .contact-links a:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--panel)); }
 .contact-ico { width: 18px; height: 18px; flex: none; }
 @media (max-width: 560px) {
   .contact p.contact-lead { font-size: 19px; }
