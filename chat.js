@@ -18,6 +18,7 @@
   const ERRORS = {
     region: `This AI chat isn't available in your region, but you can email me at ${EMAIL}.`,
     rate: "That's a lot of questions at once! Give me a minute and try again.",
+    daily: `You've asked me a lot today! For anything else, email me at ${EMAIL}.`,
     busy: `I've talked so much today that I've hit my limit. Try again later, or email me at ${EMAIL}.`,
     no_answer: `I couldn't answer that one. Try asking another way, or email me at ${EMAIL}.`,
   };
@@ -32,7 +33,7 @@
   launcher.className = "chat-launcher";
   launcher.setAttribute("aria-expanded", "false");
   launcher.setAttribute("aria-controls", "chat-panel");
-  launcher.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.2 3.6c-.5.4-1.3.1-1.3-.6V16A2.5 2.5 0 0 1 4 13.5z"/></svg><span>Ask about my work</span>';
+  launcher.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.2 3.6c-.5.4-1.3.1-1.3-.6V16A2.5 2.5 0 0 1 4 13.5z"/></svg><span class="chat-launcher-text">Ask about my work</span><img class="chat-launcher-face" alt="" width="68" height="68">';
 
   const panel = document.createElement("section");
   panel.className = "chat-panel";
@@ -71,6 +72,8 @@
   const probe = new Image();
   probe.onload = () => {
     panel.classList.add("has-faces");
+    launcher.querySelector(".chat-launcher-face").src = face("waving");
+    launcher.classList.add("has-face");
     MOODS.forEach((m) => { new Image().src = face(m); });
   };
   probe.src = face("waving");

@@ -198,7 +198,9 @@ function tooMany(ip) {
   h.dayCount++;
   hits.set(ip, h);
   if (hits.size > 5000) hits.clear(); // keep memory bounded
-  return h.minuteCount > PER_MINUTE || h.dayCount > PER_DAY;
+  if (h.dayCount > PER_DAY) return "daily";
+  if (h.minuteCount > PER_MINUTE) return "rate";
+  return null;
 }
 
 function reply(body, status, origin) {
@@ -252,7 +254,8 @@ export default {
     if (BLOCKED_COUNTRIES.has(country)) return reply({ error: "region" }, 451, origin);
 
     const ip = request.headers.get("CF-Connecting-IP") || "unknown";
-    if (tooMany(ip)) return reply({ error: "rate" }, 429, origin);
+    const limit = tooMany(ip);
+    if (limit) return reply({ error: limit }, 429, origin);
 
     let body;
     try {

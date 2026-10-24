@@ -1,8 +1,7 @@
 // Section links (a vertical rail on wide screens, a horizontal bar on small ones)
-// with scroll highlighting, plus the back-to-top button.
+// with scroll highlighting.
 (function () {
   const bar = document.getElementById("section-bar");
-  const toTop = document.getElementById("to-top");
   if (!bar) return;
 
   const chips = [...bar.querySelectorAll(".chip")];
@@ -49,8 +48,6 @@
       const c = current.chip;
       bar.scrollTo({ left: c.offsetLeft - (bar.clientWidth - c.offsetWidth) / 2, behavior: "smooth" });
     }
-
-    if (toTop) toTop.hidden = scrollY < 600;
   }
 
   let queued = false;
@@ -65,8 +62,4 @@
   addEventListener("scroll", onScroll, { passive: true });
   addEventListener("resize", onScroll);
   update();
-
-  if (toTop) {
-    toTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
-  }
 })();

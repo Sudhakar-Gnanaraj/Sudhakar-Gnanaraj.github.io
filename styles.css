@@ -292,28 +292,6 @@ a { color: inherit; text-decoration: none; }
 html:has(.game-page) { scroll-padding-top: 140px; }
 @media (min-width: 1180px) { html:has(.game-page) { scroll-padding-top: 96px; } }
 
-/* Back to top */
-.to-top {
-  position: fixed;
-  right: 18px;
-  bottom: 18px;
-  z-index: 20;
-  width: 44px;
-  height: 44px;
-  font: inherit;
-  font-size: 20px;
-  line-height: 1;
-  color: var(--cta-text);
-  cursor: pointer;
-  background: var(--cta);
-  border: 0;
-  border-radius: 50%;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
-  transition: transform 0.15s ease, filter 0.15s ease;
-}
-.to-top:hover { transform: translateY(-2px); filter: brightness(1.12); }
-.to-top[hidden] { display: none; }
-
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
@@ -772,7 +750,6 @@ body.no-scroll { overflow: hidden; }
   .section-bar { top: 62px; margin-bottom: 22px; }
   .chip { padding: 7px 12px; }
   html:has(.game-page) { scroll-padding-top: 124px; }
-  .to-top { right: 12px; bottom: 12px; }
   .tabs { flex-wrap: wrap; }
   .screen { border-radius: 12px; }
   .overview p, .panel p { font-size: 16px; }
@@ -1229,6 +1206,14 @@ body.no-scroll { overflow: hidden; }
 .chat-launcher svg { width: 20px; height: 20px; fill: currentColor; }
 .chat-launcher.is-open { display: none; }
 body.no-scroll .chat-launcher, body.no-scroll .chat-panel { display: none; }
+/* Once the pictures load, the button becomes the waving character with a speech bubble */
+.chat-launcher-face { display: none; }
+.chat-launcher.has-face { padding: 0; gap: 10px; background: none; box-shadow: none; }
+.chat-launcher.has-face svg { display: none; }
+.chat-launcher.has-face .chat-launcher-face { display: block; width: 68px; height: 68px; object-fit: contain; object-position: bottom; background: #f6f1e8; border: 2px solid var(--accent); border-radius: 22px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); }
+.chat-launcher.has-face .chat-launcher-text { padding: 10px 16px; background: var(--cta); border-radius: 18px 18px 4px 18px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); animation: chat-bubble-in 0.4s ease-out 0.8s both; }
+@keyframes chat-bubble-in { from { opacity: 0; transform: translateX(8px) scale(0.9); } }
+@media (prefers-reduced-motion: reduce) { .chat-launcher.has-face .chat-launcher-text { animation: none; } }
 
 .chat-panel {
   position: fixed;
@@ -1284,8 +1269,11 @@ body.no-scroll .chat-launcher, body.no-scroll .chat-panel { display: none; }
 
 @media (max-width: 760px) {
   .chat-launcher { right: 16px; bottom: 16px; padding: 12px; }
-  .chat-launcher span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .chat-launcher:not(.has-face) span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .chat-launcher svg { width: 24px; height: 24px; }
+  .chat-launcher.has-face { padding: 0; }
+  .chat-launcher.has-face .chat-launcher-face { width: 58px; height: 58px; border-radius: 18px; }
+  .chat-launcher.has-face .chat-launcher-text { padding: 8px 13px; font-size: 13px; }
   .chat-panel { right: 16px; bottom: 16px; height: min(640px, calc(100dvh - 96px)); }
 }
 
