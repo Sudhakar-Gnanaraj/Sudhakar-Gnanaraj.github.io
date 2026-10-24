@@ -1271,9 +1271,11 @@ body.no-scroll .chat-launcher, body.no-scroll .chat-panel { display: none; }
   .chat-launcher { right: 16px; bottom: 16px; padding: 12px; }
   .chat-launcher:not(.has-face) span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .chat-launcher svg { width: 24px; height: 24px; }
-  .chat-launcher.has-face { padding: 0; }
-  .chat-launcher.has-face .chat-launcher-face { width: 58px; height: 58px; border-radius: 18px; }
-  .chat-launcher.has-face .chat-launcher-text { padding: 8px 13px; font-size: 13px; }
+  /* Phones keep the small orange chat icon; the character and bubble are for wider screens */
+  .chat-launcher.has-face { padding: 12px; background: var(--cta); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); }
+  .chat-launcher.has-face svg { display: block; }
+  .chat-launcher.has-face .chat-launcher-face { display: none; }
+  .chat-launcher.has-face .chat-launcher-text { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; box-shadow: none; animation: none; }
   .chat-panel { right: 16px; bottom: 16px; height: min(640px, calc(100dvh - 96px)); }
 }
 
