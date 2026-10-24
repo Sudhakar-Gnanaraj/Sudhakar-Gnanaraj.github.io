@@ -182,17 +182,24 @@
     fit();
   }
 
-  // Phones: the on-screen keyboard covers part of the page (iPhones don't shrink the page for it),
-  // so while it's open the panel fits the visible area above it and the header turns compact.
+  // Phones: the on-screen keyboard covers part of the page, and browsers handle that differently.
+  // While typing (or whenever little of the screen is visible) the header turns compact and the
+  // panel fits the visible area, so the conversation stays in view above the keyboard.
+  const touch = matchMedia("(pointer: coarse)");
   function fit() {
     const vv = window.visualViewport;
-    const keyboard = !panel.hidden && !!vv && document.documentElement.clientHeight - vv.height > 150;
-    panel.classList.toggle("is-compact", keyboard);
-    panel.style.top = keyboard ? `${vv.offsetTop + 8}px` : "";
-    panel.style.bottom = keyboard ? "auto" : "";
-    panel.style.height = keyboard ? `${vv.height - 16}px` : "";
-    if (keyboard) log.scrollTop = log.scrollHeight;
+    const typing = touch.matches && document.activeElement === input;
+    const short = !!vv && vv.height < 560 && innerWidth <= 760;
+    const compact = !panel.hidden && (typing || short);
+    panel.classList.toggle("is-compact", compact);
+    const place = compact && !!vv;
+    panel.style.top = place ? `${vv.offsetTop + 8}px` : "";
+    panel.style.bottom = place ? "auto" : "";
+    panel.style.height = place ? `${Math.min(vv.height - 16, 640)}px` : "";
+    if (compact) log.scrollTop = log.scrollHeight;
   }
+  input.addEventListener("focus", fit);
+  input.addEventListener("blur", () => setTimeout(fit, 100)); // after the keyboard starts closing
   if (window.visualViewport) {
     visualViewport.addEventListener("resize", fit);
     visualViewport.addEventListener("scroll", fit);
