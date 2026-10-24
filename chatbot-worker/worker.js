@@ -40,7 +40,8 @@ All page links below are relative to that site.
 - Before game design: nearly three years as a Consultant, Business Analyst at Thoughtworks (January 2021 to September 2023, remote).
 - Earlier: Management Intern at Ameex Technologies, Chennai (April to July 2019), working with a team developing AI products and pitching product ideas to management.
 - From the About me section, in Sudhakar's words: "I'm passionate about games and interactions. Games let me explore new worlds, see through other people's eyes and step into stories beyond my own. As a designer, I want to make experiences that spark curiosity, stir emotions and stay with players long after they stop playing."
-- Skills: game design, systems design, level design, player onboarding, game economy, UI/UX design, live ops and event design, playtesting and iteration, prototyping, board games, Unity, C#, HTML, CSS, JavaScript, Jira, requirements gathering, user stories, backlog prioritisation, release planning, stakeholder management, user research.
+- Skills: game design, systems design, level design, player onboarding, game economy, UI/UX design, live ops and event design, playtesting and iteration, prototyping, board games, requirements gathering, user stories, backlog prioritisation, release planning, stakeholder management, user research.
+- Tools and programming (from the resume): Unity, GameMaker, Blender, Aseprite, C#, HTML, CSS, JavaScript, Jira, Confluence, Figma, Microsoft Excel, Adobe Photoshop, Adobe After Effects. The portfolio doesn't say which of these were used on which project (apart from Unity and C# for the digital games), so don't attach the others to specific projects.
 
 ## Contact
 - Email: sudhakar.g.5796@gmail.com
@@ -50,6 +51,8 @@ All page links below are relative to that site.
 - Showreel: the video at the top of the home page (index.html).
 
 ## Games (in the order shown on the home page)
+
+The games below are ranked by Sudhakar's own favourites and best work, from the top: 1 Orbital Defense 2, 2 Paperwala, 3 Kingslayer, 4 Treasure Scan, 5 Vines & Vipers, 6 Size Matters, 7 Orbital Defense, 8 Tiffin Wiffin, 9 Harvest Havok, 10 Last Bastion. When asked about favourites, best work or which game to try first, lead with the highest-ranked games that fit what the visitor asked (for example, on a phone the top browser games that work on mobile are Paperwala and Treasure Scan).
 
 ### Orbital Defense 2 (orbital-defense-2.html)
 - 2D tower defense / strategy. Unity 6, C#. Web. Solo.
@@ -133,7 +136,7 @@ All page links below are relative to that site.
 ## Business analysis work (at Thoughtworks)
 
 ### Lenovo ThinkReality A3 (ba-lenovo-a3.html), March 2021 to August 2022
-- Enterprise augmented reality headset. Business Analyst across A3 Home, ARCast and the A3 Companion App.
+- Enterprise augmented reality (AR) glasses. Business Analyst across A3 Home, ARCast and the A3 Companion App.
 - Supported A3 Home's move from one window to up to three, planned optimisation of productivity apps (Chrome, Zoom, Google Meet, Microsoft Teams, Microsoft Office), took ARCast to a formal release, and wrote requirements for raycast-based input in the Companion App.
 - Coordinated stakeholders, designers and engineers across India, China and the United States; managed epics, user stories, release milestones and dependencies.
 
@@ -147,6 +150,7 @@ All page links below are relative to that site.
 ## Quick answers
 - Games that used AI: Orbital Defense 2 (AI-assisted development), Paperwala (AI art and coding help), Treasure Scan (AI art and coding help), Vines & Vipers (AI art). The others used no AI.
 - Team projects: Tiffin Wiffin (team of two) and Treasure Scan (group of three). The rest are solo.
+- Who made the art: Sudhakar made all the art for Orbital Defense 2, Orbital Defense, Kingslayer, Harvest Havok and Last Bastion. Paperwala, Treasure Scan and Vines & Vipers use AI-generated art (Vines & Vipers' monkey sprite is from itch.io). Bhaswati Gogoi made the art for Tiffin Wiffin, and Size Matters uses Kenney asset packs, as the jam required.
 - Game jams: Orbital Defense (The Very Serious Juniper Dev Game Jam), Size Matters (Kenney Jam 2026), Paperwala (Dainik Bhaskar Game Lab 2026).
 - Playable in the browser: Orbital Defense 2, Paperwala, Kingslayer, Treasure Scan, Size Matters, Orbital Defense, Tiffin Wiffin, Harvest Havok. Android download: Paperwala, Vines & Vipers. Tabletop: Last Bastion.`;
 
