@@ -174,10 +174,28 @@
     launcher.classList.toggle("is-open", open);
     if (open) {
       if (!log.childElementCount) render();
-      input.focus();
+      // Only jump into the text box with a mouse; on phones that would pop the keyboard straight away
+      if (matchMedia("(pointer: fine)").matches) input.focus();
     } else {
       launcher.focus();
     }
+    fit();
+  }
+
+  // Phones: the on-screen keyboard covers part of the page (iPhones don't shrink the page for it),
+  // so while it's open the panel fits the visible area above it and the header turns compact.
+  function fit() {
+    const vv = window.visualViewport;
+    const keyboard = !panel.hidden && !!vv && document.documentElement.clientHeight - vv.height > 150;
+    panel.classList.toggle("is-compact", keyboard);
+    panel.style.top = keyboard ? `${vv.offsetTop + 8}px` : "";
+    panel.style.bottom = keyboard ? "auto" : "";
+    panel.style.height = keyboard ? `${vv.height - 16}px` : "";
+    if (keyboard) log.scrollTop = log.scrollHeight;
+  }
+  if (window.visualViewport) {
+    visualViewport.addEventListener("resize", fit);
+    visualViewport.addEventListener("scroll", fit);
   }
 
   launcher.addEventListener("click", () => toggle(panel.hidden));

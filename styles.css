@@ -1299,3 +1299,12 @@ body.no-scroll .chat-launcher, body.no-scroll .chat-panel { display: none; }
   .chat-stage::before { left: 10px; width: 124px; height: 124px; bottom: 6px; }
   .chat-face { width: 140px; height: 140px; }
 }
+
+/* While the phone keyboard is open (chat.js adds .is-compact): a small picture beside the name, no extras */
+.chat-panel.is-compact .chat-head { min-height: 0; align-items: center; justify-content: flex-start; gap: 10px; padding: 10px 44px 10px 12px; }
+.chat-panel.is-compact .chat-stage { align-self: center; width: 40px; height: 40px; margin: 0; }
+.chat-panel.is-compact .chat-stage::before { display: none; }
+.chat-panel.is-compact .chat-face { position: static; width: 40px; height: 40px; background: #f6f1e8; border-radius: 12px; }
+.chat-panel.is-compact .chat-title { font-size: 16px; }
+.chat-panel.is-compact .chat-sub, .chat-panel.is-compact .chat-starters, .chat-panel.is-compact .chat-note { display: none; }
+.chat-panel.is-compact .chat-close { top: 50%; transform: translateY(-50%); }
