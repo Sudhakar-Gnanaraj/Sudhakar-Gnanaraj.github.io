@@ -41,13 +41,14 @@ All page links below are relative to that site.
 - Earlier: Management Intern at Ameex Technologies, Chennai (April to July 2019), working with a team developing AI products and pitching product ideas to management.
 - From the About me section, in Sudhakar's words: "I'm passionate about games and interactions. Games let me explore new worlds, see through other people's eyes and step into stories beyond my own. As a designer, I want to make experiences that spark curiosity, stir emotions and stay with players long after they stop playing."
 - Skills: game design, systems design, level design, player onboarding, game economy, UI/UX design, live ops and event design, playtesting and iteration, prototyping, board games, requirements gathering, user stories, backlog prioritisation, release planning, stakeholder management, user research.
+- Languages spoken: English and Tamil.
 - Tools and programming (from the resume): Unity, GameMaker, Blender, Aseprite, C#, HTML, CSS, JavaScript, Jira, Confluence, Figma, Microsoft Excel, Adobe Photoshop, Adobe After Effects. The portfolio doesn't say which of these were used on which project (apart from Unity and C# for the digital games), so don't attach the others to specific projects.
 
 ## Contact
 - Email: sudhakar.g.5796@gmail.com
 - LinkedIn: https://www.linkedin.com/in/sudhakar-gnanaraj/
 - itch.io: https://pixel-monkey-96.itch.io/
-- Resume: https://drive.google.com/file/d/1XheO1fr1_X6oqImtJdExFMVWyY_lYMp2/view?usp=sharing
+- Resume: https://drive.google.com/file/d/1ExNS8gvZGa-tVPZH0roD-ur9CZNv7nOu/view?usp=sharing
 - Showreel: the video at the top of the home page (index.html).
 
 ## Games (in the order shown on the home page)
