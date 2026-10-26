@@ -48,7 +48,7 @@ All page links below are relative to that site.
 - Email: sudhakar.g.5796@gmail.com
 - LinkedIn: https://www.linkedin.com/in/sudhakar-gnanaraj/
 - itch.io: https://pixel-monkey-96.itch.io/
-- Resume: https://drive.google.com/file/d/1ExNS8gvZGa-tVPZH0roD-ur9CZNv7nOu/view?usp=sharing
+- Resume: https://drive.google.com/file/d/15GAljG_YH-gl2lrmkETBU2GeX65YYwdi/view?usp=sharing
 - Showreel: the video at the top of the home page (index.html).
 
 ## Games (in the order shown on the home page)
@@ -69,6 +69,7 @@ The games below are ranked by Sudhakar's own favourites and best work, from the 
 ### Paperwala (paperwala.html)
 - Route-drawing puzzle. Unity, C#. Web and Android (APK download). Best on mobile.
 - Made for the Dainik Bhaskar Game Lab 2026, whose brief asked for a game for a mobile news platform with mass appeal, daily engagement, simple mechanics and relevance to Indian players.
+- Award: Paperwala won a Consolation Prize at the Dainik Bhaskar Game Lab 2026 (results announced 26 October 2026). There were seven prizes in all: a first prize, a second prize and five consolation prizes. A panel of about ten judges assessed entries as experiences inside a news app, scoring daily engagement potential, fun and delight, originality, relevance to a mass Indian audience, scalability, simplicity and clarity, and prototype quality.
 - You are a newspaper boy at 6 AM; the clock runs to 8 AM. Drag a route along the road through every newspaper, release, and the cycle rides it, throwing papers to houses.
 - Mechanics: ambush and patrol cows (stop and start to avoid them), petrol and a fuel gauge on the town motorbike, and cars on fixed loops.
 - 12 levels in two worlds (Village 1 to 6, Town 7 to 12), built in Teach, Practice, Test cycles. Everything is deterministic so failures feel fair. Each failure has its own picture-led screen.
@@ -152,7 +153,8 @@ The games below are ranked by Sudhakar's own favourites and best work, from the 
 - Games that used AI: Orbital Defense 2 (AI-assisted development), Paperwala (AI art and coding help), Treasure Scan (AI art and coding help), Vines & Vipers (AI art). The others used no AI.
 - Team projects: Tiffin Wiffin (team of two) and Treasure Scan (group of three). The rest are solo.
 - Who made the art: Sudhakar made all the art for Orbital Defense 2, Orbital Defense, Kingslayer, Harvest Havok and Last Bastion. Paperwala, Treasure Scan and Vines & Vipers use AI-generated art (Vines & Vipers' monkey sprite is from itch.io). Sudhakar's teammate made the art for Tiffin Wiffin, and Size Matters uses Kenney asset packs, as the jam required.
-- Game jams: Orbital Defense (The Very Serious Juniper Dev Game Jam), Size Matters (Kenney Jam 2026), Paperwala (Dainik Bhaskar Game Lab 2026).
+- Game jams: Orbital Defense (The Very Serious Juniper Dev Game Jam), Size Matters (Kenney Jam 2026), Paperwala (Dainik Bhaskar Game Lab 2026, won a Consolation Prize).
+- Awards: Paperwala won a Consolation Prize at the Dainik Bhaskar Game Lab 2026.
 - Playable in the browser: Orbital Defense 2, Paperwala, Kingslayer, Treasure Scan, Size Matters, Orbital Defense, Tiffin Wiffin, Harvest Havok. Android download: Paperwala, Vines & Vipers. Tabletop: Last Bastion.`;
 
 const SYSTEM_PROMPT = `You are an AI version of Sudhakar Gnanaraj, chatting with visitors on Sudhakar's game design portfolio website. Visitors are mostly recruiters, studios and other designers. Speak as Sudhakar, in the first person ("I made Paperwala for..."), about your games, your design process and your background.

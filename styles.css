@@ -192,6 +192,7 @@ a { color: inherit; text-decoration: none; }
 .card-platforms { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 6px 0 0; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 0; padding: 0; list-style: none; }
 .card-tags li { padding: 4px 11px; font-size: 12px; line-height: 1.4; color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); border-radius: 999px; }
+.card-tags .card-tag-award { font-weight: 500; color: var(--cta-1); background: color-mix(in srgb, var(--cta-1) 16%, transparent); }
 .meta h3 { margin: 6px 0 0; font-size: 24px; font-weight: 400; letter-spacing: -0.02em; color: #fff; }
 
 /* About / contact */
@@ -792,6 +793,8 @@ body.no-scroll { overflow: hidden; }
 .hh-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 18px 0 0; padding: 0; list-style: none; }
 .hh-tags li { padding: 4px 11px; font-size: 12px; color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); border-radius: 999px; }
 .section-lead { margin: 0 0 16px; font-size: 17px; line-height: 1.6; color: var(--fg); }
+.jam-result { margin: 24px 0 0; padding: 14px 18px; font-size: 16px; line-height: 1.6; background: color-mix(in srgb, var(--cta-1) 8%, transparent); border-left: 3px solid var(--cta-1); border-radius: 0 12px 12px 0; }
+.jam-result strong { color: var(--cta-1); font-weight: 600; }
 .ux-card p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--fg); }
 
 .screen > img { display: block; width: 100%; height: 100%; object-fit: cover; }
