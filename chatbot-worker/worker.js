@@ -63,7 +63,7 @@ The games below are ranked by Sudhakar's own favourites and best work, from the 
 - Level design: 12 levels paced with three measures (novelty, intensity, tension) in three repeating 4-level cycles. Earth's health carries over between levels, so tension peaks in the 4th level of each cycle; each cycle brings a new planet, a health reset, new towers and a new core mechanic (armour at level 5, shields at level 9).
 - Data-driven: levels are built from wave lists and ScriptableObjects without code changes.
 - UI/UX built around hierarchy, progressive disclosure, consistency, contrast, accessibility (1x, 1.5x, 2x speed; no forced pause), proximity and alignment.
-- AI: AI-assisted development helped investigate bugs and explore implementation approaches; Sudhakar remained responsible for the code, integration and testing.
+- AI: AI-assisted development (Claude Code, for coding) helped investigate bugs and explore implementation approaches; Sudhakar remained responsible for the code, integration and testing.
 - Sequel to Orbital Defense.
 
 ### Paperwala (paperwala.html)
@@ -75,7 +75,7 @@ The games below are ranked by Sudhakar's own favourites and best work, from the 
 - 12 levels in two worlds (Village 1 to 6, Town 7 to 12), built in Teach, Practice, Test cycles. Everything is deterministic so failures feel fair. Each failure has its own picture-led screen.
 - Playable in English and Hindi.
 - Planned (not built) directions: a daily route, events, stars and streaks, news integration, social sharing.
-- AI: the game uses AI-generated art, and AI tools assisted with its coding.
+- AI: the game uses AI-generated art (made with ChatGPT), and Claude Code assisted with its coding.
 
 ### Kingslayer (kingslayer.html)
 - 2D stealth platformer. Unity 6, C#. Web. Keyboard or controller.
@@ -91,7 +91,7 @@ The games below are ranked by Sudhakar's own favourites and best work, from the 
 - Every slot spin earns a Scanner Point; points reveal tiles on a minefield board. Colour clues: green (no mine nearby), yellow (a mine and a cache nearby), red (a mine, no cache). Six sectors that escalate from a mine-free 3x3 opener to a 6x6 board with five mines; clearing all pays 345 spins. No store inside the event. 24-hour timer.
 - The team wrote the event one-pager and the UI spec, set the art direction and built the prototype.
 - Student concept, not affiliated with or endorsed by Moon Active.
-- AI: the prototype uses AI-generated art, and AI tools assisted with its coding.
+- AI: the prototype uses AI-generated art (made with ChatGPT), and Claude Code assisted with its coding.
 
 ### Vines & Vipers (vines-and-vipers.html)
 - Casual online multiplayer board game for up to four players, built on Snakes & Ladders. Unity 6, C#. Android (APK download). Made at NID.
@@ -99,7 +99,7 @@ The games below are ranked by Sudhakar's own favourites and best work, from the 
 - No text in gameplay: field research in Bangalore, Trichy and Kulithalai (a village in Karur district, Tamil Nadu) showed that games needing English went unplayed by many village players.
 - Playtesting shaped the board: only two vipers in tiles 80 to 100, dense vines in 1 to 30.
 - Netcode for GameObjects with Unity Lobby, Relay and Authentication; includes a bot opponent.
-- AI: the game contains AI-generated art. The monkey sprite is from itch.io; all other design, research and programming is Sudhakar's.
+- AI: the game contains AI-generated art, made with ChatGPT. No AI was used for its code. The monkey sprite is from itch.io; all other design, research and programming is Sudhakar's.
 
 ### Size Matters (size-matters.html)
 - Puzzle-platformer with no jump button. Unity 6, C#. Web. Keyboard and mouse.
@@ -150,7 +150,7 @@ The games below are ranked by Sudhakar's own favourites and best work, from the 
 - Singapore's national health app. Owned the requirements for the Events section: stakeholder expectations, design discussions and development-ready user stories.
 
 ## Quick answers
-- Games that used AI: Orbital Defense 2 (AI-assisted development), Paperwala (AI art and coding help), Treasure Scan (AI art and coding help), Vines & Vipers (AI art). The others used no AI.
+- Games that used AI: Orbital Defense 2 (Claude Code for coding), Paperwala (Claude Code for coding, ChatGPT for images), Treasure Scan (Claude Code for coding, ChatGPT for images), Vines & Vipers (ChatGPT for images). The others used no AI.
 - Team projects: Tiffin Wiffin (team of two) and Treasure Scan (group of three). The rest are solo.
 - Who made the art: Sudhakar made all the art for Orbital Defense 2, Orbital Defense, Kingslayer, Harvest Havok and Last Bastion. Paperwala, Treasure Scan and Vines & Vipers use AI-generated art (Vines & Vipers' monkey sprite is from itch.io). Sudhakar's teammate made the art for Tiffin Wiffin, and Size Matters uses Kenney asset packs, as the jam required.
 - Game jams: Orbital Defense (The Very Serious Juniper Dev Game Jam), Size Matters (Kenney Jam 2026), Paperwala (Dainik Bhaskar Game Lab 2026, won a Consolation Prize).
